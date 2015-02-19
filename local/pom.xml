@@ -37,6 +37,7 @@
     </properties>
 
     <modules>
+	<module>mongo-elasticsearch-sync</module>
     </modules>
 
 </project>
