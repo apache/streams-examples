@@ -44,41 +44,36 @@ public class ElasticsearchReindex implements Runnable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindex.class);
 
-    protected static ListeningExecutorService executor = MoreExecutors.listeningDecorator(newFixedThreadPoolWithQueueSize(5, 20));
-
-    private static ExecutorService newFixedThreadPoolWithQueueSize(int nThreads, int queueSize) {
-        return new ThreadPoolExecutor(nThreads, nThreads,
-                5000L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue<Runnable>(queueSize, true), new ThreadPoolExecutor.CallerRunsPolicy());
-    }
-
-    ElasticsearchReindexConfiguration reindex;
+    ElasticsearchReindexConfiguration config;
 
     public ElasticsearchReindex() {
-       this(new ComponentConfigurator<ElasticsearchReindexConfiguration>(ElasticsearchReindexConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+       this(new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
 
     }
 
     public ElasticsearchReindex(ElasticsearchReindexConfiguration reindex) {
-        this.reindex = reindex;
+        this.config = reindex;
     }
 
     public static void main(String[] args)
     {
         LOGGER.info(StreamsConfigurator.config.toString());
 
-        executor.submit(new ElasticsearchReindex());
+        ElasticsearchReindex reindex = new ElasticsearchReindex();
+
+        new Thread(reindex).start();
 
     }
 
     @Override
     public void run() {
 
-        ElasticsearchPersistReader elasticsearchPersistReader = new ElasticsearchPersistReader(reindex.getSource());
+        ElasticsearchPersistReader elasticsearchPersistReader = new ElasticsearchPersistReader(config.getSource());
 
-        ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(reindex.getDestination());
+        ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
         Map<String, Object> streamConfig = Maps.newHashMap();
+        streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
         streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
         StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
 
