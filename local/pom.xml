@@ -37,6 +37,8 @@
     </properties>
 
     <modules>
+
+        <module>twitter-userstream-elasticsearch</module>
     </modules>
 
 </project>
