@@ -310,4 +310,44 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- The Docker Maven plugin is used to create docker image with the fat jar -->
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>0.11.0</version>
+                        <configuration>
+                            <images>
+
+                                <image>
+                                    <alias>${project.artifactId}</alias>
+                                    <name>${project.artifactId}:${project.version}</name>
+                                    <build>
+                                        <from>dockerfile/java:oracle-java8</from>
+                                        <assembly>
+                                            <basedir>/</basedir>
+                                            <descriptorRef>artifact</descriptorRef>
+                                        </assembly>
+                                        <!-- Default command for the build image -->
+                                    </build>
+
+                                </image>
+
+                            </images>
+                        </configuration>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+            <activation>
+                <activeByDefault/>
+            </activation>
+        </profile>
+    </profiles>
 </project>
