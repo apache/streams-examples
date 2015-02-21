@@ -64,5 +64,5 @@ Deploy:
 
 `docker push <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT`
 
-`docker run <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT.jar java -cp mongo-elasticsearch-sync-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
+`docker run <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT java -cp mongo-elasticsearch-sync-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
 
