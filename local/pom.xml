@@ -37,7 +37,9 @@
     </properties>
 
     <modules>
-	<module>elasticsearch-reindex</module>
+
+        <module>twitter-history-elasticsearch</module>
+
     </modules>
 
 </project>
