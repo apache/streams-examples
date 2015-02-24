@@ -45,19 +45,10 @@ public class MongoElasticsearchSync implements Runnable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(MongoElasticsearchSync.class);
 
-    protected static ListeningExecutorService executor = MoreExecutors.listeningDecorator(newFixedThreadPoolWithQueueSize(5, 20));
-
-    private static ExecutorService newFixedThreadPoolWithQueueSize(int nThreads, int queueSize) {
-        return new ThreadPoolExecutor(nThreads, nThreads,
-                5000L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue<Runnable>(queueSize, true), new ThreadPoolExecutor.CallerRunsPolicy());
-    }
-
     MongoElasticsearchSyncConfiguration config;
 
     public MongoElasticsearchSync() {
         this(new ComponentConfigurator<MongoElasticsearchSyncConfiguration>(MongoElasticsearchSyncConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
-
     }
 
     public MongoElasticsearchSync(MongoElasticsearchSyncConfiguration config) {
@@ -68,7 +59,9 @@ public class MongoElasticsearchSync implements Runnable {
     {
         LOGGER.info(StreamsConfigurator.config.toString());
 
-        executor.submit(new MongoElasticsearchSync());
+        MongoElasticsearchSync sync = new MongoElasticsearchSync();
+
+        new Thread(sync).start();
 
     }
 
@@ -80,6 +73,7 @@ public class MongoElasticsearchSync implements Runnable {
         ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
         Map<String, Object> streamConfig = Maps.newHashMap();
+        streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
         streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
         StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
 

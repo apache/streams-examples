@@ -22,8 +22,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.apache.streams</groupId>
-        <artifactId>streams-examples</artifactId>
+        <artifactId>streams-examples-local</artifactId>
         <version>0.2-incubating-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
