@@ -37,7 +37,9 @@
     </properties>
 
     <modules>
-	<module>elasticsearch-reindex</module>
+        <module>elasticsearch-hdfs</module>
+
+        <module>elasticsearch-reindex</module>
     </modules>
 
 </project>
