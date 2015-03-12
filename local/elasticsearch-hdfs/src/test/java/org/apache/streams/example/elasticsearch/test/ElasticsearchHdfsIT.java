@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.io.File;
 import java.util.*;
 
 /**
@@ -96,7 +97,7 @@ public class ElasticsearchHdfsIT extends ElasticsearchIntegrationTest {
     }
 
     @Test
-    public void testBackup() throws Exception {
+    public void testElasticsearchHdfs() throws Exception {
 
         ElasticsearchHdfsConfiguration backupConfiguration = MAPPER.readValue(
                 ElasticsearchHdfsIT.class.getResourceAsStream("/testBackup.json"), ElasticsearchHdfsConfiguration.class);
@@ -115,22 +116,12 @@ public class ElasticsearchHdfsIT extends ElasticsearchIntegrationTest {
         backupThread.start();
         backupThread.join();
 
-        flushAndRefresh();
-
-
-    }
-
-    @Test
-    public void testRestore() throws Exception {
-
         HdfsElasticsearchConfiguration restoreConfiguration = MAPPER.readValue(
                 ElasticsearchHdfsIT.class.getResourceAsStream("/testRestore.json"), HdfsElasticsearchConfiguration.class);
 
         restoreConfiguration.getDestination().setClusterName(cluster().getClusterName());
 
-        assert(indexExists("source"));
-        long srcCount = client().count(client().prepareCount("source").request()).get().getCount();
-        assert srcCount > 0;
+        assert(!indexExists("destination"));
 
         HdfsElasticsearch restore = new HdfsElasticsearch(restoreConfiguration);
 
@@ -140,6 +131,9 @@ public class ElasticsearchHdfsIT extends ElasticsearchIntegrationTest {
 
         flushAndRefresh();
 
+        long destCount = client().count(client().prepareCount("destination").request()).get().getCount();
 
+        assert srcCount == destCount;
     }
+
 }

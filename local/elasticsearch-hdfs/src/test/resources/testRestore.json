@@ -1,0 +1,24 @@
+{
+      "source": {
+        "scheme": "file",
+        "host": "localhost",
+        "user": "cloudera",
+        "path": "target",
+        "readerPath": "test",
+        "fields": [
+          "ID",
+          "DOC"
+        ]
+      },
+      "destination": {
+          "hosts": [
+              "localhost"
+          ],
+          "port": 9300,
+          "clusterName": "elasticsearch",
+          "index": "destination",
+          "type": "activity",
+          "forceUseConfig": true
+      }
+
+}
