@@ -20,6 +20,7 @@ package org.apache.streams.example.elasticsearch.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.google.common.util.concurrent.Uninterruptibles;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 import org.apache.streams.core.StreamsDatum;
@@ -48,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Test copying documents between hdfs and elasticsearch
@@ -127,9 +129,18 @@ public class ElasticsearchHdfsIT extends ElasticsearchIntegrationTest {
 
         Thread restoreThread = new Thread(restore);
         restoreThread.start();
+
+        Uninterruptibles.sleepUninterruptibly(30, TimeUnit.SECONDS);
+
         restoreThread.join();
 
+        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
+
         flushAndRefresh();
+
+        Uninterruptibles.sleepUninterruptibly(10, TimeUnit.SECONDS);
+
+        assert(indexExists("destination"));
 
         long destCount = client().count(client().prepareCount("destination").request()).get().getCount();
 

@@ -4,11 +4,7 @@
         "host": "localhost",
         "user": "cloudera",
         "path": "target",
-        "readerPath": "test",
-        "fields": [
-          "ID",
-          "DOC"
-        ]
+        "readerPath": "test"
       },
       "destination": {
           "hosts": [

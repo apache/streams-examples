@@ -339,9 +339,6 @@
 
                 </plugins>
             </build>
-            <activation>
-                <activeByDefault/>
-            </activation>
         </profile>
     </profiles>
 </project>

@@ -33,6 +33,7 @@ import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigInteger;
 import java.util.Map;
 import java.util.concurrent.*;
 
@@ -75,7 +76,7 @@ public class HdfsElasticsearch implements Runnable {
 
         Map<String, Object> streamConfig = Maps.newHashMap();
         streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
+        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 1000 * 1000);
         StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
 
         builder.newPerpetualStream(WebHdfsPersistReader.STREAMS_ID, webHdfsPersistReader);

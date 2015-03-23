@@ -18,11 +18,7 @@
       "user": "cloudera",
       "path": "target",
       "writerPath": "test",
-      "writerPrefix": "activities",
-      "fields": [
-        "ID",
-        "DOC"
-      ]
+      "writerFilePrefix": "activities"
     }
 
 }

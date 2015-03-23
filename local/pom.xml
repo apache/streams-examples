@@ -38,7 +38,6 @@
 
     <modules>
         <module>elasticsearch-hdfs</module>
-
         <module>elasticsearch-reindex</module>
     </modules>
 
