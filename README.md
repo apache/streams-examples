@@ -40,7 +40,7 @@ To build from source code:
     unless you choose to checkout a SNAPSHOT branch.
     
     If so needed, incubator-streams can be checked out from:
-      http://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git
+      http://git-wip-us.apache.org/repos/asf/incubator-streams.git
 
     After check out, cd into incubator-streams and invoke maven to install it using:
       $mvn install
