@@ -11,7 +11,7 @@ Requirements:
 
 Description:
 ------------
-Copies documents between elasticsearch and file system using the hdfs driver.
+Copies documents between elasticsearch and file system using the hdfs persist module.
 
 Streams:
 --------
@@ -25,8 +25,8 @@ Build:
 
 `mvn clean package`
 
-Note that a different version of hdfs in packaged by excluding org.apache.hadoop.hadoop-hdfs in pom.xml and specifically
-depending on a different preferred version.
+Note that an alternative version of hdfs is packaged, by excluding org.apache.hadoop.hadoop-hdfs when
+importing org.apache.streams.streams-persist-hdfs, and specifically depending on a different preferred version.
 
 Deploy:
 --------
