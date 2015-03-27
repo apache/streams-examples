@@ -39,6 +39,7 @@
     <modules>
 	<module>elasticsearch-reindex</module>
 	<module>mongo-elasticsearch-sync</module>
+        <module>twitter-following-neo4j</module>
     </modules>
 
 </project>
