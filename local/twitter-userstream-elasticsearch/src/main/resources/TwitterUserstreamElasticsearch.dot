@@ -5,8 +5,8 @@ digraph g {
 
   //processors
   TwitterTypeConverter [label="TwitterTypeConverter",shape=box,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/processor/TwitterTypeConverter.java"];
-  DeleteOnlyProcessor  [label="DeleteOnlyProcessor ",shape=box,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/processor/TwitterTypeConverter.java"];
-  NoDeletesProcessor  [label="NoDeletes",shape=box,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/processor/TwitterTypeConverter.java"];
+  DeleteOnlyProcessor [label="VerbDefinitionKeepFilter (verb:post)",shape=box,URL="https://github.com/apache/incubator-streams/blob/master/streams-components/streams-filters/src/main/java/org/apache/streams/filters/VerbDefinitionKeepFilter.java"];
+  NoDeletesProcessor  [label="VerbDefinitionDropFilter (verb:post)",shape=box,URL="https://github.com/apache/incubator-streams/blob/master/streams-components/streams-filters/src/main/java/org/apache/streams/filters/VerbDefinitionDropFilter.java"];
    
   //persisters
   ElasticsearchPersistWriter [label="ElasticsearchPersistWriter",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-persist-elasticsearch/src/main/java/org/apache/streams/elasticsearch/ElasticsearchPersistWriter.java"];
