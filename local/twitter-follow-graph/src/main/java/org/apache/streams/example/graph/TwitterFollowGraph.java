@@ -43,7 +43,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Created by steve on 11/29/14.
+ * Collects friend and follow connections for a set of twitter users and builds a graph
+ * database in neo4j.
  */
 public class TwitterFollowGraph {
 
