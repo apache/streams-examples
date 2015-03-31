@@ -53,27 +53,26 @@ Example Configuration:
         type = activity
     }
 
-In the Twitter section you should place all of your relevant authentication keys and whichever Twitter IDs you're looking to follow
+In the Twitter section you should place all of your relevant authentication keys and whichever Twitter IDs you want to pull history for.
+
 Twitter IDs can be converted from screennames at http://www.gettwitterid.com
 
-Running:
+Build:
+---------
+
+`mvn clean package verify`
+
+Run:
 --------
 
-You will need to run `./install_templates.sh` in the resources folder in order to apply the templates to your ES cluster
+    java -cp target/twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=application.conf org.apache.streams.example.twitter.TwitterHistoryElasticsearch
 
-    java -cp target/twitter-history-elasticsearch-0.1-SNAPSHOT.jar -Dconfig.file=application.conf org.apache.streams.twitter.example.TwitterHistoryElasticsearchActivity
+Deploy:
+--------
+`mvn -Pdocker clean package docker:build`
 
-Note that you must modify src/main/resources/application.conf, and supply an absolute path to config.file
+`docker tag twitter-history-elasticsearch:0.2-incubating-SNAPSHOT <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
 
-Verification:
--------------
-Open up http://localhost:9200/_plugin/head/ and confirm that the index you specified now contains has data
+`docker push <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT`
 
-Download https://github.com/w2ogroup/streams-examples/blob/master/twitter-history-elasticsearch/src/main/resources/reports/ActivityReport.json
-
-Open up http://localhost:9200/_plugin/marvel and from the folder icon in the top right hand corner click
-    Load -> Advanced -> Choose File and select the report you downloaded
-
-The gear on the top-right allows you to change the report index
-
-You should now see dashboards displaying metrics about your twitter activity
+`docker run <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT.jar java -cp twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.twitter.TwitterHistoryElasticsearch`

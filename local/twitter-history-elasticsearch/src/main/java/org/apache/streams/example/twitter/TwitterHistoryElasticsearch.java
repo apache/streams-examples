@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.config.Config;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
+import org.apache.streams.converter.ActivityConverterProcessor;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.elasticsearch.ElasticsearchConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
@@ -76,7 +77,7 @@ public class TwitterHistoryElasticsearch implements Runnable {
     public void run() {
 
         TwitterTimelineProvider provider = new TwitterTimelineProvider(config.getTwitter(), ObjectNode.class);
-        TwitterTypeConverter converter = new TwitterTypeConverter(ObjectNode.class, Activity.class);
+        ActivityConverterProcessor converter = new ActivityConverterProcessor();
         ElasticsearchPersistWriter writer = new ElasticsearchPersistWriter(config.getElasticsearch());
 
         StreamBuilder builder = new LocalStreamBuilder(500);
