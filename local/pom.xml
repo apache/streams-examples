@@ -40,6 +40,7 @@
 	<module>elasticsearch-hdfs</module>
 	<module>elasticsearch-reindex</module>
 	<module>mongo-elasticsearch-sync</module>
+	<module>twitter-userstream-elasticsearch</module>
     </modules>
 
 </project>
