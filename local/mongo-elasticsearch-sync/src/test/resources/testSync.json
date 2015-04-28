@@ -1,18 +1,21 @@
 {
-    "source": {
-        "host": "localhost",
-        "port": 37017,
-        "db": "local",
-        "collection": "activities"
-    },
-    "destination": {
-        "hosts": [
-            "localhost"
-        ],
-        "port": 9300,
-        "clusterName": "elasticsearch",
-        "index": "destination",
-        "type": "activity",
-        "forceUseConfig": true
-    }
+  "$license": [
+    "http://www.apache.org/licenses/LICENSE-2.0"
+  ],
+  "source": {
+      "host": "localhost",
+      "port": 37017,
+      "db": "local",
+      "collection": "activities"
+  },
+  "destination": {
+      "hosts": [
+          "localhost"
+      ],
+      "port": 9300,
+      "clusterName": "elasticsearch",
+      "index": "destination",
+      "type": "activity",
+      "forceUseConfig": true
+  }
 }
