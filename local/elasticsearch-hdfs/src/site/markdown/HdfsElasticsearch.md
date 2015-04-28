@@ -13,12 +13,12 @@ Copies documents from hdfs to elasticsearch.
 Specification:
 -----------------
 
-[HdfsElasticsearch.dot](src/main/resources/HdfsElasticsearch.dot "HdfsElasticsearch.dot" )
+[HdfsElasticsearch.dot](HdfsElasticsearch.dot "HdfsElasticsearch.dot" )
 
 Diagram:
 -----------------
 
-![HdfsElasticsearch.png](./HdfsElasticsearch.png?raw=true)
+![HdfsElasticsearch.dot.png](./HdfsElasticsearch.dot.png?raw=true)
 
 Example Configuration:
 ----------------------

@@ -17,12 +17,12 @@ Collects friend or follower connections for a set of twitter users to build a gr
 Specification:
 -----------------
 
-[TwitterFollowGraph.dot](src/main/resources/TwitterFollowGraph.dot "TwitterFollowGraph.dot" )
+[TwitterFollowGraph.dot](TwitterFollowGraph.dot "TwitterFollowGraph.dot" )
 
 Diagram:
 -----------------
 
-![TwitterFollowGraph.dot.png](src/main/resources/TwitterFollowGraph.dot.png?raw=true)
+![TwitterFollowGraph.dot.png](./TwitterFollowGraph.dot.png?raw=true)
 
 Example Configuration:
 ----------------------

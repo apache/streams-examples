@@ -13,7 +13,7 @@ Requirements:
 
 Description:
 ------------
-Copies documents  between indexes.
+Copies documents into a different index
 
 Specification:
 -----------------
@@ -23,7 +23,7 @@ Specification:
 Diagram:
 -----------------
 
-![ElasticsearchReindex.dot.png](src/main/resources/ElasticsearchReindex.dot.png?raw=true)
+![ElasticsearchReindex.dot.png](./ElasticsearchReindex.dot.png?raw=true)
 
 Example Configuration:
 ----------------------

@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "type": "object",
+  "javaType" : "org.apache.streams.elasticsearch.example.ElasticsearchHdfsConfiguration",
+  "javaInterfaces": ["java.io.Serializable"],
+  "properties": {
+    "source": { "javaType": "org.apache.streams.elasticsearch.ElasticsearchReaderConfiguration", "type": "object", "required": true },
+    "destination": { "javaType": "org.apache.streams.hdfs.HdfsWriterConfiguration", "type": "object", "required": true }
+  }
+}

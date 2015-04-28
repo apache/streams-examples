@@ -29,6 +29,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mongo-elasticsearch-sync</artifactId>
+    <name>mongo-elasticsearch-sync</name>
+
+    <description>Copies documents from mongodb to elasticsearch.</description>
 
     <properties>
         <elasticsearch.version>1.1.0</elasticsearch.version>
