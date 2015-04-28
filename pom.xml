@@ -185,7 +185,7 @@
             https://repository.apache.org/service/local/staging/deploy/maven2
         </release.repository.url>
 
-        <streams.version>${project.version}</streams.version>
+        <streams.version>0.2-incubating</streams.version>
 
         <!-- Plugin and Plugin Dependency Versions -->
         <build-helper.plugin.version>1.8</build-helper.plugin.version>
