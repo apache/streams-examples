@@ -94,6 +94,17 @@
     </mailingLists>
 
     <distributionManagement>
+        <repository>
+            <id>streams.releases</id>
+            <name>Streams Releases</name>
+            <url>${release.repository.url}</url>
+        </repository>
+        <!-- Snapshots (not-releases) are published to this repository -->
+        <snapshotRepository>
+            <id>streams.snapshots</id>
+            <name>Streams Snapshots</name>
+            <url>${snapshot.repository.url}</url>
+        </snapshotRepository>
         <site>
             <id>streams.site.examples</id>
             <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/streams/content/site/${project.version}/streams-examples/</url>
@@ -160,7 +171,45 @@
     </repositories>
 
     <properties>
+
+        <!-- Build Properties -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.7</java.version>
+
+        <!-- Release Properties -->
+        <snapshot.repository.url>
+            https://repository.apache.org/content/repositories/snapshots
+        </snapshot.repository.url>
+        <release.repository.url>
+            https://repository.apache.org/service/local/staging/deploy/maven2
+        </release.repository.url>
+
         <streams.version>${project.version}</streams.version>
+
+        <!-- Plugin and Plugin Dependency Versions -->
+        <build-helper.plugin.version>1.8</build-helper.plugin.version>
+        <compiler.plugin.version>3.0</compiler.plugin.version>
+        <clean.plugin.version>2.6</clean.plugin.version>
+        <docker.plugin.version>0.11.2</docker.plugin.version>
+        <enforcer.plugin.version>1.3.1</enforcer.plugin.version>
+        <failsafe.plugin.version>2.17</failsafe.plugin.version>
+        <jar.plugin.version>2.6</jar.plugin.version>
+        <javadoc.plugin.version>2.10.2</javadoc.plugin.version>
+        <resources.plugin.version>2.7</resources.plugin.version>
+        <shade.plugin.version>2.3</shade.plugin.version>
+        <site.plugin.version>3.4</site.plugin.version>
+        <surefire.plugin.version>2.17</surefire.plugin.version>
+        <war.plugin.version>2.5</war.plugin.version>
+
+        <!-- Library Dependency Versions -->
+        <jsonschema2pojo.version>0.4.6</jsonschema2pojo.version>
+        <junit.version>4.11</junit.version>
+        <slf4j.version>1.7.6</slf4j.version>
+        <log4j.version>1.2.16</log4j.version>
+        <logback.version>1.1.1</logback.version>
+
+        <typesafe.config.version>1.2.0</typesafe.config.version>
 
         <!-- Release Properties -->
         <snapshot.repository.url>
@@ -178,6 +227,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>${typesafe.config.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
@@ -257,8 +311,165 @@
     </dependencyManagement>
 
     <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>${site.plugin.version}</version>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${clean.plugin.version}</version>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>src/site/resources</directory>
+                                <followSymlinks>false</followSymlinks>
+                            </fileset>
+                            <!-- this is here because elasticsearch integration tests don't have a setting to change directory where temp index files get created -->
+                            <fileset>
+                                <directory>data</directory>
+                                <followSymlinks>false</followSymlinks>
+                            </fileset>
+                        </filesets>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                    <executions>
+                        <execution>
+                            <id>copy-resources</id>
+                            <!-- validate is first to run-->
+                            <!-- copy these files to src/site/resources -->
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/src/site/resources</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>src/main/jsonschema</directory>
+                                    </resource>
+                                    <resource>
+                                        <directory>src/main/xmlschema</directory>
+                                    </resource>
+                                    <resource>
+                                        <directory>src/main/resources</directory>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.jsonschema2pojo</groupId>
+                    <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                    <version>${jsonschema2pojo.version}</version>
+                    <configuration>
+                        <addCompileSourceRoot>true</addCompileSourceRoot>
+                        <generateBuilders>true</generateBuilders>
+                        <outputDirectory>target/generated-sources/jsonschema2pojo</outputDirectory>
+                        <sourcePaths>
+                            <sourcePath>src/main/jsonschema</sourcePath>
+                        </sourcePaths>
+                        <useLongIntegers>true</useLongIntegers>
+                        <useJodaDates>true</useJodaDates>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${enforcer.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>enforce-banned-dependencies</id>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
+                            <configuration>
+                                <rules>
+                                    <bannedDependencies>
+                                        <excludes>
+                                            <exclude>org.slf4j:slf4j-log4j12</exclude>
+                                            <exclude>org.slf4j:slf4j-jcl</exclude>
+                                            <exclude>org.slf4j:slf4j-jdk14</exclude>
+                                            <exclude>org.log4j:log4j</exclude>
+                                            <exclude>commons-logging:commons-logging</exclude>
+                                        </excludes>
+                                    </bannedDependencies>
+                                </rules>
+                                <fail>true</fail>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${failsafe.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>integration-tests</id>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${shade.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <finalName>${project.build.finalName}</finalName>
+                                <filters>
+                                    <filter>
+                                        <artifact>*:*</artifact>
+                                        <excludes>
+                                            <exclude>META-INF/*.SF</exclude>
+                                            <exclude>META-INF/*.DSA</exclude>
+                                            <exclude>META-INF/*.RSA</exclude>
+                                            <exclude>**/logback.xml</exclude>
+                                            <exclude>**/log4j.properties</exclude>
+                                        </excludes>
+                                    </filter>
+                                </filters>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
@@ -289,4 +500,44 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <!-- The Docker Maven plugin is used to create docker image with the fat jar -->
+                        <groupId>org.jolokia</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.plugin.version}</version>
+                        <configuration>
+                            <images>
+
+                                <image>
+                                    <alias>${project.artifactId}</alias>
+                                    <name>${project.artifactId}:${project.version}</name>
+                                    <build>
+                                        <from>dockerfile/java:oracle-java7</from>
+                                        <assembly>
+                                            <basedir>/</basedir>
+                                            <descriptorRef>artifact</descriptorRef>
+                                        </assembly>
+                                        <!-- Default command for the build image -->
+                                    </build>
+
+                                </image>
+
+                            </images>
+                        </configuration>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+            <activation>
+                <activeByDefault/>
+            </activation>
+        </profile>
+    </profiles>
 </project>

@@ -135,17 +135,6 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>data</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
             <!-- This binary runs with logback -->
             <!-- Keep log4j out -->
             <plugin>
@@ -209,46 +198,14 @@
                     </configuration>
                 </execution>
             </executions>
-        </plugin>
-        <plugin>
-            <groupId>org.jsonschema2pojo</groupId>
-            <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-            <version>0.4.1</version>
-            <configuration>
-                <addCompileSourceRoot>true</addCompileSourceRoot>
-                <generateBuilders>true</generateBuilders>
-                <sourcePaths>
-                    <sourcePath>src/main/jsonschema</sourcePath>
-                </sourcePaths>
-                <outputDirectory>target/generated-sources/jsonschema2pojo</outputDirectory>
-                <targetPackage>org.apache.streams.example.elasticsearch</targetPackage>
-                <useJodaDates>false</useJodaDates>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>generate</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
+            </plugin>
+            <plugin>
+                <groupId>org.jsonschema2pojo</groupId>
+                <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>add-source</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>
-                                <source>target/generated-sources/jsonschema2pojo</source>
-                            </sources>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -272,57 +229,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.12.4</version>
-                <executions>
-                    <execution>
-                        <id>integration-tests</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>docker</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- The Docker Maven plugin is used to create docker image with the fat jar -->
-                        <groupId>org.jolokia</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>0.11.0</version>
-                        <configuration>
-                            <images>
-
-                                <image>
-                                    <alias>${project.artifactId}</alias>
-                                    <name>${project.artifactId}:${project.version}</name>
-                                    <build>
-                                        <from>dockerfile/java:oracle-java8</from>
-                                        <assembly>
-                                            <basedir>/</basedir>
-                                            <descriptorRef>artifact</descriptorRef>
-                                        </assembly>
-                                        <!-- Default command for the build image -->
-                                    </build>
-
-                                </image>
-
-                            </images>
-                        </configuration>
-
-                    </plugin>
-
-                </plugins>
-            </build>
-            <activation>
-                <activeByDefault/>
-            </activation>
-        </profile>
-    </profiles>
 </project>
