@@ -23,7 +23,7 @@ Specification:
 Diagram:
 -----------------
 
-![ElasticsearchReindex.dot.png](./ElasticsearchReindex.dot.png?raw=true)
+<a href="ElasticsearchReindex.dot.svg" target="_self">ElasticsearchReindex.dot.svg</a>
 
 Example Configuration:
 ----------------------

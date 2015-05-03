@@ -22,7 +22,7 @@ Specification:
 Diagram:
 -----------------
 
-![TwitterUserstreamElasticsearch.dot.png](./TwitterUserstreamElasticsearch.dot.png?raw=true)
+<a href="TwitterUserstreamElasticsearch.dot.svg" target="_self">TwitterUserstreamElasticsearch.dot.svg</a>
 
 Example Configuration:
 ----------------------
@@ -47,7 +47,10 @@ Example Configuration:
         batchSize = 1
     }
 
-The consumerKey and consumerSecret are set for our streams-example application
+The consumerKey and consumerSecret are assigned when creating a twitter application:
+
+
+
 The accessToken and accessTokenSecret can be obtained by navigating to:
 
     https://api.twitter.com/oauth/authenticate?oauth_token=UIJ0AUxCJatpKDUyFt0OTSEP4asZgqxRwUCT0AMSwc&oauth_callback=http%3A%2F%2Foauth.streamstutorial.w2odata.com%3A8080%2Fsocialauthdemo%2FsocialAuthSuccessAction.do

@@ -18,7 +18,7 @@ Specification:
 Diagram:
 -----------------
 
-![HdfsElasticsearch.dot.png](./HdfsElasticsearch.dot.png?raw=true)
+<a href="HdfsElasticsearch.dot.svg" target="_self">HdfsElasticsearch.dot.svg</a>
 
 Example Configuration:
 ----------------------
