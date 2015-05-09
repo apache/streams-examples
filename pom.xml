@@ -322,8 +322,10 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>${site.plugin.version}</version>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -473,7 +475,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.4</version>
+                    <version>${site.plugin.version}</version>
                     <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.wagon</groupId>

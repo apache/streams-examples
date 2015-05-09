@@ -5,7 +5,7 @@ streams-master-pom/
 
 target/
 overlays/
-src/site/resources/
+**/src/site/resources/
 dependency-reduced-pom.xml
 
 # IDE directories/files #
