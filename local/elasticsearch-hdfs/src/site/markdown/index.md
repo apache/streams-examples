@@ -23,7 +23,7 @@ Streams:
 Build:
 ---------
 
-`mvn clean package`
+    mvn clean package verify
 
 Note that an alternative version of hdfs is packaged, by excluding org.apache.hadoop.hadoop-hdfs when
 importing org.apache.streams.streams-persist-hdfs, and specifically depending on a different preferred version.
@@ -31,5 +31,5 @@ importing org.apache.streams.streams-persist-hdfs, and specifically depending on
 Deploy:
 --------
 
-`mvn -Pdocker clean package docker:build`
+    mvn -Pdocker clean package docker:build
 

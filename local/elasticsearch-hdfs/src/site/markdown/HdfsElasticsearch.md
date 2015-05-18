@@ -20,6 +20,11 @@ Diagram:
 
 <a href="HdfsElasticsearch.dot.svg" target="_self">HdfsElasticsearch.dot.svg</a>
 
+Configuration:
+-----------------
+
+[HdfsElasticsearchConfiguration.json](HdfsElasticsearchConfiguration.json "HdfsElasticsearchConfiguration.json" )
+
 Example Configuration:
 ----------------------
 
@@ -47,4 +52,6 @@ Example Configuration:
 Run:
 --------
 
-`docker run elasticsearch-hdfs:0.2-incubating-SNAPSHOT.jar java -cp elasticsearch-hdfs-0.2-incubating-SNAPSHOT.jar -Dconfig.file=file://<location_of_config_file>.json org.apache.streams.elasticsearch.example.HdfsElasticsearch`
+    java -cp dist/elasticsearch-hdfs-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/test/resources/testRestore.json org.apache.streams.elasticsearch.example.HdfsElasticsearch
+
+    docker run elasticsearch-hdfs:0.2-incubating java -cp /elasticsearch-hdfs-0.2-incubating-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_resource> org.apache.streams.elasticsearch.example.HdfsElasticsearch

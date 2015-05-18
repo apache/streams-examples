@@ -25,6 +25,11 @@ Diagram:
 
 <a href="ElasticsearchReindex.dot.svg" target="_self">ElasticsearchReindex.dot.svg</a>
 
+Configuration:
+-----------------
+
+[ElasticsearchReindexConfiguration.json](ElasticsearchReindexConfiguration.json "ElasticsearchReindexConfiguration.json" )
+
 Example Configuration:
 ----------------------
 
@@ -60,20 +65,17 @@ Populate source and destination in configuration with cluster / index / type det
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
+
+Deploy:
+--------
+
+    mvn -Pdocker clean package docker:build
 
 Run:
 --------
 
-`java -cp target/elasticsearch-reindex-0.1-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.elasticsearch.ElasticsearchReindex`
-
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
-
-`docker tag elasticsearch-reindex:0.2-incubating-SNAPSHOT <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
-
-`docker push <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
-
-`docker run <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT.jar java -cp elasticsearch-reindex-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.ElasticsearchReindex`
+    java -cp dist/elasticsearch-reindex-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/main/resources/application.json org.apache.streams.example.elasticsearch.ElasticsearchReindex
+    
+    docker run elasticsearch-reindex:0.2-incubating java -cp /elasticsearch-reindex-0.2-incubating-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_resource> org.apache.streams.example.elasticsearch.ElasticsearchReindex
 

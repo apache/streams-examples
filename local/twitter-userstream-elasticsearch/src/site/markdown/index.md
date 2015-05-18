@@ -24,6 +24,12 @@ Diagram:
 
 <a href="TwitterUserstreamElasticsearch.dot.svg" target="_self">TwitterUserstreamElasticsearch.dot.svg</a>
 
+Configuration:
+-----------------
+
+[TwitterUserstreamElasticsearchConfiguration.json](TwitterUserstreamElasticsearchConfiguration.json "TwitterUserstreamElasticsearchConfiguration.json" )
+
+
 Example Configuration:
 ----------------------
 
@@ -60,17 +66,14 @@ Build:
 
 `mvn clean package verify`
 
+Deploy:
+--------
+
+    mvn -Pdocker clean package docker:build`
+
 Run:
 --------
 
-`java -cp target/twitter-userstream-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`
+    java -cp dist/twitter-userstream-elasticsearch-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/main/resources/application.json org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
-
-`docker tag twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT`
-
-`docker push <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT`
-
-`docker run <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT.jar java -cp twitter-userstream-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`
+    docker run twitter-userstream-elasticsearch:0.2-incubating java -cp /twitter-userstream-elasticsearch-0.2-incubating-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_resource> org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`

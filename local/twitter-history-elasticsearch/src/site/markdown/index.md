@@ -26,6 +26,11 @@ Diagram:
 
 <a href="TwitterHistoryElasticsearch.dot.svg" target="_self">TwitterHistoryElasticsearch.dot.svg</a>
 
+Configuration:
+-----------------
+
+[TwitterHistoryElasticsearchConfiguration.json](TwitterHistoryElasticsearchConfiguration.json "TwitterHistoryElasticsearchConfiguration.json" )
+
 Example Configuration:
 ----------------------
 
@@ -62,17 +67,14 @@ Build:
 
 `mvn clean package verify`
 
+Deploy:
+--------
+
+    mvn -Pdocker clean package docker:build
+
 Run:
 --------
 
-    java -cp target/twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=application.conf org.apache.streams.example.twitter.TwitterHistoryElasticsearch
+    java -cp dist/twitter-history-elasticsearch-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/main/resources/application.conf org.apache.streams.example.twitter.TwitterHistoryElasticsearch
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
-
-`docker tag twitter-history-elasticsearch:0.2-incubating-SNAPSHOT <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
-
-`docker push <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT`
-
-`docker run <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT.jar java -cp twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.twitter.TwitterHistoryElasticsearch`
+    docker run twitter-history-elasticsearch:0.2-incubating java -cp /twitter-history-elasticsearch-0.2-incubating-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_resource> org.apache.streams.example.twitter.TwitterHistoryElasticsearch

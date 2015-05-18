@@ -24,6 +24,11 @@ Diagram:
 
 <a href="TwitterFollowGraph.dot.svg" target="_self">TwitterFollowGraph.dot.svg</a>
 
+Configuration:
+-----------------
+
+[TwitterFollowGraphConfiguration.json](TwitterFollowGraphConfiguration.json "TwitterFollowGraphConfiguration.json" )
+
 Example Configuration:
 ----------------------
 
@@ -78,20 +83,18 @@ Example Configuration:
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
+
+Deploy:
+--------
+
+    mvn -Pdocker clean package docker:build
 
 Run:
 --------
 
-`java -cp target/twitter-follow-graph-0.2-incubating-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.graph.TwitterFollowGraph`
+    java -cp dist/twitter-follow-graph-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/main/resources/application.json org.apache.streams.example.graph.TwitterFollowGraph
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
+    docker run twitter-follow-graph:0.2-incubating java -cp twitter-follow-graph-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/main/resources/application.json org.apache.streams.example.graph.TwitterFollowGraph
 
-`docker tag twitter-follow-graph:0.2-incubating-SNAPSHOT <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT`
-
-`docker push <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT`
-
-`docker run <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT java -cp twitter-follow-graph-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.graph.TwitterFollowGraph`
 

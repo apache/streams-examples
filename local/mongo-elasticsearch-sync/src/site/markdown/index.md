@@ -24,6 +24,11 @@ Diagram:
 
 <a href="MongoElasticsearchSync.dot.svg" target="_self">MongoElasticsearchSync.dot.svg</a>
 
+Configuration:
+-----------------
+
+[MongoElasticsearchSyncConfiguration.json](MongoElasticsearchSyncConfiguration.json "MongoElasticsearchSyncConfiguration.json" )
+
 Example Configuration:
 ----------------------
 
@@ -50,19 +55,15 @@ Build:
 
 `mvn clean package verify`
 
-Run:
---------
-
-`java -cp target/mongo-elasticsearch-sync-0.1-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
-
 Deploy:
 --------
 
-`mvn -Pdocker clean package docker:build`
+    mvn -Pdocker clean package docker:build
 
-`docker tag mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT`
+Run:
+--------
 
-`docker push <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT`
+    java -cp dist/mongo-elasticsearch-sync-0.2-incubating-jar-with-dependencies.jar -Dconfig.file=`pwd`/src/test/resources/testSync.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync
 
-`docker run <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT java -cp mongo-elasticsearch-sync-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
+    docker run mongo-elasticsearch-sync:0.2-incubating java -cp /mongo-elasticsearch-sync-0.2-incubating-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_resource> org.apache.streams.example.elasticsearch.MongoElasticsearchSync
 
