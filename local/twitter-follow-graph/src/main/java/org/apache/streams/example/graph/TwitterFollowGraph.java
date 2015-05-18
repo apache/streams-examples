@@ -72,9 +72,9 @@ public class TwitterFollowGraph {
         GraphPersistWriter graphPersistWriter = new GraphPersistWriter(graphWriterConfiguration);
 
         Map<String, Object> streamConfig = Maps.newHashMap();
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 20 * 60 * 1000);
+        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 24 * 60 * 60 * 1000);
 
-        StreamBuilder builder = new LocalStreamBuilder(50, streamConfig);
+        StreamBuilder builder = new LocalStreamBuilder(5000, streamConfig);
 
         builder.newPerpetualStream(TwitterFollowingProvider.STREAMS_ID, followingProvider);
         builder.addStreamsProcessor("converter", converter, 1, TwitterFollowingProvider.STREAMS_ID);

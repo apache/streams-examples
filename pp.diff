@@ -1,0 +1,77 @@
+diff --git a/local/elasticsearch-hdfs/pom.xml b/local/elasticsearch-hdfs/pom.xml
+index 662c41f..f6eaf08 100644
+--- a/local/elasticsearch-hdfs/pom.xml
++++ b/local/elasticsearch-hdfs/pom.xml
+@@ -34,8 +34,8 @@
+     <description>Copies documents between elasticsearch and file system using the hdfs persist module.</description>
+ 
+     <properties>
+-        <elasticsearch.version>1.1.0</elasticsearch.version>
+-        <lucene.version>4.7.2</lucene.version>
++        <elasticsearch.version>1.5.0</elasticsearch.version>
++        <lucene.version>4.10.3</lucene.version>
+         <hdfs.version>2.5.0-cdh5.2.4</hdfs.version>
+     </properties>
+ 
+diff --git a/local/elasticsearch-reindex/src/main/java/org/apache/streams/elasticsearch/example/ElasticsearchReindex.java b/local/elasticsearch-reindex/src/main/java/org/apache/streams/elasticsearch/example/ElasticsearchReindex.java
+index dc94773..a96c130 100644
+--- a/local/elasticsearch-reindex/src/main/java/org/apache/streams/elasticsearch/example/ElasticsearchReindex.java
++++ b/local/elasticsearch-reindex/src/main/java/org/apache/streams/elasticsearch/example/ElasticsearchReindex.java
+@@ -75,7 +75,7 @@ public class ElasticsearchReindex implements Runnable {
+         Map<String, Object> streamConfig = Maps.newHashMap();
+         streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
+         streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
+-        StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
++        StreamBuilder builder = new LocalStreamBuilder(5000, streamConfig);
+ 
+         builder.newPerpetualStream(ElasticsearchPersistReader.STREAMS_ID, elasticsearchPersistReader);
+         builder.addStreamsPersistWriter(ElasticsearchPersistWriter.STREAMS_ID, elasticsearchPersistWriter, 1, ElasticsearchPersistReader.STREAMS_ID);
+diff --git a/local/twitter-follow-graph/src/main/java/org/apache/streams/example/graph/TwitterFollowGraph.java b/local/twitter-follow-graph/src/main/java/org/apache/streams/example/graph/TwitterFollowGraph.java
+index 5a585ea..05f8273 100644
+--- a/local/twitter-follow-graph/src/main/java/org/apache/streams/example/graph/TwitterFollowGraph.java
++++ b/local/twitter-follow-graph/src/main/java/org/apache/streams/example/graph/TwitterFollowGraph.java
+@@ -72,9 +72,9 @@ public class TwitterFollowGraph {
+         GraphPersistWriter graphPersistWriter = new GraphPersistWriter(graphWriterConfiguration);
+ 
+         Map<String, Object> streamConfig = Maps.newHashMap();
+-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 20 * 60 * 1000);
++        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 24 * 60 * 60 * 1000);
+ 
+-        StreamBuilder builder = new LocalStreamBuilder(50, streamConfig);
++        StreamBuilder builder = new LocalStreamBuilder(5000, streamConfig);
+ 
+         builder.newPerpetualStream(TwitterFollowingProvider.STREAMS_ID, followingProvider);
+         builder.addStreamsProcessor("converter", converter, 1, TwitterFollowingProvider.STREAMS_ID);
+diff --git a/local/twitter-history-elasticsearch/pom.xml b/local/twitter-history-elasticsearch/pom.xml
+index 6492c42..19f9b30 100644
+--- a/local/twitter-history-elasticsearch/pom.xml
++++ b/local/twitter-history-elasticsearch/pom.xml
+@@ -37,8 +37,8 @@
+     </description>
+ 
+     <properties>
+-        <elasticsearch.version>1.1.0</elasticsearch.version>
+-        <lucene.version>4.7.2</lucene.version>
++        <elasticsearch.version>1.5.0</elasticsearch.version>
++        <lucene.version>4.10.4</lucene.version>
+     </properties>
+ 
+     <dependencies>
+@@ -107,6 +107,17 @@
+         <dependency>
+             <groupId>org.apache.streams</groupId>
+             <artifactId>streams-persist-elasticsearch</artifactId>
++            <exclusions>
++                <exclusion>
++                    <groupId>org.elasticsearch</groupId>
++                    <artifactId>elasticsearch</artifactId>
++                </exclusion>
++            </exclusions>
++        </dependency>
++        <dependency>
++            <groupId>org.elasticsearch</groupId>
++            <artifactId>elasticsearch</artifactId>
++            <version>${elasticsearch.version}</version>
+         </dependency>
+         <dependency>
+             <groupId>org.slf4j</groupId>
