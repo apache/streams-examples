@@ -26,6 +26,7 @@
     </parent>
 
     <artifactId>streams-examples-local</artifactId>
+  <version>0.3.1-PP-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>streams-examples-local</name>
