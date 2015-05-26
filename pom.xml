@@ -29,7 +29,7 @@
 
     <groupId>org.apache.streams</groupId>
     <artifactId>streams-examples</artifactId>
-    <version>0.2-incubating-SNAPSHOT</version>
+    <version>0.2-incubating</version>
     
     <packaging>pom</packaging>
     <name>streams-examples</name>
@@ -51,7 +51,8 @@
         <connection>scm:git:git@github.com:apache/incubator-streams-examples.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git</developerConnection>
         <url>scm:git:git@github.com:apache/incubator-streams-examples.git</url>
-    </scm>
+      <tag>streams-examples-0.2-incubating-rc2</tag>
+  </scm>
 
     <developers>
         <developer>
