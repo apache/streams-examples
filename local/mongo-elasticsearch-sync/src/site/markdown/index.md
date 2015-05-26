@@ -53,7 +53,7 @@ Example Configuration:
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
 Deploy:
 --------

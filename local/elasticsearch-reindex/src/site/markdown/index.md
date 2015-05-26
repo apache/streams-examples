@@ -18,7 +18,7 @@ Copies documents into a different index
 Specification:
 -----------------
 
-[ElasticsearchReindex.dot](src/main/resources/ElasticsearchReindex.dot "ElasticsearchReindex.dot" )
+[ElasticsearchReindex.dot](ElasticsearchReindex.dot "ElasticsearchReindex.dot" )
 
 Diagram:
 -----------------

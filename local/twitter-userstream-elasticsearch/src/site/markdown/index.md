@@ -53,23 +53,17 @@ Example Configuration:
         batchSize = 1
     }
 
-The consumerKey and consumerSecret are assigned when creating a twitter application:
-
-
-
-The accessToken and accessTokenSecret can be obtained by navigating to:
-
-    https://api.twitter.com/oauth/authenticate?oauth_token=UIJ0AUxCJatpKDUyFt0OTSEP4asZgqxRwUCT0AMSwc&oauth_callback=http%3A%2F%2Foauth.streamstutorial.w2odata.com%3A8080%2Fsocialauthdemo%2FsocialAuthSuccessAction.do
+In the Twitter section you should place all of your relevant authentication keys.
 
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
 Deploy:
 --------
 
-    mvn -Pdocker clean package docker:build`
+    mvn -Pdocker clean package docker:build
 
 Run:
 --------

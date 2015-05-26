@@ -19,7 +19,7 @@ Converts them to activities, and writes them in activity format to Elasticsearch
 Specification:
 -----------------
 
-[TwitterHistoryElasticsearch.dot](src/main/resources/TwitterHistoryElasticsearch.dot "TwitterHistoryElasticsearch.dot" )
+[TwitterHistoryElasticsearch.dot](TwitterHistoryElasticsearch.dot "TwitterHistoryElasticsearch.dot" )
 
 Diagram:
 -----------------
@@ -65,7 +65,7 @@ Twitter IDs can be converted from screennames at http://www.gettwitterid.com
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
 Deploy:
 --------

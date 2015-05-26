@@ -27,5 +27,5 @@ digraph g {
   NoDeletesProcessor -> ElasticsearchPersistWriter [label="Activity",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/activity.json"];
   ElasticsearchPersistWriter -> es [label="Activity",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/activity.json"];
   SetDeleteIdProcessor -> ElasticsearchPersistDeleter [label="Delete",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/verbs/delete.json"];
-  ElasticsearchPersistDeleter -> es [label="Delete",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/src/main/jsonschema/verbs/delete.json"];
+  ElasticsearchPersistDeleter -> es [label="Delete",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/verbs/delete.json"];
 }
