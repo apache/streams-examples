@@ -29,8 +29,8 @@ import org.apache.streams.converter.TypeConverterProcessor;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.data.ActivityConverter;
 import org.apache.streams.data.DocumentClassifier;
-import org.apache.streams.graph.GraphPersistWriter;
-import org.apache.streams.graph.GraphWriterConfiguration;
+import org.apache.streams.graph.GraphHttpConfiguration;
+import org.apache.streams.graph.GraphHttpPersistWriter;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.apache.streams.twitter.TwitterUserInformationConfiguration;
 import org.apache.streams.twitter.converter.TwitterFollowActivityConverter;
@@ -68,14 +68,10 @@ public class TwitterFollowGraph {
                         .withConverters(Lists.newArrayList((ActivityConverter) new TwitterFollowActivityConverter()));
         ActivityConverterProcessor activity = new ActivityConverterProcessor(activityConverterProcessorConfiguration);
 
-        GraphWriterConfiguration graphWriterConfiguration = configuration.getGraph();
-        GraphPersistWriter graphPersistWriter = new GraphPersistWriter(graphWriterConfiguration);
+        GraphHttpConfiguration graphWriterConfiguration = configuration.getGraph();
+        GraphHttpPersistWriter graphPersistWriter = new GraphHttpPersistWriter(graphWriterConfiguration);
 
-        Map<String, Object> streamConfig = Maps.newHashMap();
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 20 * 60 * 1000);
-
-        StreamBuilder builder = new LocalStreamBuilder(50, streamConfig);
-
+        StreamBuilder builder = new LocalStreamBuilder();
         builder.newPerpetualStream(TwitterFollowingProvider.STREAMS_ID, followingProvider);
         builder.addStreamsProcessor("converter", converter, 1, TwitterFollowingProvider.STREAMS_ID);
         builder.addStreamsProcessor("activity", activity, 1, "converter");

@@ -8,6 +8,6 @@
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
     "twitter": { "javaType": "org.apache.streams.twitter.TwitterUserInformationConfiguration", "type": "object", "required": true },
-    "graph": { "javaType": "org.apache.streams.graph.GraphWriterConfiguration", "type": "object", "required": true }
+    "graph": { "javaType": "org.apache.streams.graph.GraphHttpConfiguration", "type": "object", "required": true }
   }
 }
