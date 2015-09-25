@@ -23,6 +23,7 @@
         <artifactId>streams-examples</artifactId>
         <groupId>org.apache.streams</groupId>
         <version>0.3-incubating-SNAPSHOT</version>
+        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>streams-examples-local</artifactId>
@@ -38,12 +39,12 @@
     </properties>
 
     <modules>
-	<module>elasticsearch-hdfs</module>
-	<module>elasticsearch-reindex</module>
-	<module>mongo-elasticsearch-sync</module>
-	<!--<module>twitter-follow-graph</module>-->
-	<module>twitter-history-elasticsearch</module>
-	<module>twitter-userstream-elasticsearch</module>
+        <module>elasticsearch-hdfs</module>
+        <module>elasticsearch-reindex</module>
+        <module>mongo-elasticsearch-sync</module>
+        <module>twitter-follow-graph</module>
+        <module>twitter-history-elasticsearch</module>
+        <module>twitter-userstream-elasticsearch</module>
     </modules>
 
 </project>
