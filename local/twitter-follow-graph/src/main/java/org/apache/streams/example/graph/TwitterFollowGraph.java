@@ -32,6 +32,7 @@ import org.apache.streams.data.DocumentClassifier;
 import org.apache.streams.graph.GraphHttpConfiguration;
 import org.apache.streams.graph.GraphHttpPersistWriter;
 import org.apache.streams.local.builders.LocalStreamBuilder;
+import org.apache.streams.twitter.TwitterFollowingConfiguration;
 import org.apache.streams.twitter.TwitterUserInformationConfiguration;
 import org.apache.streams.twitter.converter.TwitterFollowActivityConverter;
 import org.apache.streams.twitter.pojo.Follow;
@@ -58,8 +59,8 @@ public class TwitterFollowGraph {
 
         TwitterFollowingGraphConfiguration configuration = new ComponentConfigurator<>(TwitterFollowingGraphConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig());
 
-        TwitterUserInformationConfiguration twitterUserInformationConfiguration = configuration.getTwitter();
-        TwitterFollowingProvider followingProvider = new TwitterFollowingProvider(twitterUserInformationConfiguration);
+        TwitterFollowingConfiguration twitterFollowingConfiguration = configuration.getTwitter();
+        TwitterFollowingProvider followingProvider = new TwitterFollowingProvider(twitterFollowingConfiguration);
         TypeConverterProcessor converter = new TypeConverterProcessor(String.class);
 
         ActivityConverterProcessorConfiguration activityConverterProcessorConfiguration =

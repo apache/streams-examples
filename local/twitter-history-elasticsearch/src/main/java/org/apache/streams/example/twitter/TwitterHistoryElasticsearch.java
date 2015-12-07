@@ -76,7 +76,7 @@ public class TwitterHistoryElasticsearch implements Runnable {
 
     public void run() {
 
-        TwitterTimelineProvider provider = new TwitterTimelineProvider(config.getTwitter(), ObjectNode.class);
+        TwitterTimelineProvider provider = new TwitterTimelineProvider(config.getTwitter());
         ActivityConverterProcessor converter = new ActivityConverterProcessor();
         ElasticsearchPersistWriter writer = new ElasticsearchPersistWriter(config.getElasticsearch());
 

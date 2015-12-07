@@ -114,6 +114,10 @@ public class TwitterUserstreamElasticsearch implements Runnable {
 
     protected class SetDeleteIdProcessor implements StreamsProcessor {
 
+        public String getId() {
+            return "TwitterUserstreamElasticsearch.SetDeleteIdProcessor";
+        }
+
         @Override
         public List<StreamsDatum> process(StreamsDatum entry) {
 

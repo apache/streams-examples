@@ -7,7 +7,7 @@
   "javaType" : "org.apache.streams.example.graph.TwitterFollowingGraphConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
-    "twitter": { "javaType": "org.apache.streams.twitter.TwitterUserInformationConfiguration", "type": "object", "required": true },
+    "twitter": { "javaType": "org.apache.streams.twitter.TwitterFollowingConfiguration", "type": "object", "required": true },
     "graph": { "javaType": "org.apache.streams.graph.GraphHttpConfiguration", "type": "object", "required": true }
   }
 }
