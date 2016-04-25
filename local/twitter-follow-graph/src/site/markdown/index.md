@@ -22,7 +22,7 @@ Specification:
 Diagram:
 -----------------
 
-![TwitterFollowGraph.dot.png](./TwitterFollowGraph.dot.png?raw=true)
+![TwitterFollowGraph.dot.svg](./TwitterFollowGraph.dot.svg)
 
 Example Configuration:
 ----------------------

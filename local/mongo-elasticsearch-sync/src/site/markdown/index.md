@@ -22,7 +22,7 @@ Specification:
 Diagram:
 -----------------
 
-![MongoElasticsearchSync.dot.png](./MongoElasticsearchSync.dot.png?raw=true)
+![MongoElasticsearchSync.dot.svg](./MongoElasticsearchSync.dot.svg)
 
 Example Configuration:
 ----------------------

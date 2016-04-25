@@ -24,7 +24,7 @@ Specification:
 Diagram:
 -----------------
 
-![TwitterHistoryElasticsearch.dot.png](./TwitterHistoryElasticsearch.dot.png?raw=true)
+![TwitterHistoryElasticsearch.dot.svg](./TwitterHistoryElasticsearch.dot.svg)
 
 Example Configuration:
 ----------------------

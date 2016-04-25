@@ -22,7 +22,7 @@ Specification:
 Diagram:
 -----------------
 
-![TwitterUserstreamElasticsearch.dot.png](./TwitterUserstreamElasticsearch.dot.png?raw=true)
+![TwitterUserstreamElasticsearch.dot.svg](./TwitterUserstreamElasticsearch.dot.svg)
 
 Example Configuration:
 ----------------------

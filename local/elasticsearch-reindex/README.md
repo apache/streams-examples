@@ -23,7 +23,7 @@ Specification:
 Diagram:
 -----------------
 
-![ElasticsearchReindex.dot.png](src/main/resources/ElasticsearchReindex.dot.png?raw=true)
+![ElasticsearchReindex.dot.svg](src/main/resources/ElasticsearchReindex.dot.svg)
 
 Example Configuration:
 ----------------------

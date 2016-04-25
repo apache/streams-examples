@@ -18,7 +18,7 @@ Specification:
 Diagram:
 -----------------
 
-![ElasticsearchHdfs.dot.png](./ElasticsearchHdfs.dot.png?raw=true)
+![ElasticsearchHdfs.dot.svg](./ElasticsearchHdfs.dot.svg)
 
 Example Configuration:
 ----------------------
