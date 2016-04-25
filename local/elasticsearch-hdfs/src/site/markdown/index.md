@@ -16,9 +16,9 @@ Copies documents between elasticsearch and file system using the hdfs persist mo
 Streams:
 --------
 
-[ElasticsearchHdfs](src/site/markdown/ElasticsearchHdfs.md "ElasticsearchHdfs" )
+<a href="HdfsElasticsearch.html" target="_self">HdfsElasticsearch</a>
 
-[HdfsElasticsearch](src/site/markdown/HdfsElasticsearch.md "HdfsElasticsearch" )
+<a href="ElasticsearchHdfs.html" target="_self">ElasticsearchHdfs</a>
 
 Build:
 ---------

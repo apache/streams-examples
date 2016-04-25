@@ -29,17 +29,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>twitter-follow-graph</artifactId>
-    <version>0.3-incubating-SNAPSHOT</version>
+    <name>twitter-follow-graph</name>
+
+    <description>
+        Collects friend or follower connections for a set of twitter users to build a graph database in neo4j.
+    </description>
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.streams</groupId>
-            <artifactId>streams-core</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.streams</groupId>
+            <artifactId>streams-core</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>

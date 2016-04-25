@@ -28,7 +28,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>twitter-userstream-elasticsearch</artifactId>
-    <version>0.3-incubating-SNAPSHOT</version>
+    <name>twitter-userstream-elasticsearch</name>
+
+    <description>
+        Connects to an active twitter account and stores the userstream as activities in Elasticsearch
+    </description>
 
     <properties>
         <elasticsearch.version>1.1.0</elasticsearch.version>

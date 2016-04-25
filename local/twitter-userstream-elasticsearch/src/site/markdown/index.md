@@ -12,12 +12,12 @@ Requirements:
 
 Description:
 ------------
-Connects to an active twitter account and stores the userstream as activities in Elasticsearch
+This example connects to an active twitter account and stores the userstream as activities in Elasticsearch
 
 Specification:
 -----------------
 
-[TwitterUserstreamElasticsearch.dot](src/main/resources/TwitterUserstreamElasticsearch.dot "TwitterUserstreamElasticsearch.dot" )
+[TwitterUserstreamElasticsearch.dot](TwitterUserstreamElasticsearch.dot "TwitterUserstreamElasticsearch.dot" )
 
 Diagram:
 -----------------
@@ -49,7 +49,8 @@ Example Configuration:
 
 The consumerKey and consumerSecret are set for our streams-example application
 The accessToken and accessTokenSecret can be obtained by navigating to:
- https://api.twitter.com/oauth/authenticate?oauth_token=UIJ0AUxCJatpKDUyFt0OTSEP4asZgqxRwUCT0AMSwc&oauth_callback=http%3A%2F%2Foauth.streamstutorial.w2odata.com%3A8080%2Fsocialauthdemo%2FsocialAuthSuccessAction.do
+
+    https://api.twitter.com/oauth/authenticate?oauth_token=UIJ0AUxCJatpKDUyFt0OTSEP4asZgqxRwUCT0AMSwc&oauth_callback=http%3A%2F%2Foauth.streamstutorial.w2odata.com%3A8080%2Fsocialauthdemo%2FsocialAuthSuccessAction.do
 
 Build:
 ---------

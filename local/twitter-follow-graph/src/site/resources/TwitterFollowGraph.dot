@@ -1,0 +1,21 @@
+digraph g {
+
+  //providers
+  TwitterFollowingProvider [label="TwitterFollowingProvider",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterFollowingProvider.java"];
+
+  //processors
+  TypeConverterProcessor [label="TypeConverterProcessor",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-components/streams-converters/src/main/java/org/apache/streams/converters/TypeConverterProcessor.java"];
+  ActivityConverterProcessor [label="ActivityConverterProcessor",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-components/streams-converters/src/main/java/org/apache/streams/converters/ActivityConverterProcessor.java"];
+
+  //persisters
+  GraphPersistWriter [label="GraphPersistWriter",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-persist-graph/src/main/java/org/apache/streams/graph/GraphPersistWriter.java"];
+
+  //data
+  destination [label="http://{host}:{port}/db/data",shape=box];
+
+  //stream
+  TwitterFollowingProvider -> TypeConverterProcessor [label="Follow",URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/jsonschema/com/twitter/Follow.java"];
+  TypeConverterProcessor -> ActivityConverterProcessor [label="String"];
+  ActivityConverterProcessor -> GraphPersistWriter [label="Activity",URL="https://github.com/apache/incubator-streams/blob/master/streams-pojo/src/main/jsonschema/org/apache/streams/pojo/json/activity.json"];
+  GraphPersistWriter -> destination
+}

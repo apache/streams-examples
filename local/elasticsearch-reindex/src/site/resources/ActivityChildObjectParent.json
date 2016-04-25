@@ -1,0 +1,15 @@
+{
+    "template": "*",
+    "order": 100,
+    "mappings": {
+        "object": {
+            "dynamic": true
+        },
+        "activity": {
+            "_parent": {
+              "type": "object"
+            },
+            "dynamic": true
+        }
+    }
+}

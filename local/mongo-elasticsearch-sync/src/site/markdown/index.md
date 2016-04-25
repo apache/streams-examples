@@ -12,17 +12,17 @@ Requirements:
 
 Description:
 ------------
-Copies documents from mongodb to elasticsearch.
+Copies documents from mongodb to elasticsearch
 
 Specification:
 -----------------
 
-[MongoElasticsearchSync.dot](src/main/resources/MongoElasticsearchSync.dot "MongoElasticsearchSync.dot" )
+[MongoElasticsearchSync.dot](MongoElasticsearchSync.dot "MongoElasticsearchSync.dot" )
 
 Diagram:
 -----------------
 
-![MongoElasticsearchSync.dot.png](src/main/resources/MongoElasticsearchSync.dot.png?raw=true)
+![MongoElasticsearchSync.dot.png](./MongoElasticsearchSync.dot.png?raw=true)
 
 Example Configuration:
 ----------------------

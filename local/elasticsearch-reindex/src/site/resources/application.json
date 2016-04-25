@@ -1,0 +1,26 @@
+{
+    "source": {
+        "hosts": [
+            "localhost"
+        ],
+        "port": 9300,
+        "clusterName": "elasticsearch",
+        "indexes": [
+            "activity"
+        ],
+        "types": [
+            "activity"
+        ],
+        "forceUseConfig": true
+    },
+    "destination": {
+        "hosts": [
+            "localhost"
+        ],
+        "port": 9300,
+        "clusterName": "elasticsearch",
+        "index": "activity2",
+        "type": "activity",
+        "forceUseConfig": true
+    }
+}
