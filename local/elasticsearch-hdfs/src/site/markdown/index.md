@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 elasticsearch-hdfs
 ==============================
 
@@ -23,13 +19,16 @@ Streams:
 Build:
 ---------
 
-`mvn clean package`
+    mvn clean install verify
 
 Note that an alternative version of hdfs is packaged, by excluding org.apache.hadoop.hadoop-hdfs when
 importing org.apache.streams.streams-persist-hdfs, and specifically depending on a different preferred version.
 
-Deploy:
---------
+Deploy (Docker):
+----------------
 
-`mvn -Pdocker clean package docker:build`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> clean package docker:build docker:push
 
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

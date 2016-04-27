@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 elasticsearch-hdfs
 ==============================
 
@@ -23,25 +19,18 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    {
-        "source": {
-            "host": "localhost",
-            "port": 27017,
-            "db": "streams",
-            "collection": "activities"
-        },
-        "destination": {
-            "hosts": [
-                "localhost"
-            ],
-            "port": 9300,
-            "clusterName": "elasticsearch",
-            "index": "destination",
-            "type": "activity"
-        }
-    }
+[testBackup.json](testBackup.json "testBackup.json" )
 
-Run:
---------
+Run (Local):
+------------
 
-`docker run elasticsearch-hdfs:0.2-incubating-SNAPSHOT-PP.jar java -cp stash-migrate-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.elasticsearch.example.HdfsElasticsearch`
+    java -cp dist/elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.ElasticsearchHdfs
+
+Run (Docker):
+-------------
+
+    docker run elasticsearch-hdfs java -cp elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.elasticsearch.example.ElasticsearchHdfs
+
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

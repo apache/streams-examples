@@ -165,6 +165,8 @@
             https://repository.apache.org/service/local/staging/deploy/maven2
         </release.repository.url>
 
+        <docker.plugin.version>0.15.0</docker.plugin.version>
+
     </properties>
 
     <modules>
@@ -262,6 +264,60 @@
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <version>${shade.plugin.version}</version>
+                    <configuration>
+                        <outputDirectory>dist</outputDirectory>
+                        <outputFile>dist/${project.artifactId}-jar-with-dependencies.jar</outputFile>
+                        <filters>
+                            <filter>
+                                <artifact>*:*</artifact>
+                                <excludes>
+                                    <exclude>**/META-INF/**</exclude>
+                                </excludes>
+                            </filter>
+                        </filters>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                            <configuration>
+                                <finalName>${project.build.finalName}</finalName>
+                                <filters>
+                                    <filter>
+                                        <artifact>*:*</artifact>
+                                        <excludes>
+                                            <exclude>META-INF/*.SF</exclude>
+                                            <exclude>META-INF/*.DSA</exclude>
+                                            <exclude>META-INF/*.RSA</exclude>
+                                            <exclude>**/logback.xml</exclude>
+                                            <exclude>**/log4j.properties</exclude>
+                                        </excludes>
+                                    </filter>
+                                </filters>
+                                <transformers>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                        <resource>reference.conf</resource>
+                                    </transformer>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                        <resource>application.conf</resource>
+                                    </transformer>
+                                    <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+                                        <!--<manifestEntries>-->
+                                            <!--<Main-Class>akka.Main</Main-Class>-->
+                                        <!--</manifestEntries>-->
+                                    <!--</transformer>-->
+                                </transformers>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.4</version>
                     <dependencies>
@@ -290,4 +346,71 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>docker.repo</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>deploy</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration combine.self="append">
+                            <watchInterval>500</watchInterval>
+                            <logDate>default</logDate>
+                            <verbose>true</verbose>
+                            <images>
+                                <image>
+                                    <name>${docker.repo}/${project.artifactId}</name>
+                                    <alias>${project.artifactId}</alias>
+                                    <build>
+                                        <from>1science/java</from>
+                                        <maintainer>sblackmon@apache.org</maintainer>
+                                        <env>
+                                            <LANG>en_US.UTF-8</LANG>
+                                            <LC_ALL>en_US.UTF-8</LC_ALL>
+                                        </env>
+                                        <tags>
+                                            <tag>${project.version}</tag>
+                                            <tag>latest</tag>
+                                        </tags>
+                                        <assembly>
+                                            <mode>tar</mode>
+                                            <basedir>/</basedir>
+                                            <inline>
+                                                <baseDirectory>/</baseDirectory>
+                                                <fileSets>
+                                                    <fileSet>
+                                                        <directory>dist</directory>
+                                                        <outputDirectory>/</outputDirectory>
+                                                    </fileSet>
+                                                </fileSets>
+                                            </inline>
+                                        </assembly>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

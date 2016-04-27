@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 hdfs-elasticsearch
 ==============================
 
@@ -23,28 +19,18 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    {
-        "source": {
-            "scheme": "file",
-            "host": "localhost",
-            "user": "cloudera",
-            "path": "/tmp",
-            "writerPath": "activity"
-        },
-        "destination": {
-            "hosts": [
-                "localhost"
-            ],
-            "port": 9300,
-            "clusterName": "elasticsearch",
-            "index": "activity2",
-            "type": "activity",
-            "forceUseConfig": true
-        }
-    }
+[testRestore.json](testRestore.json "testRestore.json" )
 
+Run (Local):
+------------
 
-Run:
---------
+    java -cp dist/elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.HdfsElasticsearch
 
-`docker run elasticsearch-hdfs:0.2-incubating-SNAPSHOT.jar java -cp elasticsearch-hdfs-0.2-incubating-SNAPSHOT.jar -Dconfig.file=file://<location_of_config_file>.json org.apache.streams.elasticsearch.example.HdfsElasticsearch`
+Run (Docker):
+-------------
+
+    docker run elasticsearch-hdfs java -cp elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.elasticsearch.example.HdfsElasticsearch
+
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

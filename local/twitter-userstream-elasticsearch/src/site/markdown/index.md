@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 twitter-userstream-elasticsearch
 ==============================
 
@@ -27,25 +23,7 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    twitter {
-        endpoint = "userstream"
-        oauth {
-                consumerKey = "bcg14JThZEGoZ3MZOoT2HnJS7"
-                consumerSecret = "S4dwxnZni58CIJaoupGnUrO4HRHmbBGOb28W6IqOJBx36LPw2z"
-                accessToken = ""
-                accessTokenSecret = ""
-        }
-    }
-    elasticsearch {
-        hosts = [
-            localhost
-        ]
-        port = 9300
-        clusterName = elasticsearch
-        index = userstream_activity
-        type = activity
-        batchSize = 1
-    }
+[application.conf](application.conf "application.conf" )
 
 The consumerKey and consumerSecret are set for our streams-example application
 The accessToken and accessTokenSecret can be obtained by navigating to:
@@ -55,19 +33,23 @@ The accessToken and accessTokenSecret can be obtained by navigating to:
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
-Run:
---------
+Run (Local):
+------------
 
-`java -cp target/twitter-userstream-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`
+    java -cp dist/twitter-userstream-elasticsearch-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.twitter.TwitterUserstreamElasticsearch
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
+Deploy (Docker):
+----------------
 
-`docker tag twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
 
-`docker push <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT`
+Run (Docker):
+-------------
 
-`docker run <dockerregistry>:twitter-userstream-elasticsearch:0.2-incubating-SNAPSHOT.jar java -cp twitter-userstream-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.twitter.TwitterUserstreamElasticsearch`
+    docker run twitter-userstream-elasticsearch java -cp twitter-userstream-elasticsearch-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.example.twitter.TwitterUserstreamElasticsearch
+
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

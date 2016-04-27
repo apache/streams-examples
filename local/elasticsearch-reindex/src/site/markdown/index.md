@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 elasticsearch-reindex
 ==============================
 
@@ -18,7 +14,7 @@ Copies documents into a different index
 Specification:
 -----------------
 
-[ElasticsearchReindex.dot](src/main/resources/ElasticsearchReindex.dot "ElasticsearchReindex.dot" )
+[ElasticsearchReindex.dot](ElasticsearchReindex.dot "ElasticsearchReindex.dot" )
 
 Diagram:
 -----------------
@@ -28,52 +24,30 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    {
-        "source": {
-            "hosts": [
-                "localhost"
-            ],
-            "port": 9300,
-            "clusterName": "elasticsearch",
-            "indexes": [
-                "activity"
-            ],
-            "types": [
-                "activity"
-            ],
-            "forceUseConfig": true
-        },
-        "destination": {
-            "hosts": [
-                "localhost"
-            ],
-            "port": 9300,
-            "clusterName": "elasticsearch",
-            "index": "activity2",
-            "type": "activity",
-            "forceUseConfig": true
-        }
-    }
+[testReindex.json](testReindex.json "testReindex.json" )
 
 Populate source and destination in configuration with cluster / index / type details.
 
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
-Run:
---------
+Run (Local):
+------------
 
-`java -cp target/elasticsearch-reindex-0.1-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.elasticsearch.ElasticsearchReindex`
+    java -cp dist/elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.ElasticsearchReindex
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
+Deploy (Docker):
+----------------
 
-`docker tag elasticsearch-reindex:0.2-incubating-SNAPSHOT <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
 
-`docker push <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
+Run (Docker):
+-------------
 
-`docker run <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT.jar java -cp elasticsearch-reindex-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.ElasticsearchReindex`
+    docker run elasticsearch-reindex java -cp elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.elasticsearch.example.ElasticsearchReindex
 
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

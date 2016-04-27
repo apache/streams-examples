@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 twitter-follow-graph
 ==============================
 
@@ -27,71 +23,28 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    {
-      "twitter": {
-        "endpoint": "friends",
-        "oauth": {
-          "consumerSecret": "",
-          "consumerKey": "",
-          "accessToken": "",
-          "accessTokenSecret": ""
-        },
-        "info": [
-          42232950
-        ]
-      },
-      "graph": {
-        "vertices": {
-          "objects": [
-            "actor",
-            "object"
-          ],
-          "verbs": [
-            "follow"
-          ],
-          "objectTypes": [
-            "page"
-          ]
-        },
-        "edges": {
-          "objects": [
-            "actor",
-            "object"
-          ],
-          "verbs": [
-            "follow"
-          ],
-          "objectTypes": [
-            "page"
-          ]
-        },
-        "protocol": "http",
-        "hostname": "localhost",
-        "port": 7474,
-        "requestMethod": "GET",
-        "content-type": "application/json",
-        "type": "neo4j",
-        "graph": "data"
-      }
-    }
+[testGraph.json](testGraph.json "testGraph.json" )
 
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
-Run:
---------
+Run (Local):
+------------
 
-`java -cp target/twitter-follow-graph-0.2-incubating-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.graph.TwitterFollowGraph`
+    java -cp dist/twitter-follow-graph-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.graph.TwitterFollowGraph
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
+Deploy (Docker):
+----------------
 
-`docker tag twitter-follow-graph:0.2-incubating-SNAPSHOT <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
 
-`docker push <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT`
+Run (Docker):
+-------------
 
-`docker run <dockerregistry>:twitter-follow-graph:0.2-incubating-SNAPSHOT java -cp twitter-follow-graph-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.graph.TwitterFollowGraph`
+    docker run twitter-follow-graph java -cp twitter-follow-graph-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.elasticsearch.example.TwitterFollowGraph
 
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

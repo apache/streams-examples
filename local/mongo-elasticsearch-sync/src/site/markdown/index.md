@@ -27,42 +27,28 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    {
-        "source": {
-            "host": "localhost",
-            "port": 27017,
-            "db": "streams",
-            "collection": "activities"
-        },
-        "destination": {
-            "hosts": [
-                "localhost"
-            ],
-            "port": 9300,
-            "clusterName": "elasticsearch",
-            "index": "destination",
-            "type": "activity"
-        }
-    }
+[testSync.json](testSync.json "testSync.json" )
 
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
 
-Run:
---------
+Run (Local):
+------------
 
-`java -cp target/mongo-elasticsearch-sync-0.1-SNAPSHOT.jar -Dconfig.file=src/main/resources/application.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
+    java -cp dist/mongo-elasticsearch-sync-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.MongoElasticsearchSync
 
-Deploy:
---------
+Deploy (Docker):
+----------------
 
-`mvn -Pdocker clean package docker:build`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
 
-`docker tag mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT`
+Run (Docker):
+-------------
 
-`docker push <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT`
+    docker run mongo-elasticsearch-sync java -cp mongo-elasticsearch-sync-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.elasticsearch.example.MongoElasticsearchSync
 
-`docker run <dockerregistry>:mongo-elasticsearch-sync:0.2-incubating-SNAPSHOT java -cp mongo-elasticsearch-sync-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.elasticsearch.MongoElasticsearchSync`
+[JavaDocs](apidocs/index.html "JavaDocs")
 
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

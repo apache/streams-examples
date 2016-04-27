@@ -1,7 +1,3 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
-
 twitter-history-elasticsearch
 ==============================
 
@@ -19,7 +15,7 @@ Converts them to activities, and writes them in activity format to Elasticsearch
 Specification:
 -----------------
 
-[TwitterHistoryElasticsearch.dot](src/main/resources/TwitterHistoryElasticsearch.dot "TwitterHistoryElasticsearch.dot" )
+[TwitterHistoryElasticsearch.dot](TwitterHistoryElasticsearch.dot "TwitterHistoryElasticsearch.dot" )
 
 Diagram:
 -----------------
@@ -29,29 +25,7 @@ Diagram:
 Example Configuration:
 ----------------------
 
-    twitter {
-        host = "api.twitter.com"
-        endpoint = "statuses/user_timeline"
-        oauth {
-            consumerKey = ""
-            consumerSecret = ""
-            accessToken = ""
-            accessTokenSecret = ""
-        }
-        info = [
-            "42232950"
-            "211620426"
-        ]
-    }
-    elasticsearch {
-        hosts = [
-            localhost
-        ]
-        port = 9300
-        clusterName = elasticsearch
-        index = userhistory_activity
-        type = activity
-    }
+[application.conf](application.conf "application.conf" )
 
 In the Twitter section you should place all of your relevant authentication keys and whichever Twitter IDs you want to pull history for.
 
@@ -60,19 +34,23 @@ Twitter IDs can be converted from screennames at http://www.gettwitterid.com
 Build:
 ---------
 
-`mvn clean package verify`
+    mvn clean package verify
+    
+Run (Local):
+------------
 
-Run:
---------
+    java -cp dist/twitter-history-elasticsearch-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.twitter.TwitterHistoryElasticsearch
 
-    java -cp target/twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=application.conf org.apache.streams.example.twitter.TwitterHistoryElasticsearch
+Deploy (Docker):
+----------------
 
-Deploy:
---------
-`mvn -Pdocker clean package docker:build`
+    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
 
-`docker tag twitter-history-elasticsearch:0.2-incubating-SNAPSHOT <dockerregistry>:elasticsearch-reindex:0.2-incubating-SNAPSHOT`
+Run (Docker):
+-------------
 
-`docker push <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT`
+    docker run twitter-history-elasticsearch java -cp twitter-history-elasticsearch-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.example.twitter.TwitterHistoryElasticsearch
 
-`docker run <dockerregistry>:twitter-history-elasticsearch:0.2-incubating-SNAPSHOT.jar java -cp twitter-history-elasticsearch-0.2-incubating-SNAPSHOT.jar -Dconfig.file=http://<location_of_config_file>.json org.apache.streams.example.twitter.TwitterHistoryElasticsearch`
+[JavaDocs](apidocs/index.html "JavaDocs")
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

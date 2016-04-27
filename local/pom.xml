@@ -47,4 +47,7 @@
         <module>twitter-userstream-elasticsearch</module>
     </modules>
 
+    <build>
+
+    </build>
 </project>
