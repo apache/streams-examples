@@ -1,4 +1,7 @@
 {
+    "$license": [
+        "http://www.apache.org/licenses/LICENSE-2.0"
+    ],
     "source": {
         "host": "localhost",
         "port": 37017,
