@@ -22,7 +22,7 @@
     <parent>
         <artifactId>streams-master</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.3-incubating-SNAPSHOT</version>
+        <version>0.3-incubating</version>
 	</parent>
 
     <artifactId>streams-examples</artifactId>
@@ -47,7 +47,8 @@
         <connection>scm:git:git@github.com:apache/incubator-streams-examples.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git</developerConnection>
         <url>scm:git:git@github.com:apache/incubator-streams-examples.git</url>
-    </scm>
+      <tag>streams-examples-0.3-incubating</tag>
+  </scm>
 
     <developers>
         <developer>
@@ -184,39 +185,39 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-core</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-filters</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
@@ -228,32 +229,32 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-runtime-local</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-provider-twitter</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-graph</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-hdfs</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>${project.version}</version>
+                <version>0.3-incubating</version>
             </dependency>
 
         </dependencies>
@@ -299,7 +300,7 @@
                                     </filter>
                                 </filters>
                                 <transformers>
-                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                                     <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                                         <resource>reference.conf</resource>
                                     </transformer>
