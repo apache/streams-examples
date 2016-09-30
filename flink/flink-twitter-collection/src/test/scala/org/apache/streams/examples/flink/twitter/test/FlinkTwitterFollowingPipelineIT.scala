@@ -27,7 +27,7 @@ class FlinkTwitterFollowingPipelineIT extends FlatSpec {
 
   import FlinkTwitterFollowingPipeline._
 
-  @Test
+  @Test(enabled = false)
   def flinkTwitterFollowersPipelineFriendsIT = {
 
     val reference: Config = ConfigFactory.load()
@@ -55,7 +55,7 @@ class FlinkTwitterFollowingPipelineIT extends FlatSpec {
 
   }
 
-  @Test
+  @Test(enabled = false)
   def flinkTwitterFollowersPipelineFollowersIT = {
 
     val reference: Config = ConfigFactory.load()

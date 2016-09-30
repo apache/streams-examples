@@ -1,25 +1,25 @@
-FlinkTwitterPostsPipeline
-=========================
+FlinkTwitterSpritzerPipeline
+============================
 
 Description:
 -----------------
 
-Collects twitter posts with flink.
+Collects twitter posts in real-time from the sample endpoint with flink.
 
 Specification:
 -----------------
 
-[FlinkTwitterPostsPipeline.dot](FlinkTwitterPostsPipeline.dot "FlinkTwitterPostsPipeline.dot" )
+[FlinkTwitterSpritzerPipeline.dot](FlinkTwitterSpritzerPipeline.dot "FlinkTwitterSpritzerPipeline.dot" )
 
 Diagram:
 -----------------
 
-![FlinkTwitterPostsPipeline.dot.svg](./FlinkTwitterPostsPipeline.dot.svg)
+![FlinkTwitterSpritzerPipeline.dot.svg](./FlinkTwitterSpritzerPipeline.dot.svg)
 
 Example Configuration:
 ----------------------
 
-[FlinkTwitterPostsPipelineIT.conf](FlinkTwitterPostsPipelineIT.conf "FlinkTwitterPostsPipelineIT.conf" )
+[FlinkTwitterSpritzerPipelineIT.conf](FlinkTwitterSpritzerPipelineIT.conf "FlinkTwitterSpritzerPipelineIT.conf" )
 
 Run (Local):
 ------------

@@ -19,7 +19,9 @@ Diagram:
 Example Configuration:
 ----------------------
 
-[FlinkTwitterFollowingPipeline.json](FlinkTwitterFollowingPipeline.json "FlinkTwitterFollowingPipeline.json" )
+[FlinkTwitterFollowingPipelineFollowersIT.conf](FlinkTwitterFollowingPipelineFollowersIT.conf "FlinkTwitterFollowingPipelineFollowersIT.conf" )
+
+[FlinkTwitterFollowingPipelineFriendsIT.conf](FlinkTwitterFollowingPipelineFriendsIT.conf "FlinkTwitterFollowingPipelineFriendsIT.conf" )
 
 Run (Local):
 ------------

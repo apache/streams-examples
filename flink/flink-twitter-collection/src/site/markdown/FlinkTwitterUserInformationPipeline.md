@@ -4,7 +4,7 @@ FlinkTwitterUserInformationPipeline
 Description:
 -----------------
 
-Collects twitter users with flink.
+Collects twitter user profiles with flink.
 
 Specification:
 -----------------
@@ -19,7 +19,7 @@ Diagram:
 Example Configuration:
 ----------------------
 
-[FlinkTwitterUserInformationPipeline.json](FlinkTwitterUserInformationPipeline.json "FlinkTwitterUserInformationPipeline.json" )
+[FlinkTwitterUserInformationPipelineIT.conf](FlinkTwitterUserInformationPipelineIT.conf "FlinkTwitterUserInformationPipelineIT.conf" )
 
 Run (Local):
 ------------

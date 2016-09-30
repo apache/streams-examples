@@ -22,10 +22,24 @@ Streams:
 
 <a href="FlinkTwitterFollowingPipeline.html" target="_self">FlinkTwitterFollowingPipeline</a>
 
+Test:
+-----
+
+Create a local file `application.conf` with valid twitter credentials
+
+    twitter {
+      oauth {
+        consumerKey = ""
+        consumerSecret = ""
+        accessToken = ""
+        accessTokenSecret = ""
+      }
+    }
+    
 Build:
 ---------
 
-    mvn clean install verify
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 
