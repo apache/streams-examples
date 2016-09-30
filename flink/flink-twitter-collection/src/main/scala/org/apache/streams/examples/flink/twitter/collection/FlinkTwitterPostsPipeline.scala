@@ -3,11 +3,8 @@ package org.apache.streams.examples.flink.twitter.collection
 import java.util.concurrent.TimeUnit
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.common.base.{Preconditions, Strings}
 import com.google.common.util.concurrent.Uninterruptibles
-import com.peoplepattern.streams.pdb.pipelines.FlinkStreamingConfiguration
-import com.peoplepattern.streams.pdb.flink.{FlinkBase, FlinkUtil}
-import com.peoplepattern.streams.pipelines.pdb.TwitterPostsPipelineConfiguration
-import com.peoplepattern.streams.twitter.collection.FlinkTwitterPostsPipeline.LOGGER
 import org.apache.flink.api.common.functions.{FlatMapFunction, RichFlatMapFunction}
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.scala.{ExecutionEnvironment, _}
@@ -33,6 +30,7 @@ import org.apache.streams.twitter.TwitterUserInformationConfiguration
 import org.apache.streams.twitter.pojo.{Tweet, User}
 import org.apache.streams.twitter.provider.{TwitterTimelineProvider, TwitterUserInformationProvider}
 import org.slf4j.{Logger, LoggerFactory}
+import org.apache.flink.api.scala._
 
 import scala.collection.JavaConversions._
 
@@ -84,6 +82,12 @@ object FlinkTwitterPostsPipeline extends FlinkBase {
       return false
     }
 
+    Preconditions.checkNotNull(jobConfig.getTwitter.getOauth)
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getAccessToken))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getAccessTokenSecret))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
+
     return true
 
   }
@@ -105,15 +109,7 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
 
     val outPath = buildWriterPath(config.getDestination)
 
-    //val inProps = buildKafkaProps(config.getSourceTopic)
-
     val ids: DataStream[String] = env.readTextFile(inPath).setParallelism(10).name("ids")
-
-    //val idTopicIn = new KafkaSink()
-
-//    val idTopicOut : DataStream[String] = env.addSource[String](
-//      new org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer09(config.getSourceTopic.getTopic, new SimpleStringSchema(),
-//        inProps));
 
     val keyed_ids: KeyedStream[String, Int] = env.readTextFile(inPath).setParallelism(10).name("keyed_ids").keyBy( id => (id.hashCode % 100).abs )
 
@@ -149,7 +145,7 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
       val twitterConfiguration = config.getTwitter
       val twitProvider: TwitterTimelineProvider =
         new TwitterTimelineProvider(
-          twitterConfiguration.withInfo(List(FlinkUtil.toProviderId(id))).withMaxItems(200l)
+          twitterConfiguration.withInfo(List(toProviderId(id))).withMaxItems(200l)
         )
       twitProvider.prepare(twitProvider)
       twitProvider.startStream()

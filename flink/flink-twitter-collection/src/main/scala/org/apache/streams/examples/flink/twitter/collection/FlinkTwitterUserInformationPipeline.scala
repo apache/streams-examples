@@ -1,28 +1,18 @@
 package org.apache.streams.examples.flink.twitter.collection
 
-import java.lang
 import java.util.concurrent.TimeUnit
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.common.base.{Preconditions, Strings}
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.scala.function.{AllWindowFunction, WindowFunction}
 import org.apache.flink.streaming.api.windowing.assigners.{GlobalWindows, TumblingEventTimeWindows}
-
-import scala.collection.JavaConversions._
-import com.peoplepattern.streams.twitter.collection.FlinkTwitterUserInformationPipeline.LOGGER
 import com.google.common.util.concurrent.Uninterruptibles
-import org.apache.streams.examples.flink.FlinkBase
 import org.apache.flink.api.common.functions.RichFlatMapFunction
-import org.apache.flink.api.common.restartstrategy.RestartStrategies
-import org.apache.flink.api.java.tuple.Tuple
 import org.apache.flink.streaming.api.scala.{AllWindowedStream, DataStream, KeyedStream, StreamExecutionEnvironment, WindowedStream}
-import org.apache.flink.streaming.api.windowing.time.Time
-import org.apache.flink.streaming.api.windowing.triggers._
 import org.apache.flink.streaming.api.windowing.windows.{GlobalWindow, TimeWindow, Window}
 import org.apache.flink.api.scala._
-import org.apache.flink.api.scala.{ExecutionEnvironment, _}
-import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.connectors.fs.RollingSink
 import org.apache.flink.util.Collector
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
@@ -30,12 +20,12 @@ import org.apache.streams.core.StreamsDatum
 import org.apache.streams.examples.flink.FlinkBase
 import org.apache.streams.examples.flink.twitter.TwitterUserInformationPipelineConfiguration
 import org.apache.streams.flink.FlinkStreamingConfiguration
-import org.apache.streams.hdfs.HdfsConfiguration
 import org.apache.streams.jackson.StreamsJacksonMapper
-import org.apache.streams.twitter.TwitterUserInformationConfiguration
-import org.apache.streams.twitter.pojo.{Tweet, User}
-import org.apache.streams.twitter.provider.{TwitterTimelineProvider, TwitterUserInformationProvider}
+import org.apache.streams.twitter.pojo.User
+import org.apache.streams.twitter.provider.TwitterUserInformationProvider
 import org.slf4j.{Logger, LoggerFactory}
+
+import scala.collection.JavaConversions._
 
 /**
   * Created by sblackmon on 3/15/16.
@@ -84,6 +74,12 @@ object FlinkTwitterUserInformationPipeline extends FlinkBase {
       System.err.println("jobConfig.getTwitter is null!")
       return false
     }
+
+    Preconditions.checkNotNull(jobConfig.getTwitter.getOauth)
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getAccessToken))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getAccessTokenSecret))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
     return true
 
@@ -137,7 +133,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
 
   class idListWindowFunction extends WindowFunction[String, List[String], Int, GlobalWindow] {
     override def apply(key: Int, window: GlobalWindow, input: Iterable[String], out: Collector[List[String]]): Unit = {if( input.size > 0 )
-        out.collect(input.map(id => FlinkUtil.toProviderId(id)).toList)
+        out.collect(input.map(id => toProviderId(id)).toList)
     }
   }
 

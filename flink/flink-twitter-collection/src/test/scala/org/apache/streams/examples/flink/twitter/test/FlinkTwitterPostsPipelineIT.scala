@@ -1,12 +1,16 @@
 package com.peoplepattern.streams.twitter.collection
 
+import java.io.File
 import java.nio.file.{Files, Paths}
 import java.util.concurrent.TimeUnit
 
 import com.google.common.util.concurrent.{Monitor, Uninterruptibles}
-import com.peoplepattern.streams.pipelines.pdb.TwitterPostsPipelineConfiguration
-import org.apache.flink.api.scala.ExecutionEnvironment
-import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
+import com.typesafe.config.{Config, ConfigFactory, ConfigParseOptions}
+import org.apache.streams.examples.flink.twitter.{TwitterFollowingPipelineConfiguration, TwitterPostsPipelineConfiguration}
+import org.apache.streams.config.{ComponentConfigurator, StreamsConfiguration, StreamsConfigurator}
+import org.apache.streams.examples.flink.twitter.TwitterPostsPipelineConfiguration
+import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterUserInformationPipeline._
+import org.apache.streams.examples.flink.twitter.collection.{FlinkTwitterPostsPipeline, FlinkTwitterUserInformationPipeline}
 import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, HdfsWriterConfiguration}
 import org.slf4j.{Logger, LoggerFactory}
 
@@ -20,23 +24,25 @@ import org.testng.annotations.Test
 /**
   * Created by sblackmon on 3/13/16.
   */
-class FlinkTwitterPostsPipelineIT extends FlatSpec {
+class FlinkTwitterPostsPipelineIT extends FlatSpec  {
 
   private val LOGGER: Logger = LoggerFactory.getLogger(classOf[FlinkTwitterPostsPipelineIT])
+
+  import FlinkTwitterPostsPipeline._
 
   @Test
   def flinkTwitterPostsPipelineIT = {
 
-    val testConfig : TwitterPostsPipelineConfiguration =
-      new ComponentConfigurator[TwitterPostsPipelineConfiguration](classOf[TwitterPostsPipelineConfiguration]).detectConfiguration(StreamsConfigurator.getConfig)
-    val source : HdfsReaderConfiguration = new HdfsReaderConfiguration().withReaderPath("asf.txt").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsReaderConfiguration]
-    source.setPath("target/test-classes")
-    testConfig.setSource(source);
-    val destination : HdfsWriterConfiguration = new HdfsWriterConfiguration().withWriterPath("pdb-twitter-collect/FlinkTwitterPostsPipeline").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsWriterConfiguration]
-    destination.setPath("target/test-classes")
-    testConfig.setDestination(destination)
-    testConfig.setProviderWaitMs(1000l)
-    testConfig.setTest(true)
+    val reference: Config = ConfigFactory.load()
+    val conf_file: File = new File("target/test-classes/FlinkTwitterPostsPipelineIT.conf")
+    assert(conf_file.exists())
+    val testResourceConfig: Config = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+
+    val typesafe: Config = testResourceConfig.withFallback(reference).resolve()
+    val streams: StreamsConfiguration = StreamsConfigurator.detectConfiguration(typesafe)
+    val testConfig = new ComponentConfigurator(classOf[TwitterPostsPipelineConfiguration]).detectConfiguration(typesafe)
+
+    setup(testConfig)
 
     val job = new FlinkTwitterPostsPipeline(config = testConfig)
     val jobThread = new Thread(job)
@@ -44,9 +50,9 @@ class FlinkTwitterPostsPipelineIT extends FlatSpec {
     jobThread.join
 
     eventually (timeout(30 seconds), interval(1 seconds)) {
-      assert(Files.exists(Paths.get("target/test-classes/FlinkTwitterPostsPipeline")))
+      assert(Files.exists(Paths.get(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath)))
       assert(
-        Source.fromFile("target/test-classes/FlinkTwitterPostsPipeline", "UTF-8").getLines.size
+        Source.fromFile(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath, "UTF-8").getLines.size
           >= 200)
     }
 

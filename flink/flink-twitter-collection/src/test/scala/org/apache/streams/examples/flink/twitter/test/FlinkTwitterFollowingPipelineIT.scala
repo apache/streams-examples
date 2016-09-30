@@ -1,17 +1,22 @@
 package com.peoplepattern.streams.twitter.collection
 
+import java.io.File
 import java.nio.file.{Files, Paths}
 
-import com.peoplepattern.streams.pipelines.pdb.{TwitterFollowingPipelineConfiguration, TwitterPostsPipelineConfiguration}
-import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
+import org.apache.streams.examples.flink.twitter.TwitterFollowingPipelineConfiguration
+import com.typesafe.config.{Config, ConfigFactory, ConfigParseOptions}
+import org.apache.streams.config.{ComponentConfigurator, StreamsConfiguration, StreamsConfigurator}
+import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterUserInformationPipeline._
+import org.apache.streams.examples.flink.twitter.collection.{FlinkTwitterFollowingPipeline, FlinkTwitterSpritzerPipeline}
 import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, HdfsWriterConfiguration}
-import org.scalatest.FlatSpec
-import org.scalatest.concurrent.Eventually._
-import org.scalatest.time.SpanSugar._
 import org.slf4j.{Logger, LoggerFactory}
 import org.testng.annotations.Test
 
 import scala.io.Source
+import org.scalatest.FlatSpec
+import org.scalatest.concurrent.Eventually._
+import org.scalatest.time.{Seconds, Span}
+import org.scalatest.time.SpanSugar._
 
 /**
   * Created by sblackmon on 3/13/16.
@@ -20,30 +25,31 @@ class FlinkTwitterFollowingPipelineIT extends FlatSpec {
 
   private val LOGGER: Logger = LoggerFactory.getLogger(classOf[FlinkTwitterFollowingPipelineIT])
 
+  import FlinkTwitterFollowingPipeline._
+
   @Test
   def flinkTwitterFollowersPipelineFriendsIT = {
 
-    val testConfig : TwitterFollowingPipelineConfiguration =
-      new ComponentConfigurator[TwitterFollowingPipelineConfiguration](classOf[TwitterFollowingPipelineConfiguration]).detectConfiguration(StreamsConfigurator.getConfig)
-    testConfig.getTwitter.setEndpoint("friends")
-    val source : HdfsReaderConfiguration = new HdfsReaderConfiguration().withReaderPath("asf.txt").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsReaderConfiguration]
-    source.setPath("target/test-classes")
-    testConfig.setSource(source);
-    val destination : HdfsWriterConfiguration = new HdfsWriterConfiguration().withWriterPath("pdb-twitter-collect/FlinkTwitterFollowingPipeline/friends").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsWriterConfiguration]
-    destination.setPath("target/test-classes")
-    testConfig.setDestination(destination)
-    testConfig.setProviderWaitMs(1000l)
-    testConfig.setTest(true)
+    val reference: Config = ConfigFactory.load()
+    val conf_file: File = new File("target/test-classes/FlinkTwitterFollowingPipelineFollowersIT.conf")
+    assert(conf_file.exists())
+    val testResourceConfig: Config = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+
+    val typesafe: Config = testResourceConfig.withFallback(reference).resolve()
+    val streams: StreamsConfiguration = StreamsConfigurator.detectConfiguration(typesafe)
+    val testConfig = new ComponentConfigurator(classOf[TwitterFollowingPipelineConfiguration]).detectConfiguration(typesafe)
+
+    setup(testConfig)
 
     val job = new FlinkTwitterFollowingPipeline(config = testConfig)
     val jobThread = new Thread(job)
     jobThread.start
     jobThread.join
 
-    eventually (timeout(30 seconds), interval(1 seconds)) {
-      assert(Files.exists(Paths.get("target/test-classes/pdb-twitter-collect/FlinkTwitterFollowingPipeline/friends")))
+    eventually (timeout(60 seconds), interval(1 seconds)) {
+      assert(Files.exists(Paths.get(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath)))
       assert(
-        Source.fromFile("target/test-classes/pdb-twitter-collect/FlinkTwitterFollowingPipeline/friends", "UTF-8").getLines.size
+        Source.fromFile(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath, "UTF-8").getLines.size
           > 90)
     }
 
@@ -52,27 +58,26 @@ class FlinkTwitterFollowingPipelineIT extends FlatSpec {
   @Test
   def flinkTwitterFollowersPipelineFollowersIT = {
 
-    val testConfig : TwitterFollowingPipelineConfiguration =
-      new ComponentConfigurator[TwitterFollowingPipelineConfiguration](classOf[TwitterFollowingPipelineConfiguration]).detectConfiguration(StreamsConfigurator.getConfig)
-    testConfig.getTwitter.setEndpoint("followers")
-    val source : HdfsReaderConfiguration = new HdfsReaderConfiguration().withReaderPath("asf.txt").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsReaderConfiguration]
-    source.setPath("target/test-classes")
-    testConfig.setSource(source);
-    val destination : HdfsWriterConfiguration = new HdfsWriterConfiguration().withWriterPath("pdb-twitter-collect/FlinkTwitterFollowingPipeline/followers").withScheme(HdfsConfiguration.Scheme.FILE).asInstanceOf[HdfsWriterConfiguration]
-    destination.setPath("target/test-classes")
-    testConfig.setDestination(destination)
-    testConfig.setProviderWaitMs(1000l)
-    testConfig.setTest(true)
+    val reference: Config = ConfigFactory.load()
+    val conf_file: File = new File("target/test-classes/FlinkTwitterFollowingPipelineFriendsIT.conf")
+    assert(conf_file.exists())
+    val testResourceConfig: Config = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+
+    val typesafe: Config = testResourceConfig.withFallback(reference).resolve()
+    val streams: StreamsConfiguration = StreamsConfigurator.detectConfiguration(typesafe)
+    val testConfig = new ComponentConfigurator(classOf[TwitterFollowingPipelineConfiguration]).detectConfiguration(typesafe)
+
+    setup(testConfig)
 
     val job = new FlinkTwitterFollowingPipeline(config = testConfig)
     val jobThread = new Thread(job)
     jobThread.start
     jobThread.join
 
-    eventually (timeout(30 seconds), interval(1 seconds)) {
-      assert(Files.exists(Paths.get("target/test-classes/FlinkTwitterFollowingPipeline/followers")))
+    eventually (timeout(60 seconds), interval(1 seconds)) {
+      assert(Files.exists(Paths.get(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath)))
       assert(
-        Source.fromFile("target/test-classes/FlinkTwitterFollowingPipeline/followers", "UTF-8").getLines.size
+        Source.fromFile(testConfig.getDestination.getPath + "/" + testConfig.getDestination.getWriterPath, "UTF-8").getLines.size
           > 500)
     }
 
