@@ -19,20 +19,12 @@
 package org.apache.streams.example.elasticsearch.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
-import org.apache.streams.config.ComponentConfigurator;
-import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.core.StreamsDatum;
-import org.apache.streams.elasticsearch.ElasticsearchConfiguration;
-import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
-import org.apache.streams.elasticsearch.ElasticsearchWriterConfiguration;
-import org.apache.streams.example.elasticsearch.MongoElasticsearchSync;
+import org.apache.streams.elasticsearch.example.MongoElasticsearchSync;
 import org.apache.streams.example.elasticsearch.MongoElasticsearchSyncConfiguration;
 import org.apache.streams.jackson.StreamsJacksonMapper;
-import org.apache.streams.mongo.MongoConfiguration;
-import org.apache.streams.mongo.MongoPersistReader;
 import org.apache.streams.mongo.MongoPersistWriter;
 import org.apache.streams.pojo.json.Activity;
 import org.elasticsearch.test.ElasticsearchIntegrationTest;

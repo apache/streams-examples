@@ -36,7 +36,7 @@ Build:
 Run (Local):
 ------------
 
-    java -cp dist/elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.ElasticsearchReindex
+    java -cp dist/elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.elasticsearch.example.ElasticsearchReindex
 
 Deploy (Docker):
 ----------------

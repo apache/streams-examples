@@ -16,25 +16,20 @@
  * under the License.
  */
 
-package org.apache.streams.example.elasticsearch;
+package org.apache.streams.elasticsearch.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-import com.typesafe.config.Config;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
-import org.apache.streams.core.StreamsDatum;
 import org.apache.streams.elasticsearch.*;
 import org.apache.streams.core.StreamBuilder;
+import org.apache.streams.example.elasticsearch.MongoElasticsearchSyncConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.apache.streams.mongo.MongoPersistReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
-import java.util.concurrent.*;
 
 /**
  * Copies documents into a new index

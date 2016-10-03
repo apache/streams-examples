@@ -24,7 +24,7 @@ Example Configuration:
 Run (Local):
 ------------
 
-    java -cp dist/elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.elasticsearch.ElasticsearchHdfs
+    java -cp dist/elasticsearch-hdfs-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.elasticsearch.example.ElasticsearchHdfs
 
 Run (Docker):
 -------------
