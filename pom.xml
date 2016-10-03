@@ -94,7 +94,7 @@
     <distributionManagement>
         <site>
             <id>streams.site.examples</id>
-            <url>scm:svn:https://svn.apache.org/repos/infra/websites/production/streams/content/site/${project.version}/streams-examples/</url>
+            <url>scm:svn:https://svn.apache.org/repos/asf/incubator/streams/site/trunk/content/site/${project.version}/streams-examples/</url>
         </site>
     </distributionManagement>
 
@@ -317,13 +317,6 @@
                             </configuration>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>${site.plugin.version}</version>
-                    <configuration>
-                        <topSiteURL>scm:svn:https://svn.apache.org/repos/infra/websites/production/streams/content/site/${project.version}/${project.artifactId}</topSiteURL>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
