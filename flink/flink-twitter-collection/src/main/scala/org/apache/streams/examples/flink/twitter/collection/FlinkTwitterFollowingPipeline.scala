@@ -126,7 +126,7 @@ class FlinkTwitterFollowingPipeline(config: TwitterFollowingPipelineConfiguratio
 
         // if( test == true ) jsons.print();
 
-        env.execute("FlinkTwitterFollowingPipeline")
+        env.execute(STREAMS_ID)
     }
 
     class FollowingCollectorFlatMapFunction(

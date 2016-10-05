@@ -134,7 +134,7 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
 
     // if( test == true ) jsons.print();
 
-    env.execute("FlinkTwitterPostsPipeline")
+    env.execute(STREAMS_ID)
   }
 
   class postCollectorFlatMapFunction extends RichFlatMapFunction[String, StreamsDatum] with Serializable {

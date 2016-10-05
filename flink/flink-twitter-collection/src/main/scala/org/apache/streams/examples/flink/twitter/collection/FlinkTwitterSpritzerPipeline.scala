@@ -1,10 +1,12 @@
 package org.apache.streams.examples.flink.twitter.collection
 
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.{Preconditions, Strings}
 import com.google.common.util.concurrent.Uninterruptibles
+import org.apache.flink.api.common.functions.StoppableFunction
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.streaming.api.TimeCharacteristic
@@ -21,6 +23,7 @@ import org.apache.streams.twitter.TwitterStreamConfiguration
 import org.apache.streams.twitter.provider.TwitterStreamProvider
 import org.slf4j.{Logger, LoggerFactory}
 import org.apache.flink.api.scala._
+import org.apache.streams.twitter.converter.TwitterDateTimeFormat
 
 import scala.collection.JavaConversions._
 
@@ -82,6 +85,8 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
 
   import FlinkTwitterSpritzerPipeline._
 
+  val spritzerSource = new SpritzerSource(config.getTwitter)
+
   override def run(): Unit = {
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
@@ -91,7 +96,7 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
 
     val outPath = buildWriterPath(config.getDestination)
 
-    val streamSource : DataStream[String] = env.addSource(new SpritzerSource(config.getTwitter));
+    val streamSource : DataStream[String] = env.addSource(spritzerSource);
 
     if( config.getTest == false )
       streamSource.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
@@ -101,15 +106,23 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
 
     // if( test == true ) jsons.print();
 
-    env.execute("FlinkTwitterPostsPipeline")
+    env.execute(STREAMS_ID)
+
   }
 
-  class SpritzerSource(sourceConfig: TwitterStreamConfiguration) extends RichSourceFunction[String] with Serializable {
+  def stop(): Unit = {
+    spritzerSource.stop()
+  }
+
+  class SpritzerSource(sourceConfig: TwitterStreamConfiguration) extends RichSourceFunction[String] with Serializable with StoppableFunction {
+
+    var mapper: ObjectMapper = _
 
     var twitProvider: TwitterStreamProvider = _
 
     @throws[Exception]
     override def open(parameters: Configuration): Unit = {
+      mapper = StreamsJacksonMapper.getInstance(TwitterDateTimeFormat.TWITTER_FORMAT)
       twitProvider = new TwitterStreamProvider( sourceConfig )
       twitProvider.prepare(twitProvider)
       twitProvider.startStream()
@@ -120,17 +133,16 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
       do {
         Uninterruptibles.sleepUninterruptibly(config.getProviderWaitMs, TimeUnit.MILLISECONDS)
         iterator = twitProvider.readCurrent().iterator()
-        iterator.toList.map(datum => ctx.collect(datum.getDocument.asInstanceOf[String]))
+        iterator.toList.map(datum => ctx.collect(mapper.writeValueAsString(datum.getDocument)))
       } while( twitProvider.isRunning )
     }
 
     override def cancel(): Unit = {
-      twitProvider.cleanUp()
+      close()
     }
 
-    @throws[Exception]
-    override def close(): Unit = {
-      twitProvider.cleanUp()
+    override def stop(): Unit = {
+      close();
     }
   }
 

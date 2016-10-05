@@ -128,7 +128,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
 
     LOGGER.info("StreamExecutionEnvironment: {}", env.toString )
 
-    env.execute("FlinkTwitterUserInformationPipeline")
+    env.execute(STREAMS_ID)
   }
 
   class idListWindowFunction extends WindowFunction[String, List[String], Int, GlobalWindow] {
