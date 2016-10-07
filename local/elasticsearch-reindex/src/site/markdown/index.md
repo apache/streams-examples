@@ -28,11 +28,13 @@ Example Configuration:
 
 Populate source and destination in configuration with cluster / index / type details.
 
-Build:
+Testing:
 ---------
 
-    mvn clean package verify
-
+    mvn -PdockerITs docker:start
+    mvn clean install test verify -DskipITs=false
+    mvn -PdockerITs docker:stop
+    
 Run (Local):
 ------------
 

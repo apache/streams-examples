@@ -53,9 +53,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- * Test copying documents between two indexes on same cluster
+ * Test copying parent/child associated documents between two indexes on same cluster
  */
-public class ElasticsearchReindexIT {
+public class ElasticsearchReindexChildIT {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
 
@@ -70,7 +70,7 @@ public class ElasticsearchReindexIT {
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
+        File conf_file = new File("target/test-classes/ElasticsearchReindexChildIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Properties es_properties  = new Properties();
@@ -117,4 +117,5 @@ public class ElasticsearchReindexIT {
         assertEquals(count, (int)countResponse.getHits().getTotalHits());
 
     }
+
 }
