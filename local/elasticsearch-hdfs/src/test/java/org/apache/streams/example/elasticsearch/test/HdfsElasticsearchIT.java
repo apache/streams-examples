@@ -65,27 +65,26 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
  * Test copying documents between hdfs and elasticsearch
  */
-public class ElasticsearchHdfsIT {
+public class HdfsElasticsearchIT {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchHdfsIT.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(HdfsElasticsearchIT.class);
 
     ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
 
-    protected ElasticsearchHdfsConfiguration testConfiguration;
+    protected HdfsElasticsearchConfiguration testConfiguration;
     protected Client testClient;
-
-    private int count = 0;
 
     @Before
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchHdfsIT.conf");
+        File conf_file = new File("target/test-classes/HdfsElasticsearchIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Properties es_properties  = new Properties();
@@ -94,35 +93,40 @@ public class ElasticsearchHdfsIT {
         Config esProps  = ConfigFactory.parseProperties(es_properties);
         Config typesafe  = testResourceConfig.withFallback(esProps).withFallback(reference).resolve();
         StreamsConfiguration streams  = StreamsConfigurator.detectConfiguration(typesafe);
-        testConfiguration = new ComponentConfigurator<>(ElasticsearchHdfsConfiguration.class).detectConfiguration(typesafe);
-        testClient = new ElasticsearchClientManager(testConfiguration.getSource()).getClient();
+        testConfiguration = new ComponentConfigurator<>(HdfsElasticsearchConfiguration.class).detectConfiguration(typesafe);
+        testClient = new ElasticsearchClientManager(testConfiguration.getDestination()).getClient();
 
         ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
         ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
         assertNotEquals(clusterHealthResponse.getStatus(), ClusterHealthStatus.RED);
 
-        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
+        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getDestination().getIndex());
         IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
-        assertTrue(indicesExistsResponse.isExists());
-
-        SearchRequestBuilder countRequest = testClient
-                .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
-                .setTypes(testConfiguration.getSource().getTypes().get(0));
-        SearchResponse countResponse = countRequest.execute().actionGet();
-
-        count = (int)countResponse.getHits().getTotalHits();
-
-        assertNotEquals(count, 0);
+        if(indicesExistsResponse.isExists()) {
+            DeleteIndexRequest deleteIndexRequest = Requests.deleteIndexRequest(testConfiguration.getDestination().getIndex());
+            DeleteIndexResponse deleteIndexResponse = testClient.admin().indices().delete(deleteIndexRequest).actionGet();
+            assertTrue(deleteIndexResponse.isAcknowledged());
+        };
     }
 
     @Test
     public void ElasticsearchHdfsIT() throws Exception {
 
-        ElasticsearchHdfs backup = new ElasticsearchHdfs(testConfiguration);
+        HdfsElasticsearch restore = new HdfsElasticsearch(testConfiguration);
 
-        backup.run();
+        restore.run();
 
-        // assert lines in file
+        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getDestination().getIndex());
+        IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
+        assertTrue(indicesExistsResponse.isExists());
+
+        SearchRequestBuilder countRequest = testClient
+                .prepareSearch(testConfiguration.getDestination().getIndex())
+                .setTypes(testConfiguration.getDestination().getType());
+        SearchResponse countResponse = countRequest.execute().actionGet();
+
+        assertEquals(89, countResponse.getHits().getTotalHits());
+
     }
 
 }
