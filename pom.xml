@@ -22,11 +22,11 @@
     <parent>
         <artifactId>streams-master</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.3-incubating</version>
+        <version>0.4-incubating-SNAPSHOT</version>
 	</parent>
 
     <artifactId>streams-examples</artifactId>
-  <version>0.4-incubating-SNAPSHOT</version>
+    <version>0.4-incubating-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>streams-examples</name>
