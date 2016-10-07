@@ -19,6 +19,7 @@
 package org.apache.streams.example.elasticsearch.test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
@@ -28,11 +29,13 @@ import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchClientManager;
 import org.apache.streams.elasticsearch.example.ElasticsearchReindex;
 import org.apache.streams.elasticsearch.example.ElasticsearchReindexConfiguration;
+import org.apache.streams.elasticsearch.test.ElasticsearchParentChildWriterIT;
 import org.apache.streams.jackson.StreamsJacksonMapper;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.template.put.PutIndexTemplateRequestBuilder;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -46,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import static junit.framework.TestCase.assertTrue;
@@ -53,9 +57,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- * Test copying documents between two indexes on same cluster
+ * Test copying parent/child associated documents between two indexes on same cluster
  */
-public class ElasticsearchReindexIT {
+public class ElasticsearchReindexParentIT {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
 
@@ -70,7 +74,7 @@ public class ElasticsearchReindexIT {
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
+        File conf_file = new File("target/test-classes/ElasticsearchReindexParentIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Properties es_properties  = new Properties();
@@ -97,6 +101,14 @@ public class ElasticsearchReindexIT {
 
         count = (int)countResponse.getHits().getTotalHits();
 
+        PutIndexTemplateRequestBuilder putTemplateRequestBuilder = testClient.admin().indices().preparePutTemplate("mappings");
+        URL templateURL = ElasticsearchParentChildWriterIT.class.getResource("/ActivityChildObjectParent.json");
+        ObjectNode template = MAPPER.readValue(templateURL, ObjectNode.class);
+        String templateSource = MAPPER.writeValueAsString(template);
+        putTemplateRequestBuilder.setSource(templateSource);
+
+        testClient.admin().indices().putTemplate(putTemplateRequestBuilder.request()).actionGet();
+
         assertNotEquals(count, 0);
 
     }
@@ -117,4 +129,5 @@ public class ElasticsearchReindexIT {
         assertEquals(count, (int)countResponse.getHits().getTotalHits());
 
     }
+
 }
