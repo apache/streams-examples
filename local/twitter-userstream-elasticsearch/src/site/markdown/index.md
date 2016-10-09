@@ -33,8 +33,28 @@ The accessToken and accessTokenSecret can be obtained by navigating to:
 Build:
 ---------
 
-    mvn clean package verify
+    mvn clean package
 
+Testing:
+---------
+
+Create a local file `application.conf` with valid twitter credentials
+
+    twitter {
+      oauth {
+        consumerKey = ""
+        consumerSecret = ""
+        accessToken = ""
+        accessTokenSecret = ""
+      }
+    }
+    
+Build with integration testing enabled, using your credentials
+
+    mvn -PdockerITs docker:start
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+    mvn -PdockerITs docker:stop
+        
 Run (Local):
 ------------
 
