@@ -50,10 +50,16 @@ Create a local file `application.conf` with valid twitter credentials
       }
     }
     
+Start up elasticsearch with docker:
+    
+        mvn -PdockerITs docker:start
+
 Build with integration testing enabled, using your credentials
 
-    mvn -PdockerITs docker:start
     mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+
+Shutdown elasticsearch when finished:
+
     mvn -PdockerITs docker:stop
 
 Run (Local):

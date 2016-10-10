@@ -19,10 +19,22 @@ Streams:
 Build:
 ---------
 
-    mvn clean install verify
+    mvn clean install
 
-Note that an alternative version of hdfs is packaged, by excluding org.apache.hadoop.hadoop-hdfs when
-importing org.apache.streams.streams-persist-hdfs, and specifically depending on a different preferred version.
+Testing:
+---------
+
+Start up elasticsearch with docker:
+     
+    mvn -PdockerITs docker:start
+ 
+Build with integration testing enabled, using your credentials
+ 
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+ 
+Shutdown elasticsearch when finished:
+ 
+    mvn -PdockerITs docker:stop
 
 Deploy (Docker):
 ----------------

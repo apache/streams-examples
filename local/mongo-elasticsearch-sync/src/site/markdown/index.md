@@ -32,7 +32,33 @@ Example Configuration:
 Build:
 ---------
 
-    mvn clean package verify
+    mvn clean package
+
+Testing:
+---------
+
+Create a local file `application.conf` with valid twitter credentials
+
+    twitter {
+      oauth {
+        consumerKey = ""
+        consumerSecret = ""
+        accessToken = ""
+        accessTokenSecret = ""
+      }
+    }
+
+Start up elasticsearch and mongodb with docker:
+    
+        mvn -PdockerITs docker:start
+
+Build with integration testing enabled, using your credentials
+
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+
+Shutdown elasticsearch and mongodb when finished:
+
+    mvn -PdockerITs docker:stop
 
 Run (Local):
 ------------

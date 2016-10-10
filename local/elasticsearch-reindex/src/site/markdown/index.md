@@ -31,8 +31,16 @@ Populate source and destination in configuration with cluster / index / type det
 Testing:
 ---------
 
+Start up elasticsearch with docker:
+     
     mvn -PdockerITs docker:start
-    mvn clean install test verify -DskipITs=false
+ 
+Build with integration testing enabled, using your credentials
+ 
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+ 
+Shutdown elasticsearch when finished:
+ 
     mvn -PdockerITs docker:stop
     
 Run (Local):
