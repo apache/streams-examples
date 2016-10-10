@@ -4,7 +4,7 @@
     "http://www.apache.org/licenses/LICENSE-2.0"
   ],
   "type": "object",
-  "javaType" : "org.apache.streams.example.graph.TwitterFollowingGraphConfiguration",
+  "javaType" : "org.apache.streams.example.graph.TwitterFollowGraphConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
     "twitter": { "javaType": "org.apache.streams.twitter.TwitterFollowingConfiguration", "type": "object", "required": true },

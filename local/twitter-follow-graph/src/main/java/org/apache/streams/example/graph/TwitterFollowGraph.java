@@ -47,19 +47,23 @@ import java.util.Map;
  * Collects friend and follow connections for a set of twitter users and builds a graph
  * database in neo4j.
  */
-public class TwitterFollowGraph {
+public class TwitterFollowGraph implements Runnable {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TwitterFollowGraph.class);
 
-    public static void main(String[] args) {
+    TwitterFollowGraphConfiguration config;
 
-        LOGGER.info(StreamsConfigurator.config.toString());
+    public TwitterFollowGraph() {
+        this(new ComponentConfigurator<>(TwitterFollowGraphConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+    }
 
-        StreamsConfiguration streams = StreamsConfigurator.detectConfiguration();
+    public TwitterFollowGraph(TwitterFollowGraphConfiguration config) {
+        this.config = config;
+    }
 
-        TwitterFollowingGraphConfiguration configuration = new ComponentConfigurator<>(TwitterFollowingGraphConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig());
+    public void run() {
 
-        TwitterFollowingConfiguration twitterFollowingConfiguration = configuration.getTwitter();
+        TwitterFollowingConfiguration twitterFollowingConfiguration = config.getTwitter();
         TwitterFollowingProvider followingProvider = new TwitterFollowingProvider(twitterFollowingConfiguration);
         TypeConverterProcessor converter = new TypeConverterProcessor(String.class);
 
@@ -69,7 +73,7 @@ public class TwitterFollowGraph {
                         .withConverters(Lists.newArrayList((ActivityConverter) new TwitterFollowActivityConverter()));
         ActivityConverterProcessor activity = new ActivityConverterProcessor(activityConverterProcessorConfiguration);
 
-        GraphHttpConfiguration graphWriterConfiguration = configuration.getGraph();
+        GraphHttpConfiguration graphWriterConfiguration = config.getGraph();
         GraphHttpPersistWriter graphPersistWriter = new GraphHttpPersistWriter(graphWriterConfiguration);
 
         StreamBuilder builder = new LocalStreamBuilder();
@@ -79,6 +83,21 @@ public class TwitterFollowGraph {
         builder.addStreamsPersistWriter("graph", graphPersistWriter, 1, "activity");
 
         builder.start();
+    }
+
+    public static void main(String[] args) {
+
+        LOGGER.info(StreamsConfigurator.config.toString());
+
+        TwitterFollowGraph stream = new TwitterFollowGraph();
+
+        stream.run();
+
+        LOGGER.info(StreamsConfigurator.config.toString());
+
+        StreamsConfiguration streams = StreamsConfigurator.detectConfiguration();
+
+
     }
 
 }
