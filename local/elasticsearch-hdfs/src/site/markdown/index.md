@@ -1,28 +1,19 @@
-elasticsearch-hdfs
-==============================
+### elasticsearch-hdfs
 
-Requirements:
--------------
- - A running ElasticSearch 1.0.0+ instance
+#### Requirements:
+ - A running ElasticSearch 2.0.0+ instance
 
-Description:
-------------
-Copies documents between elasticsearch and file system using the hdfs persist module.
-
-Streams:
---------
+#### Streams:
 
 <a href="HdfsElasticsearch.html" target="_self">HdfsElasticsearch</a>
 
 <a href="ElasticsearchHdfs.html" target="_self">ElasticsearchHdfs</a>
 
-Build:
----------
+#### Build:
 
     mvn clean install
 
-Testing:
----------
+#### Test:
 
 Start up elasticsearch with docker:
      
@@ -35,11 +26,6 @@ Build with integration testing enabled, using your credentials
 Shutdown elasticsearch when finished:
  
     mvn -PdockerITs docker:stop
-
-Deploy (Docker):
-----------------
-
-    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> clean package docker:build docker:push
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 

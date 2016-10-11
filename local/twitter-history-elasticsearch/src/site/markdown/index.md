@@ -1,43 +1,18 @@
-twitter-history-elasticsearch
-==============================
+### twitter-history-elasticsearch
 
-Requirements:
--------------
+#### Requirements:
  - Authorized Twitter API credentials
- - A running ElasticSearch 1.0.0+ instance
+ - A running ElasticSearch 2.0.0+ instance
 
-Description:
-------------
-Retrieves as many posts from a known list of users as twitter API allows.
+#### Streams:
 
-Converts them to activities, and writes them in activity format to Elasticsearch.
+<a href="TwitterHistoryElasticsearch.html" target="_self">TwitterHistoryElasticsearch</a>
 
-Specification:
------------------
-
-[TwitterHistoryElasticsearch.dot](TwitterHistoryElasticsearch.dot "TwitterHistoryElasticsearch.dot" )
-
-Diagram:
------------------
-
-![TwitterHistoryElasticsearch.dot.svg](./TwitterHistoryElasticsearch.dot.svg)
-
-Example Configuration:
-----------------------
-
-[application.conf](application.conf "application.conf" )
-
-In the Twitter section you should place all of your relevant authentication keys and whichever Twitter IDs you want to pull history for.
-
-Twitter IDs can be converted from screennames at http://www.gettwitterid.com
-
-Build:
----------
+#### Build:
 
     mvn clean package
    
-Testing:
----------
+#### Test:
 
 Create a local file `application.conf` with valid twitter credentials
 
@@ -52,7 +27,7 @@ Create a local file `application.conf` with valid twitter credentials
     
 Start up elasticsearch with docker:
     
-        mvn -PdockerITs docker:start
+    mvn -PdockerITs docker:start
 
 Build with integration testing enabled, using your credentials
 
@@ -61,21 +36,6 @@ Build with integration testing enabled, using your credentials
 Shutdown elasticsearch when finished:
 
     mvn -PdockerITs docker:stop
-
-Run (Local):
-------------
-
-    java -cp dist/twitter-history-elasticsearch-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.example.twitter.TwitterHistoryElasticsearch
-
-Deploy (Docker):
-----------------
-
-    mvn -Pdocker -Ddocker.repo=<your docker host>:<your docker repo> docker:build docker:push
-
-Run (Docker):
--------------
-
-    docker run twitter-history-elasticsearch java -cp twitter-history-elasticsearch-jar-with-dependencies.jar -Dconfig.url=http://<location_of_config_file> org.apache.streams.example.twitter.TwitterHistoryElasticsearch
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 
