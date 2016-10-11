@@ -4,7 +4,7 @@
     "http://www.apache.org/licenses/LICENSE-2.0"
   ],
   "type": "object",
-  "javaType" : "org.apache.streams.example.elasticsearch.MongoElasticsearchSyncConfiguration",
+  "javaType" : "org.apache.streams.example.MongoElasticsearchSyncConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
     "source": { "javaType": "org.apache.streams.mongo.MongoConfiguration", "type": "object", "required": true },

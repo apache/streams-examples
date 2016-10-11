@@ -4,7 +4,7 @@
     "http://www.apache.org/licenses/LICENSE-2.0"
   ],
   "type": "object",
-  "javaType" : "org.apache.streams.elasticsearch.example.HdfsElasticsearchConfiguration",
+  "javaType" : "org.apache.streams.example.HdfsElasticsearchConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
     "source": { "javaType": "org.apache.streams.hdfs.HdfsReaderConfiguration", "type": "object", "required": true },

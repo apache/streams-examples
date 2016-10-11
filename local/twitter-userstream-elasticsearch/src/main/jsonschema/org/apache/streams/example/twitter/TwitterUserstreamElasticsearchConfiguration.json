@@ -4,7 +4,7 @@
     "http://www.apache.org/licenses/LICENSE-2.0"
   ],
   "type": "object",
-  "javaType" : "org.apache.streams.example.twitter.TwitterUserstreamElasticsearchConfiguration",
+  "javaType" : "org.apache.streams.example.TwitterUserstreamElasticsearchConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "properties": {
     "twitter": { "javaType": "org.apache.streams.twitter.TwitterStreamConfiguration", "type": "object", "required": true },

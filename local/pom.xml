@@ -42,12 +42,9 @@
         <module>elasticsearch-hdfs</module>
         <module>elasticsearch-reindex</module>
         <module>mongo-elasticsearch-sync</module>
-        <module>twitter-follow-graph</module>
+        <module>twitter-follow-neo4j</module>
         <module>twitter-history-elasticsearch</module>
         <module>twitter-userstream-elasticsearch</module>
     </modules>
 
-    <build>
-
-    </build>
 </project>
