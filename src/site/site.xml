@@ -19,19 +19,20 @@
 <project>
     <custom>
         <fluidoSkin>
-            <topBarEnabled>true</topBarEnabled>
+            <topBarEnabled>false</topBarEnabled>
             <navBarStyle>navbar-inverse</navBarStyle>
-            <sideBarEnabled>false</sideBarEnabled>
-            <gitHub>
-                <projectId>apache/incubator-streams-examples</projectId>
-                <ribbonOrientation>right</ribbonOrientation>
-                <ribbonColor>black</ribbonColor>
-            </gitHub>
-            <twitter>
-                <user>ApacheStreams</user>
-                <showUser>true</showUser>
-                <showFollowers>true</showFollowers>
-            </twitter>
+            <sideBarEnabled>true</sideBarEnabled>
         </fluidoSkin>
     </custom>
+    <body>
+        <menu name="Overview" />
+        <menu name="Projects" />
+        <menu name="Resources" inherit="bottom" >
+            <item name="Install Git" href="install/git.html"/>
+            <item name="Install Java" href="install/java.html"/>
+            <item name="Install Maven" href="install/maven.html"/>
+            <item name="Install Docker" href="install/docker.html"/>
+            <item name="Install SBT" href="install/sbt.html"/>
+        </menu>
+    </body>
 </project>
