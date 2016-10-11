@@ -17,12 +17,17 @@
   ~ under the License.
   -->
 <project>
+    <custom>
+        <fluidoSkin>
+            <topBarEnabled>false</topBarEnabled>
+            <navBarStyle>navbar-inverse</navBarStyle>
+            <sideBarEnabled>true</sideBarEnabled>
+        </fluidoSkin>
+    </custom>
     <body>
-        <menu name="Credentials">
-            <item name="Twitter" href="../../credentials/twitter.html"/>
-        </menu>
         <menu name="Services">
-            <item name="Neo4j" href="../../services/neo4j.html"/>
+            <item name="Elasticsearch" href="../../services/elasticsearch.html"/>
+            <item name="Mongo" href="../../services/mongo.html"/>
         </menu>
     </body>
 </project>

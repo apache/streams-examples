@@ -18,11 +18,8 @@
   -->
 <project>
     <body>
-        <menu name="Credentials">
-            <item name="Twitter" href="../../credentials/twitter.html"/>
-        </menu>
-        <menu name="Services">
-            <item name="Neo4j" href="../../services/neo4j.html"/>
+        <menu name="Runtime">
+            <item name="Flink" href="../flink.html"/>
         </menu>
     </body>
 </project>

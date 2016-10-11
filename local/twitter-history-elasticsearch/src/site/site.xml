@@ -17,12 +17,29 @@
   ~ under the License.
   -->
 <project>
+    <custom>
+        <fluidoSkin>
+            <topBarEnabled>false</topBarEnabled>
+            <navBarStyle>navbar-inverse</navBarStyle>
+            <sideBarEnabled>true</sideBarEnabled>
+            <!--<gitHub>-->
+            <!--<projectId>apache/incubator-streams-examples</projectId>-->
+            <!--<ribbonOrientation>right</ribbonOrientation>-->
+            <!--<ribbonColor>black</ribbonColor>-->
+            <!--</gitHub>-->
+            <!--<twitter>-->
+            <!--<user>ApacheStreams</user>-->
+            <!--<showUser>true</showUser>-->
+            <!--<showFollowers>true</showFollowers>-->
+            <!--</twitter>-->
+        </fluidoSkin>
+    </custom>
     <body>
         <menu name="Credentials">
             <item name="Twitter" href="../../credentials/twitter.html"/>
         </menu>
         <menu name="Services">
-            <item name="Neo4j" href="../../services/neo4j.html"/>
+            <item name="Elasticsearch" href="../../services/elasticsearch.html"/>
         </menu>
     </body>
 </project>
