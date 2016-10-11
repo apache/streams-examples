@@ -6,7 +6,20 @@ Collects friend or follower connections for a set of twitter users to build a gr
 
 #### Configuration:
 
-[TwitterFollowNeo4jIT.conf](TwitterFollowNeo4jIT.conf "TwitterFollowNeo4jIT.conf" )
+[TwitterFollowNeo4j.json](TwitterFollowNeo4j.json "TwitterFollowNeo4j.json") for _
+
+##### application.conf
+
+    include "neo4j.properties"
+    include "neo4j.conf"
+    include "twitter.oauth.conf"
+    twitter {
+      endpoint = "friends"
+      info = [
+        18055613
+      ]
+      twitter.max_items = 1000
+    }
 
 #### Run (SBT):
 
@@ -15,7 +28,7 @@ Collects friend or follower connections for a set of twitter users to build a gr
     set libraryDependencies += "org.apache.streams" % "twitter-follow-neo4j" % "0.4-incubating-SNAPSHOT"
     set fork := true
     set javaOptions +="-Dconfig.file=application.conf"
-    run org.apache.streams.example.graph.TwitterFollowNeo4j
+    run org.apache.streams.example.TwitterFollowNeo4j
 
 #### Run (Docker):
 
@@ -28,6 +41,5 @@ Collects friend or follower connections for a set of twitter users to build a gr
 #### Diagram:
 
 ![TwitterFollowNeo4j.dot.svg](./TwitterFollowNeo4j.dot.svg)
-
 
 ###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

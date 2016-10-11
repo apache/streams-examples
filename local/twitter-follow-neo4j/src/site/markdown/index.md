@@ -10,20 +10,9 @@
 
 #### Build:
 
-    mvn clean package verify
+    mvn clean package    
 
 #### Test:
-
-Create a local file `application.conf` with valid twitter credentials
-
-    twitter {
-      oauth {
-        consumerKey = ""
-        consumerSecret = ""
-        accessToken = ""
-        accessTokenSecret = ""
-      }
-    }
 
 Start up neo4j with docker:
 
@@ -31,7 +20,7 @@ Start up neo4j with docker:
     
 Build with integration testing enabled, using your credentials
 
-    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=./twitter.conf"
 
 Shutdown neo4j when finished:
 

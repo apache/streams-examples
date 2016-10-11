@@ -6,7 +6,25 @@ Copies documents from mongodb to elasticsearch
 
 #### Configuration:
 
-[MongoElasticsearchSyncIT.conf](MongoElasticsearchSyncIT.conf "MongoElasticsearchSyncIT.conf" )
+[MongoElasticsearchSync.json](MongoElasticsearchSync.json "MongoElasticsearchSync.json") for _
+
+##### application.conf
+
+    include "mongo.properties"
+    include "mongo.conf"
+    include "elasticsearch.properties"
+    include "elasticsearch.conf"
+    source = ${mongo}
+    source {
+      db: mongo_persist_it
+      collection: activity
+    }
+    destination = ${elasticsearch}
+    destination {
+      index: mongo_elasticsearch_sync_it
+      type: activity
+      forceUseConfig": true
+    }
 
 #### Run (SBT):
 
@@ -15,7 +33,7 @@ Copies documents from mongodb to elasticsearch
     set libraryDependencies += "org.apache.streams" % "mongo-elasticsearch-sync" % "0.4-incubating-SNAPSHOT"
     set fork := true
     set javaOptions +="-Dconfig.file=application.conf"
-    run mongo-elasticsearch-sync org.apache.streams.example.MongoElasticsearchSync
+    run org.apache.streams.example.MongoElasticsearchSync
 
 #### Run (Docker):
 

@@ -6,16 +6,35 @@ Copies documents from hdfs to elasticsearch.
 
 #### Configuration:
 
-[HdfsElasticsearchIT.conf](HdfsElasticsearchIT.conf "HdfsElasticsearchIT.conf" )
+[HdfsElasticsearch.json](HdfsElasticsearch.json "HdfsElasticsearch.json" )
 
+##### application.conf
+
+    include "elasticsearch.properties"
+    include "elasticsearch.conf"
+    source {
+      fields = ["ID","DOC"]
+      scheme = file
+      user = hadoop
+      path = "target/test-classes"
+      readerPath = "elasticsearch_hdfs_it"
+    }
+    destination = ${elasticsearch}
+    destination {
+      index = "hdfs_elasticsearch_it"
+      type = "activity"
+      refresh = true
+      forceUseConfig = true
+    }
+    
 #### Run (SBT):
 
     sbtx -210 -sbt-create
     set resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
     set libraryDependencies += "org.apache.streams" % "elasticsearch-hdfs" % "0.4-incubating-SNAPSHOT"
     set fork := true
-    set javaOptions +="-Dconfig.file=HdfsElasticsearchIT.conf"
-    run elasticsearch-hdfs org.apache.streams.example.ElasticsearchHdfs
+    set javaOptions +="-Dconfig.file=application.conf"
+    run org.apache.streams.example.ElasticsearchHdfs
 
 #### Run (Docker):
 

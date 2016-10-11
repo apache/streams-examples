@@ -1,40 +1,47 @@
-FlinkTwitterSpritzerPipeline
-============================
+### FlinkTwitterSpritzerPipeline
 
-Description:
------------------
+#### Description:
 
 Collects twitter posts in real-time from the sample endpoint with flink.
 
-Specification:
------------------
+#### Configuration:
 
-[FlinkTwitterSpritzerPipeline.dot](FlinkTwitterSpritzerPipeline.dot "FlinkTwitterSpritzerPipeline.dot" )
+[TwitterSpritzerPipelineConfiguration.json](TwitterSpritzerPipelineConfiguration.json "TwitterSpritzerPipelineConfiguration.json" )
 
-Diagram:
------------------
-
-![FlinkTwitterSpritzerPipeline.dot.svg](./FlinkTwitterSpritzerPipeline.dot.svg)
-
-Example Configuration:
-----------------------
-
-[FlinkTwitterSpritzerPipelineIT.conf](FlinkTwitterSpritzerPipelineIT.conf "FlinkTwitterSpritzerPipelineIT.conf" )
-
-Run (Local):
-------------
+    include "flink.conf"
+    include "twitter.oauth.conf"
+    destination {
+      fields = ["DOC"]
+      scheme = file
+      path = "target/test-classes"
+      writerPath = "FlinkTwitterSpritzerPipelineIT"
+    }
+    twitter {
+      endpoint = sample
+      track = [
+        "data"
+      ]
+    }
+    
+#### Run (Local):
 
     java -cp dist/flink-twitter-collection-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.examples.flink.twitter.collection.FlinkTwitterSpritzerPipeline
 
-Run (Flink):
-------------
+#### Run (Flink):
 
     flink-run.sh dist/flink-twitter-collection-jar-with-dependencies.jar org.apache.streams.examples.flink.twitter.collection.FlinkTwitterSpritzerPipeline http://<location_of_config_file> 
 
-Run (YARN):
------------
+#### Run (YARN):
 
     flink-run.sh yarn dist/flink-twitter-collection-jar-with-dependencies.jar org.apache.streams.examples.flink.twitter.collection.FlinkTwitterSpritzerPipeline http://<location_of_config_file> 
+
+#### Specification:
+
+[FlinkTwitterSpritzerPipeline.dot](FlinkTwitterSpritzerPipeline.dot "FlinkTwitterSpritzerPipeline.dot" )
+
+#### Diagram:
+
+![FlinkTwitterSpritzerPipeline.dot.svg](./FlinkTwitterSpritzerPipeline.dot.svg)
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 

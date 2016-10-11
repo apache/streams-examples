@@ -31,7 +31,7 @@ Start up elasticsearch with docker:
 
 Build with integration testing enabled, using your credentials
 
-    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=./twitter.conf"
 
 Shutdown elasticsearch when finished:
 

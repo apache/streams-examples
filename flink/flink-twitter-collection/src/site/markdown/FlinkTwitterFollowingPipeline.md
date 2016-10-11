@@ -1,42 +1,51 @@
-FlinkTwitterFollowingPipeline
-=============================
+### FlinkTwitterFollowingPipeline
 
-Description:
------------------
+#### Description:
 
 Collects twitter friends or followers with flink.
 
-Specification:
------------------
+#### Configuration:
 
-[FlinkTwitterFollowingPipeline.dot](FlinkTwitterFollowingPipeline.dot "FlinkTwitterFollowingPipeline.dot" )
+[TwitterFollowingPipelineConfiguration.json](TwitterFollowingPipelineConfiguration.json "TwitterFollowingPipelineConfiguration.json" )
 
-Diagram:
------------------
-
-![FlinkTwitterFollowingPipeline.dot.svg](./FlinkTwitterFollowingPipeline.dot.svg)
-
-Example Configuration:
-----------------------
-
-[FlinkTwitterFollowingPipelineFollowersIT.conf](FlinkTwitterFollowingPipelineFollowersIT.conf "FlinkTwitterFollowingPipelineFollowersIT.conf" )
-
-[FlinkTwitterFollowingPipelineFriendsIT.conf](FlinkTwitterFollowingPipelineFriendsIT.conf "FlinkTwitterFollowingPipelineFriendsIT.conf" )
-
-Run (Local):
-------------
+    include "flink.conf"
+    include "twitter.oauth.conf"
+    source {
+      fields = ["ID"]
+      scheme = file
+      path = "target/test-classes"
+      readerPath = "asf.txt"
+    }
+    destination {
+      fields = ["DOC"]
+      scheme = file
+      path = "target/test-classes"
+      writerPath = "FlinkTwitterFollowingPipelineFriendsIT"
+    }
+    twitter {
+      endpoint = friends
+      ids_only = true
+    }
+    
+#### Run (Local):
 
     java -cp dist/flink-twitter-collection-jar-with-dependencies.jar -Dconfig.file=file://<location_of_config_file> org.apache.streams.examples.flink.twitter.collection.FlinkTwitterFollowingPipeline
 
-Run (Flink):
-------------
+#### Run (Flink):
 
     flink-run.sh dist/flink-twitter-collection-jar-with-dependencies.jar org.apache.streams.examples.flink.twitter.collection.FlinkTwitterFollowingPipeline http://<location_of_config_file> 
 
-Run (YARN):
------------
+#### Run (YARN):
 
     flink-run.sh yarn dist/flink-twitter-collection-jar-with-dependencies.jar org.apache.streams.examples.flink.twitter.collection.FlinkTwitterFollowingPipeline http://<location_of_config_file> 
+
+#### Specification:
+
+[FlinkTwitterFollowingPipeline.dot](FlinkTwitterFollowingPipeline.dot "FlinkTwitterFollowingPipeline.dot" )
+
+#### Diagram:
+
+![FlinkTwitterFollowingPipeline.dot.svg](./FlinkTwitterFollowingPipeline.dot.svg)
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 

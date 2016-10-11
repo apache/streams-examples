@@ -1,6 +1,6 @@
 ## Twitter Credentials
 
-Create a local file `twitter.conf` with valid twitter credentials
+Create a local file `twitter.oauth.conf` with valid twitter credentials
 
     twitter {
       oauth {

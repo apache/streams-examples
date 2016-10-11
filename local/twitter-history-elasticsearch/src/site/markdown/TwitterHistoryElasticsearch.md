@@ -8,11 +8,26 @@ Converts them to activities, and writes them in activity format to Elasticsearch
 
 #### Configuration:
 
-[TwitterHistoryElasticsearchIT.conf](TwitterHistoryElasticsearchIT.conf "TwitterHistoryElasticsearchIT.conf" )
+[TwitterHistoryElasticsearch.json](TwitterHistoryElasticsearch.json "TwitterHistoryElasticsearch.json") for _
 
-In the Twitter section you should place all of your relevant authentication keys and whichever Twitter IDs you want to pull history for.
+##### application.conf
 
-Twitter IDs can be converted from screennames at http://www.gettwitterid.com
+    include "elasticsearch.properties"
+    include "elasticsearch.conf"
+    include "twitter.oauth.conf"
+    twitter {
+      info = [
+        18055613
+      ]
+      twitter.max_items = 1000
+    }
+    elasticsearch {
+      index = twitter_history
+      type = activity
+      forceUseConfig = true
+    }
+
+[TwitterHistoryElasticsearchIT.conf](TwitterHistoryElasticsearchIT.conf "TwitterHistoryElasticsearchIT.conf")
 
 #### Run (SBT):
 

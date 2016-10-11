@@ -19,7 +19,7 @@ Start up elasticsearch with docker:
      
     mvn -PdockerITs docker:start
  
-Build with integration testing enabled, using your credentials
+Build with integration testing enabled:
  
     mvn clean test verify -DskipITs=false
  

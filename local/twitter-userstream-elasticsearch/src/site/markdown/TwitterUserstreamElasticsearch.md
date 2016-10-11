@@ -6,7 +6,18 @@ This example connects to an active twitter account and stores the userstream as 
 
 #### Configuration:
 
-[TwitterUserstreamElasticsearchIT.conf](TwitterUserstreamElasticsearchIT.conf "TwitterUserstreamElasticsearchIT.conf" )
+[TwitterUserstreamElasticsearch.json](TwitterUserstreamElasticsearch.json "TwitterUserstreamElasticsearch.json") for _
+
+##### application.conf
+
+    include "elasticsearch.properties"
+    include "elasticsearch.conf"
+    include "twitter.oauth.conf"
+    elasticsearch {
+      index = twitter_userstream
+      type = activity
+      forceUseConfig = true
+    }
 
 #### Run (SBT):
 

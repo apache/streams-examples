@@ -1,20 +1,13 @@
-Apache Streams (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
+### flink-twitter-collection
 
-flink-twitter-collection
-========================
-
-Requirements:
--------------
+#### Requirements:
  - Authorized Twitter API credentials
 
-Description:
-------------
+#### Description:
+
 Collects large batches of documents from api.twitter.com from a seed set of ids.
 
-Streams:
---------
+#### Streams:
 
 <a href="FlinkTwitterFollowingPipeline.html" target="_self">FlinkTwitterFollowingPipeline</a>
 
@@ -24,24 +17,15 @@ Streams:
 
 <a href="FlinkTwitterUserInformationPipeline.html" target="_self">FlinkTwitterUserInformationPipeline</a>
 
-Test:
------
+#### Build:
 
-Create a local file `application.conf` with valid twitter credentials
+    mvn clean package    
 
-    twitter {
-      oauth {
-        consumerKey = ""
-        consumerSecret = ""
-        accessToken = ""
-        accessTokenSecret = ""
-      }
-    }
-    
-Build:
----------
+#### Test:
 
-    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=`pwd`/application.conf"
+Build with integration testing enabled, using your credentials
+
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=./twitter.conf"
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 

@@ -6,20 +6,36 @@ Copies documents into a different index
 
 #### Configuration:
 
-[ElasticsearchReindexIT.conf](ElasticsearchReindexIT.conf "ElasticsearchReindexIT.conf" )
+[ElasticsearchReindex.json](ElasticsearchReindex.json "ElasticsearchReindex.json")
 
+##### application.conf
+
+    include "elasticsearch.properties"
+    include "elasticsearch.conf"
+    source = ${elasticsearch}
+    source {
+       indexes += "elasticsearch_persist_writer_it"
+       types += "activity"
+    }
+    destination = ${elasticsearch}
+    destination {
+       index: "elasticsearch_reindex_it",
+       type: "activity",
+       forceUseConfig": true
+    }
+    
 #### Run (SBT):
 
     sbtx -210 -sbt-create
     set resolvers += "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"
     set libraryDependencies += "org.apache.streams" % "elasticsearch-reindex" % "0.4-incubating-SNAPSHOT"
     set fork := true
-    set javaOptions +="-Dconfig.file=ElasticsearchReindexIT.conf"
-    run elasticsearch-hdfs org.apache.streams.example.ElasticsearchReindex
+    set javaOptions +="-Dconfig.file=application.conf"
+    run org.apache.streams.example.ElasticsearchReindex
 
 #### Run (Docker):
 
-    docker run elasticsearch-reindex java -cp elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.file=`pwd`/HdfsElasticsearchIT.conf org.apache.streams.example.ElasticsearchReindex
+    docker run elasticsearch-reindex java -cp elasticsearch-reindex-jar-with-dependencies.jar -Dconfig.file=./application.conf org.apache.streams.example.ElasticsearchReindex
 
 #### Specification:
 
