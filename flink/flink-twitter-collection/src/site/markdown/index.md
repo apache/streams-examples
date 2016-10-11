@@ -25,7 +25,7 @@ Collects large batches of documents from api.twitter.com from a seed set of ids.
 
 Build with integration testing enabled, using your credentials
 
-    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=./twitter.conf"
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=twitter.oauth.conf"
 
 [JavaDocs](apidocs/index.html "JavaDocs")
 

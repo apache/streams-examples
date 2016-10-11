@@ -20,7 +20,7 @@ Start up neo4j with docker:
     
 Build with integration testing enabled, using your credentials
 
-    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=./twitter.conf"
+    mvn clean test verify -DskipITs=false -DargLine="-Dconfig.file=twitter.oauth.conf"
 
 Shutdown neo4j when finished:
 
