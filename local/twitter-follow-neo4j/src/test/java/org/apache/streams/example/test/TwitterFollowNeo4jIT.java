@@ -57,12 +57,7 @@ public class TwitterFollowNeo4jIT {
         File conf_file = new File("target/test-classes/TwitterFollowGraphIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Properties graph_properties  = new Properties();
-        InputStream graph_stream  = new FileInputStream("neo4j.properties");
-        graph_properties.load(graph_stream);
-        Config graphProps  = ConfigFactory.parseProperties(graph_properties);
-        Config typesafe  = testResourceConfig.withFallback(graphProps).withFallback(reference).resolve();
-        StreamsConfiguration streams  = StreamsConfigurator.detectConfiguration(typesafe);
+        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(TwitterFollowNeo4jConfiguration.class).detectConfiguration(typesafe);
 
     }

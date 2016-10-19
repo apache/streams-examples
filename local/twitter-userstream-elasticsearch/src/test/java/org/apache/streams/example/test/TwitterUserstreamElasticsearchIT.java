@@ -78,7 +78,7 @@ public class TwitterUserstreamElasticsearchIT {
     }
 
     @Test
-    public void testReindex() throws Exception {
+    public void testUserstreamElasticsearch() throws Exception {
 
         TwitterUserstreamElasticsearch stream = new TwitterUserstreamElasticsearch(testConfiguration);
 
