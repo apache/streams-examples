@@ -77,12 +77,7 @@ public class ElasticsearchReindexParentIT {
         File conf_file = new File("target/test-classes/ElasticsearchReindexParentIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Properties es_properties  = new Properties();
-        InputStream es_stream  = new FileInputStream("elasticsearch.properties");
-        es_properties.load(es_stream);
-        Config esProps  = ConfigFactory.parseProperties(es_properties);
-        Config typesafe  = testResourceConfig.withFallback(esProps).withFallback(reference).resolve();
-        StreamsConfiguration streams  = StreamsConfigurator.detectConfiguration(typesafe);
+        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
         testClient = new ElasticsearchClientManager(testConfiguration.getSource()).getClient();
 

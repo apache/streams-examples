@@ -23,8 +23,6 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
 import org.apache.streams.config.ComponentConfigurator;
-import org.apache.streams.config.StreamsConfiguration;
-import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchClientManager;
 import org.apache.streams.example.ElasticsearchHdfs;
 import org.apache.streams.example.ElasticsearchHdfsConfiguration;
@@ -44,9 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotEquals;
@@ -72,12 +67,7 @@ public class ElasticsearchHdfsIT {
         File conf_file = new File("target/test-classes/ElasticsearchHdfsIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Properties es_properties  = new Properties();
-        InputStream es_stream  = new FileInputStream("elasticsearch.properties");
-        es_properties.load(es_stream);
-        Config esProps  = ConfigFactory.parseProperties(es_properties);
-        Config typesafe  = testResourceConfig.withFallback(esProps).withFallback(reference).resolve();
-        StreamsConfiguration streams  = StreamsConfigurator.detectConfiguration(typesafe);
+        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(ElasticsearchHdfsConfiguration.class).detectConfiguration(typesafe);
         testClient = new ElasticsearchClientManager(testConfiguration.getSource()).getClient();
 

@@ -26,8 +26,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>twitter-follow-graph</artifactId>
-    <name>twitter-follow-graph</name>
+    <artifactId>twitter-follow-neo4j</artifactId>
+    <name>twitter-follow-neo4j</name>
 
     <description>
         Collects friend or follower connections for a set of twitter users to build a graph database in neo4j.
@@ -215,7 +215,7 @@
                             <goal>unpack-dependencies</goal>
                         </goals>
                         <configuration>
-                            <includeArtifactIds>streams-pojo</includeArtifactIds>
+                            <includeArtifactIds>streams-schemas-activitystreams</includeArtifactIds>
                             <includes>**/*.json</includes>
                             <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
                         </configuration>

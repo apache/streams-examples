@@ -23,7 +23,7 @@
         <artifactId>streams-master</artifactId>
         <groupId>org.apache.streams</groupId>
         <version>0.4-incubating-SNAPSHOT</version>
-	</parent>
+    </parent>
 
     <artifactId>streams-examples</artifactId>
     <version>0.4-incubating-SNAPSHOT</version>
@@ -48,8 +48,8 @@
         <connection>scm:git:git@github.com:apache/incubator-streams-examples.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git</developerConnection>
         <url>scm:git:git@github.com:apache/incubator-streams-examples.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>
@@ -310,9 +310,9 @@
                                         <resource>application.conf</resource>
                                     </transformer>
                                     <!--<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-                                        <!--<manifestEntries>-->
-                                            <!--<Main-Class>akka.Main</Main-Class>-->
-                                        <!--</manifestEntries>-->
+                                    <!--<manifestEntries>-->
+                                    <!--<Main-Class>akka.Main</Main-Class>-->
+                                    <!--</manifestEntries>-->
                                     <!--</transformer>-->
                                 </transformers>
                             </configuration>
@@ -387,6 +387,133 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+
+        <profile>
+            <id>dockerITs</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <property>
+                    <name>skipITs</name>
+                    <value>false</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.plugin.version}</version>
+                        <configuration combine.self="override">
+                            <watchInterval>500</watchInterval>
+                            <logDate>default</logDate>
+                            <verbose>true</verbose>
+                            <autoPull>on</autoPull>
+                            <images>
+                                <image>
+                                    <name>elasticsearch:2.3.5</name>
+                                    <alias>elasticsearch</alias>
+                                    <run>
+                                        <namingStrategy>none</namingStrategy>
+                                        <ports>
+                                            <port>${es.http.host}:${es.http.port}:9200</port>
+                                            <port>${es.tcp.host}:${es.tcp.port}:9300</port>
+                                        </ports>
+                                        <portPropertyFile>elasticsearch.properties</portPropertyFile>
+                                        <wait>
+                                            <log>elasticsearch startup</log>
+                                            <http>
+                                                <url>http://${es.http.host}:${es.http.port}</url>
+                                                <method>GET</method>
+                                                <status>200</status>
+                                            </http>
+                                            <time>20000</time>
+                                            <kill>1000</kill>
+                                            <shutdown>500</shutdown>
+                                            <!--<tcp>-->
+                                            <!--<host>${es.transport.host}</host>-->
+                                            <!--<ports>-->
+                                            <!--<port>${es.transport.port}</port>-->
+                                            <!--</ports>-->
+                                            <!--</tcp>-->
+                                        </wait>
+                                        <log>
+                                            <enabled>true</enabled>
+                                            <date>default</date>
+                                            <color>cyan</color>
+                                        </log>
+                                    </run>
+                                    <watch>
+                                        <mode>none</mode>
+                                    </watch>
+                                </image>
+                                <image>
+                                    <name>mongo:3.2.0</name>
+                                    <alias>mongo</alias>
+                                    <run>
+                                        <namingStrategy>none</namingStrategy>
+                                        <ports>
+                                            <port>${mongo.tcp.host}:${mongo.tcp.port}:27017</port>
+                                        </ports>
+                                        <portPropertyFile>mongo.properties</portPropertyFile>
+                                        <log>
+                                            <enabled>true</enabled>
+                                            <date>default</date>
+                                            <color>cyan</color>
+                                        </log>
+                                    </run>
+                                    <watch>
+                                        <mode>none</mode>
+                                    </watch>
+                                </image>
+                                <image>
+                                    <name>neo4j</name>
+                                    <alias>graph</alias>
+                                    <run>
+                                        <env>
+                                            <NEO4J_AUTH>none</NEO4J_AUTH>
+                                        </env>
+                                        <namingStrategy>none</namingStrategy>
+                                        <ports>
+                                            <port>${neo4j.http.host}:${neo4j.http.port}:7474</port>
+                                            <port>${neo4j.tcp.host}:${neo4j.tcp.port}:7687</port>
+                                        </ports>
+                                        <portPropertyFile>neo4j.properties</portPropertyFile>
+                                        <wait>
+                                            <log>graph startup</log>
+                                            <http>
+                                                <url>http://${neo4j.http.host}:${neo4j.http.port}</url>
+                                                <method>GET</method>
+                                                <status>200</status>
+                                            </http>
+                                            <time>20000</time>
+                                            <kill>1000</kill>
+                                            <shutdown>500</shutdown>
+                                            <!--<tcp>-->
+                                            <!--<host>${es.transport.host}</host>-->
+                                            <!--<ports>-->
+                                            <!--<port>${es.transport.port}</port>-->
+                                            <!--</ports>-->
+                                            <!--</tcp>-->
+                                        </wait>
+                                        <log>
+                                            <enabled>true</enabled>
+                                            <date>default</date>
+                                            <color>cyan</color>
+                                        </log>
+                                    </run>
+                                    <watch>
+                                        <mode>none</mode>
+                                    </watch>
+                                </image>
+                            </images>
+                        </configuration>
+
+                    </plugin>
+
+                </plugins>
+            </build>
+
         </profile>
     </profiles>
 </project>

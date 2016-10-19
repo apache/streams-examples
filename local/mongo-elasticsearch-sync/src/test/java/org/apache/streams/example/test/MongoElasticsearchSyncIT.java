@@ -44,14 +44,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 /**
  * Test copying documents between two indexes on same cluster
@@ -72,16 +67,7 @@ public class MongoElasticsearchSyncIT {
         File conf_file = new File("target/test-classes/MongoElasticsearchSyncIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Properties mongo_properties  = new Properties();
-        InputStream mongo_stream  = new FileInputStream("mongo.properties");
-        mongo_properties.load(mongo_stream);
-        Config mongoProps  = ConfigFactory.parseProperties(mongo_properties);
-        Properties es_properties  = new Properties();
-        InputStream es_stream  = new FileInputStream("elasticsearch.properties");
-        es_properties.load(es_stream);
-        Config esProps  = ConfigFactory.parseProperties(es_properties);
-        Config typesafe  = testResourceConfig.withFallback(mongoProps).withFallback(esProps).withFallback(reference).resolve();
-        StreamsConfiguration streams  = StreamsConfigurator.detectConfiguration(typesafe);
+        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(MongoElasticsearchSyncConfiguration.class).detectConfiguration(typesafe);
         testClient = new ElasticsearchClientManager(testConfiguration.getDestination()).getClient();
 

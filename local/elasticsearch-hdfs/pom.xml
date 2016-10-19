@@ -86,7 +86,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
-            <artifactId>streams-pojo</artifactId>
+            <artifactId>streams-schema-activitystreams</artifactId>
             <version>0.4-incubating-SNAPSHOT</version>
             <type>test-jar</type>
         </dependency>
@@ -178,17 +178,6 @@
             </testResource>
         </testResources>
         <plugins>
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>data</directory>
-                            <followSymlinks>false</followSymlinks>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
             <!-- This binary runs with logback -->
             <!-- Keep log4j out -->
             <plugin>
