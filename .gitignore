@@ -3,9 +3,11 @@ streams-master-pom/
 
 # Compile directores and files #
 
+dist/
 target/
 overlays/
 dependency-reduced-pom.xml
+**/src/site/resources/
 
 # IDE directories/files #
 /.idea
@@ -14,6 +16,8 @@ dependency-reduced-pom.xml
 .settings/
 .classpath
 .project
+*.svg
+*.properties
 
 # OS generated files #
 .DS_Store
