@@ -82,7 +82,9 @@ public class TwitterUserstreamElasticsearchIT {
 
         TwitterUserstreamElasticsearch stream = new TwitterUserstreamElasticsearch(testConfiguration);
 
-        stream.run();
+        Thread thread = new Thread(stream);
+        thread.start();
+        thread.join(30000);
 
         // assert lines in file
         SearchRequestBuilder countRequest = testClient
