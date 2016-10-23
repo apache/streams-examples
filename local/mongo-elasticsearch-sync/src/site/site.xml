@@ -25,9 +25,9 @@
         </fluidoSkin>
     </custom>
     <body>
-        <menu name="Services">
-            <item name="Elasticsearch" href="../../services/elasticsearch.html"/>
-            <item name="Mongo" href="../../services/mongo.html"/>
-        </menu>
+        <links name="Services">
+            <item name="Elasticsearch" href="../../../../../streams-project/streams-contrib/streams-persist-elasticsearch/elasticsearch.html"/>
+            <item name="Mongo" href="../../../../../streams-project/streams-contrib/streams-persist-mongo/mongo.html"/>
+        </links>
     </body>
 </project>

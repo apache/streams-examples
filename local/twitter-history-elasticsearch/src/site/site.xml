@@ -17,29 +17,10 @@
   ~ under the License.
   -->
 <project>
-    <custom>
-        <fluidoSkin>
-            <topBarEnabled>false</topBarEnabled>
-            <navBarStyle>navbar-inverse</navBarStyle>
-            <sideBarEnabled>true</sideBarEnabled>
-            <!--<gitHub>-->
-            <!--<projectId>apache/incubator-streams-examples</projectId>-->
-            <!--<ribbonOrientation>right</ribbonOrientation>-->
-            <!--<ribbonColor>black</ribbonColor>-->
-            <!--</gitHub>-->
-            <!--<twitter>-->
-            <!--<user>ApacheStreams</user>-->
-            <!--<showUser>true</showUser>-->
-            <!--<showFollowers>true</showFollowers>-->
-            <!--</twitter>-->
-        </fluidoSkin>
-    </custom>
     <body>
-        <menu name="Credentials">
-            <item name="Twitter" href="../../credentials/twitter.html"/>
-        </menu>
-        <menu name="Services">
-            <item name="Elasticsearch" href="../../services/elasticsearch.html"/>
-        </menu>
+        <links>
+            <item name="Twitter" href="../../../../../streams-project/streams-contrib/streams-provider-twitter/twitter.html"/>
+            <item name="Elasticsearch" href="../../../../../streams-project/streams-contrib/streams-persist-elasticsearch/elasticsearch.html"/>
+        </links>
     </body>
 </project>

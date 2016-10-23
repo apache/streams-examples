@@ -18,11 +18,9 @@
   -->
 <project>
     <body>
-        <menu name="Credentials">
-            <item name="Twitter" href="../../credentials/twitter.html"/>
-        </menu>
-        <menu name="Services">
-            <item name="Neo4j" href="../../services/neo4j.html"/>
-        </menu>
+        <links>
+            <item name="Twitter" href="../../../../../streams-project/streams-contrib/streams-provider-twitter/twitter.html"/>
+            <item name="Neo4j" href="../../../../../streams-project/streams-contrib/streams-persist-graph/neo4j.html"/>
+        </links>
     </body>
 </project>
