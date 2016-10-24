@@ -7,7 +7,7 @@ dist/
 target/
 overlays/
 dependency-reduced-pom.xml
-**/src/site/resources/
+**/src/site/resources
 
 # IDE directories/files #
 /.idea
