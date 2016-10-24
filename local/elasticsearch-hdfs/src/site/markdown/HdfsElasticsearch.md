@@ -6,7 +6,7 @@ Copies documents from hdfs to elasticsearch.
 
 #### Configuration:
 
-[HdfsElasticsearch.json](HdfsElasticsearch.json "HdfsElasticsearch.json" )
+[HdfsElasticsearchConfiguration.json](HdfsElasticsearchConfiguration.json "HdfsElasticsearchConfiguration.json" )
 
 ##### application.conf
 

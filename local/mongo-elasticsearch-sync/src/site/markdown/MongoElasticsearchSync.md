@@ -6,7 +6,7 @@ Copies documents from mongodb to elasticsearch
 
 #### Configuration:
 
-[MongoElasticsearchSync.json](MongoElasticsearchSync.json "MongoElasticsearchSync.json") for _
+[MongoElasticsearchSyncConfiguration.json](MongoElasticsearchSyncConfiguration.json "MongoElasticsearchSyncConfiguration.json")
 
 ##### application.conf
 

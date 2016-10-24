@@ -18,11 +18,9 @@
   -->
 <project>
     <body>
-        <menu name="Credentials">
-            <item name="Twitter" href="../../credentials/twitter.html"/>
-        </menu>
-        <menu name="Runtime">
+        <links>
+            <item name="Twitter" target="_self" href="../../../streams-project/streams-contrib/streams-provider-twitter/twitter.html"/>
             <item name="Flink" href="../flink.html"/>
-        </menu>
+        </links>
     </body>
 </project>

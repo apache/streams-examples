@@ -6,7 +6,7 @@ Copies documents into a different index
 
 #### Configuration:
 
-[ElasticsearchReindex.json](ElasticsearchReindex.json "ElasticsearchReindex.json")
+[ElasticsearchReindexConfiguration.json](ElasticsearchReindexConfiguration.json "ElasticsearchReindexConfiguration.json")
 
 ##### application.conf
 

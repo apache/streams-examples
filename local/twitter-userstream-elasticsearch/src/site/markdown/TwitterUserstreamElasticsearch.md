@@ -6,7 +6,7 @@ This example connects to an active twitter account and stores the userstream as 
 
 #### Configuration:
 
-[TwitterUserstreamElasticsearch.json](TwitterUserstreamElasticsearch.json "TwitterUserstreamElasticsearch.json") for _
+[TwitterUserstreamElasticsearchConfiguration.json](TwitterUserstreamElasticsearchConfiguration.json "TwitterUserstreamElasticsearchConfiguration.json")
 
 ##### application.conf
 

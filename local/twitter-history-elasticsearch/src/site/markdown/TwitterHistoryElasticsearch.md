@@ -8,7 +8,7 @@ Converts them to activities, and writes them in activity format to Elasticsearch
 
 #### Configuration:
 
-[TwitterHistoryElasticsearch.json](TwitterHistoryElasticsearch.json "TwitterHistoryElasticsearch.json") for _
+[TwitterHistoryElasticsearchConfiguration.json](TwitterHistoryElasticsearchConfiguration.json "TwitterHistoryElasticsearchConfiguration.json")
 
 ##### application.conf
 

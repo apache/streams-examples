@@ -6,7 +6,7 @@ Collects friend or follower connections for a set of twitter users to build a gr
 
 #### Configuration:
 
-[TwitterFollowNeo4j.json](TwitterFollowNeo4j.json "TwitterFollowNeo4j.json") for _
+[TwitterFollowNeo4jConfiguration.json](TwitterFollowNeo4jConfiguration.json "TwitterFollowNeo4jConfiguration.json")
 
 ##### application.conf
 

@@ -18,8 +18,8 @@
   -->
 <project>
     <body>
-        <menu name="Runtime">
-            <item name="Flink" href="../flink.html"/>
-        </menu>
+        <links>
+            <item name="Flink Runtime" href="flink.html"/>
+        </links>
     </body>
 </project>
