@@ -18,3 +18,4 @@ If you need to install maven, start here:
 
 [http://maven.apache.org/install.html](http://maven.apache.org/install.html)
 
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

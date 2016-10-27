@@ -15,3 +15,4 @@ If you need to install or upgrade Java, start here:
 
 [http://www.oracle.com/technetwork/java/javase/downloads/index.html](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
