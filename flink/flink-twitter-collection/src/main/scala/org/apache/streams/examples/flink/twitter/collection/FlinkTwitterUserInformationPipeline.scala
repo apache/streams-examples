@@ -45,9 +45,6 @@ import org.slf4j.{Logger, LoggerFactory}
 
 import scala.collection.JavaConversions._
 
-/**
-  * Created by sblackmon on 3/15/16.
-  */
 object FlinkTwitterUserInformationPipeline extends FlinkBase {
 
   val STREAMS_ID: String = "FlinkTwitterUserInformationPipeline"
@@ -58,7 +55,7 @@ object FlinkTwitterUserInformationPipeline extends FlinkBase {
   override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator[TwitterUserInformationPipelineConfiguration](classOf[TwitterUserInformationPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterUserInformationPipeline = new FlinkTwitterUserInformationPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -99,7 +96,7 @@ object FlinkTwitterUserInformationPipeline extends FlinkBase {
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-    return true
+    true
 
   }
 
@@ -113,7 +110,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
     env.setNumberOfExecutionRetries(0)
 
     val inPath = buildReaderPath(config.getSource)
@@ -142,7 +139,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
       jsons.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
     else
       jsons.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-        .setParallelism(env.getParallelism);
+        .setParallelism(env.getParallelism)
 
     LOGGER.info("StreamExecutionEnvironment: {}", env.toString )
 
@@ -150,7 +147,8 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
   }
 
   class idListWindowFunction extends WindowFunction[String, List[String], Int, GlobalWindow] {
-    override def apply(key: Int, window: GlobalWindow, input: Iterable[String], out: Collector[List[String]]): Unit = {if( input.size > 0 )
+    override def apply(key: Int, window: GlobalWindow, input: Iterable[String], out: Collector[List[String]]): Unit = {
+      if( input.nonEmpty )
         out.collect(input.map(id => toProviderId(id)).toList)
     }
   }

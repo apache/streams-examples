@@ -43,12 +43,6 @@ import org.apache.flink.api.scala._
 
 import scala.collection.JavaConversions._
 
-/**
- * Created by sblackmon on 4/20/16.
- */
-/**
- * Created by sblackmon on 3/15/16.
- */
 object FlinkTwitterFollowingPipeline extends FlinkBase {
 
     val STREAMS_ID: String = "FlinkTwitterFollowingPipeline"
@@ -59,7 +53,7 @@ object FlinkTwitterFollowingPipeline extends FlinkBase {
     override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator[TwitterFollowingPipelineConfiguration](classOf[TwitterFollowingPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterFollowingPipeline = new FlinkTwitterFollowingPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -100,7 +94,7 @@ object FlinkTwitterFollowingPipeline extends FlinkBase {
         Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
         Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-        return true
+        true
 
     }
 
@@ -114,7 +108,7 @@ class FlinkTwitterFollowingPipeline(config: TwitterFollowingPipelineConfiguratio
 
         val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-        env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+        env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
         env.setNumberOfExecutionRetries(0)
 
         val inPath = buildReaderPath(config.getSource)
@@ -140,7 +134,7 @@ class FlinkTwitterFollowingPipeline(config: TwitterFollowingPipelineConfiguratio
             jsons.addSink(new RollingSink[String](outPath)).setParallelism(3)
         else
             jsons.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-              .setParallelism(env.getParallelism);
+              .setParallelism(env.getParallelism)
 
         // if( test == true ) jsons.print();
 

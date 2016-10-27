@@ -45,9 +45,6 @@ import org.apache.streams.twitter.converter.TwitterDateTimeFormat
 
 import scala.collection.JavaConversions._
 
-/**
-  * Created by sblackmon on 7/29/15.
-  */
 object FlinkTwitterSpritzerPipeline extends FlinkBase {
 
   val STREAMS_ID: String = "FlinkTwitterSpritzerPipeline"
@@ -58,7 +55,7 @@ object FlinkTwitterSpritzerPipeline extends FlinkBase {
   override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator(classOf[TwitterSpritzerPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterSpritzerPipeline = new FlinkTwitterSpritzerPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -93,7 +90,7 @@ object FlinkTwitterSpritzerPipeline extends FlinkBase {
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-    return true
+    true
 
   }
 
@@ -109,18 +106,18 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
     env.setNumberOfExecutionRetries(0)
 
     val outPath = buildWriterPath(config.getDestination)
 
-    val streamSource : DataStream[String] = env.addSource(spritzerSource);
+    val streamSource : DataStream[String] = env.addSource(spritzerSource)
 
     if( config.getTest == false )
       streamSource.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
     else
       streamSource.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-        .setParallelism(env.getParallelism);
+        .setParallelism(env.getParallelism)
 
     // if( test == true ) jsons.print();
 
@@ -160,7 +157,7 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
     }
 
     override def stop(): Unit = {
-      close();
+      close()
     }
   }
 
