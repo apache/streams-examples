@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.apache.streams</groupId>
         <artifactId>streams-examples-flink</artifactId>
-        <version>0.4-incubating-SNAPSHOT</version>
+        <version>0.4-incubating</version>
         <relativePath>..</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-core</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
         </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>
@@ -78,27 +78,27 @@
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-config</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-util</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-pojo</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-provider-twitter</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
             <artifactId>streams-persist-hdfs</artifactId>
-            <version>${project.version}</version>
+            <version>0.4-incubating</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
