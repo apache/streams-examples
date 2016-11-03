@@ -22,11 +22,11 @@
     <parent>
         <artifactId>streams-master</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.4-incubating</version>
+        <version>0.5-incubating-SNAPSHOT</version>
     </parent>
 
     <artifactId>streams-examples</artifactId>
-    <version>0.4-incubating</version>
+    <version>0.5-incubating-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>streams-examples</name>
@@ -48,7 +48,7 @@
         <connection>scm:git:git@github.com:apache/incubator-streams-examples.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git</developerConnection>
         <url>scm:git:git@github.com:apache/incubator-streams-examples.git</url>
-        <tag>streams-examples-0.4-incubating</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <developers>
@@ -187,39 +187,39 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-core</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-filters</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
@@ -231,32 +231,32 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-runtime-local</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-provider-twitter</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-graph</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-hdfs</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>0.4-incubating</version>
+                <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
 
         </dependencies>
