@@ -22,7 +22,7 @@
     <parent>
         <artifactId>streams-examples</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.4-incubating-SNAPSHOT</version>
+        <version>0.5-incubating-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
