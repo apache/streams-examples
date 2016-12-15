@@ -18,15 +18,17 @@
 
 package org.apache.streams.example.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigParseOptions;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchClientManager;
 import org.apache.streams.example.ElasticsearchReindex;
 import org.apache.streams.example.ElasticsearchReindexConfiguration;
 import org.apache.streams.jackson.StreamsJacksonMapper;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigParseOptions;
+
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
@@ -36,15 +38,15 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
-import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.File;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotEquals;
 
 /**
@@ -61,7 +63,7 @@ public class ElasticsearchReindexChildIT {
 
     private int count = 0;
 
-    @Before
+    @BeforeClass
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
@@ -70,7 +72,7 @@ public class ElasticsearchReindexChildIT {
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Config typesafe = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
-        testClient = new ElasticsearchClientManager(testConfiguration.getSource()).getClient();
+        testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
 
         ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
         ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
@@ -78,7 +80,7 @@ public class ElasticsearchReindexChildIT {
 
         IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
         IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
-        assertTrue(indicesExistsResponse.isExists());
+        assertThat(indicesExistsResponse.isExists(), is(true));
 
         SearchRequestBuilder countRequest = testClient
                 .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
@@ -104,7 +106,7 @@ public class ElasticsearchReindexChildIT {
                 .setTypes(testConfiguration.getDestination().getType());
         SearchResponse countResponse = countRequest.execute().actionGet();
 
-        assertEquals(count, (int)countResponse.getHits().getTotalHits());
+        assertThat((int)countResponse.getHits().getTotalHits(), is(count));
 
     }
 
