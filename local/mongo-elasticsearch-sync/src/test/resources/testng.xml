@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="ExampleITs">
+
+    <test name="ElasticsearchPersistWriterIT">
+        <classes>
+            <class name="org.apache.streams.mongo.test.MongoPersistIT" />
+        </classes>
+    </test>
+
+    <test name="MongoElasticsearchSyncIT">
+        <classes>
+            <class name="org.apache.streams.example.test.MongoElasticsearchSyncIT" />
+        </classes>
+    </test>
+
+</suite>

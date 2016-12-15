@@ -18,14 +18,16 @@
 
 package org.apache.streams.example;
 
-import com.google.common.collect.Maps;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
-import org.apache.streams.elasticsearch.*;
 import org.apache.streams.core.StreamBuilder;
-import org.apache.streams.example.MongoElasticsearchSyncConfiguration;
+import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
+import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.apache.streams.mongo.MongoPersistReader;
+
+import com.google.common.collect.Maps;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,13 +69,14 @@ public class MongoElasticsearchSync implements Runnable {
 
         ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
-        Map<String, Object> streamConfig = Maps.newHashMap();
-        streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
-        StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
+        LocalRuntimeConfiguration localRuntimeConfiguration = new LocalRuntimeConfiguration();
+        localRuntimeConfiguration.setIdentifier(STREAMS_ID);
+        localRuntimeConfiguration.setTaskTimeoutMs((long)(60 * 1000));
+        localRuntimeConfiguration.setQueueSize((long)1000);
+        StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
 
-        builder.newPerpetualStream(MongoPersistReader.STREAMS_ID, mongoPersistReader);
-        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.STREAMS_ID, elasticsearchPersistWriter, 1, MongoPersistReader.STREAMS_ID);
+        builder.newPerpetualStream(MongoPersistReader.class.getCanonicalName(), mongoPersistReader);
+        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, MongoPersistReader.class.getCanonicalName());
         builder.start();
     }
 }
