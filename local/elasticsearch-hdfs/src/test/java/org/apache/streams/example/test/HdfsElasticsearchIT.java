@@ -18,15 +18,17 @@
 
 package org.apache.streams.example.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigParseOptions;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchClientManager;
 import org.apache.streams.example.HdfsElasticsearch;
 import org.apache.streams.example.HdfsElasticsearchConfiguration;
 import org.apache.streams.jackson.StreamsJacksonMapper;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigParseOptions;
+
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
@@ -38,16 +40,16 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
-import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.File;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 /**
  * Test copying documents between hdfs and elasticsearch
@@ -61,7 +63,7 @@ public class HdfsElasticsearchIT {
     protected HdfsElasticsearchConfiguration testConfiguration;
     protected Client testClient;
 
-    @Before
+    @BeforeClass
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
@@ -70,7 +72,7 @@ public class HdfsElasticsearchIT {
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Config typesafe  = testResourceConfig.withFallback(reference).resolve();
         testConfiguration = new ComponentConfigurator<>(HdfsElasticsearchConfiguration.class).detectConfiguration(typesafe);
-        testClient = new ElasticsearchClientManager(testConfiguration.getDestination()).getClient();
+        testClient = ElasticsearchClientManager.getInstance(testConfiguration.getDestination()).client();
 
         ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
         ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
@@ -101,7 +103,7 @@ public class HdfsElasticsearchIT {
                 .setTypes(testConfiguration.getDestination().getType());
         SearchResponse countResponse = countRequest.execute().actionGet();
 
-        assertEquals(89, countResponse.getHits().getTotalHits());
+        assertEquals(countResponse.getHits().getTotalHits(), 89);
 
     }
 

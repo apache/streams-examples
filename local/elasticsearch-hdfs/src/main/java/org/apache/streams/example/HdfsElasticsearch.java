@@ -18,14 +18,15 @@
 
 package org.apache.streams.example;
 
-import com.google.common.collect.Maps;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
-import org.apache.streams.example.HdfsElasticsearchConfiguration;
-import org.apache.streams.hdfs.WebHdfsPersistReader;
-import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
 import org.apache.streams.core.StreamBuilder;
+import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
+import org.apache.streams.hdfs.WebHdfsPersistReader;
 import org.apache.streams.local.builders.LocalStreamBuilder;
+
+import com.google.common.collect.Maps;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,8 +74,8 @@ public class HdfsElasticsearch implements Runnable {
         streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 1000 * 1000);
         StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
 
-        builder.newPerpetualStream(WebHdfsPersistReader.STREAMS_ID, webHdfsPersistReader);
-        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.STREAMS_ID, elasticsearchPersistWriter, 1, WebHdfsPersistReader.STREAMS_ID);
+        builder.newPerpetualStream(WebHdfsPersistReader.class.getCanonicalName(), webHdfsPersistReader);
+        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, WebHdfsPersistReader.class.getCanonicalName());
         builder.start();
     }
 }
