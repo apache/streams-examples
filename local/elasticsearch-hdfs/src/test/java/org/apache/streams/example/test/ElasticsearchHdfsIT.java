@@ -28,7 +28,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
-
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
@@ -50,56 +49,54 @@ import static org.hamcrest.core.Is.is;
 import static org.testng.Assert.assertNotEquals;
 
 /**
- * Test copying documents between hdfs and elasticsearch
+ * ElasticsearchHdfsIT is an integration test for ElasticsearchHdfs.
  */
 public class ElasticsearchHdfsIT {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchHdfsIT.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchHdfsIT.class);
 
-    ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
+  ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
 
-    protected ElasticsearchHdfsConfiguration testConfiguration;
-    protected Client testClient;
+  protected ElasticsearchHdfsConfiguration testConfiguration;
+  protected Client testClient;
 
-    private int count = 0;
+  private int count = 0;
 
-    @BeforeClass
-    public void prepareTest() throws Exception {
+  @BeforeClass
+  public void prepareTest() throws Exception {
 
-        Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchHdfsIT.conf");
-        assert(conf_file.exists());
-        Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
-        testConfiguration = new ComponentConfigurator<>(ElasticsearchHdfsConfiguration.class).detectConfiguration(typesafe);
-        testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
+    Config reference  = ConfigFactory.load();
+    File conf_file = new File("target/test-classes/ElasticsearchHdfsIT.conf");
+    assert(conf_file.exists());
+    Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+    Config typesafe  = testResourceConfig.withFallback(reference).resolve();
+    testConfiguration = new ComponentConfigurator<>(ElasticsearchHdfsConfiguration.class).detectConfiguration(typesafe);
+    testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
 
-        ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
-        ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
-        assertNotEquals(clusterHealthResponse.getStatus(), ClusterHealthStatus.RED);
+    ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
+    ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
+    assertNotEquals(clusterHealthResponse.getStatus(), ClusterHealthStatus.RED);
 
-        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
-        IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
-        assertThat(indicesExistsResponse.isExists(), is(true));
+    IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
+    IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
+    assertThat(indicesExistsResponse.isExists(), is(true));
 
-        SearchRequestBuilder countRequest = testClient
-                .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
-                .setTypes(testConfiguration.getSource().getTypes().get(0));
-        SearchResponse countResponse = countRequest.execute().actionGet();
+    SearchRequestBuilder countRequest = testClient
+        .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
+        .setTypes(testConfiguration.getSource().getTypes().get(0));
+    SearchResponse countResponse = countRequest.execute().actionGet();
 
-        count = (int)countResponse.getHits().getTotalHits();
+    count = (int)countResponse.getHits().getTotalHits();
 
-        assertNotEquals(count, 0);
-    }
+    assertNotEquals(count, 0);
+  }
 
-    @Test
-    public void ElasticsearchHdfsIT() throws Exception {
+  @Test
+  public void ElasticsearchHdfsIT() throws Exception {
 
-        ElasticsearchHdfs backup = new ElasticsearchHdfs(testConfiguration);
+    ElasticsearchHdfs backup = new ElasticsearchHdfs(testConfiguration);
+    backup.run();
 
-        backup.run();
-
-        // assert lines in file
-    }
+  }
 
 }

@@ -18,14 +18,17 @@
 
 package org.apache.streams.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.converter.ActivityConverterProcessor;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
+import org.apache.streams.jackson.StreamsJacksonMapper;
+import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.apache.streams.twitter.provider.TwitterTimelineProvider;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,48 +37,48 @@ import org.slf4j.LoggerFactory;
  *
  * Converts them to activities, and writes them in activity format to Elasticsearch.
  */
-
 public class TwitterHistoryElasticsearch implements Runnable {
 
-    public final static String STREAMS_ID = "TwitterHistoryElasticsearch";
+  public final static String STREAMS_ID = "TwitterHistoryElasticsearch";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TwitterHistoryElasticsearch.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(TwitterHistoryElasticsearch.class);
 
-    private static final ObjectMapper mapper = new ObjectMapper();
+  private static final ObjectMapper mapper = new ObjectMapper();
 
-    TwitterHistoryElasticsearchConfiguration config;
+  TwitterHistoryElasticsearchConfiguration config;
 
-    public TwitterHistoryElasticsearch() {
-        this(new ComponentConfigurator<>(TwitterHistoryElasticsearchConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  public TwitterHistoryElasticsearch() {
+    this(new ComponentConfigurator<>(TwitterHistoryElasticsearchConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  }
 
-    }
+  public TwitterHistoryElasticsearch(TwitterHistoryElasticsearchConfiguration config) {
+    this.config = config;
+  }
 
-    public TwitterHistoryElasticsearch(TwitterHistoryElasticsearchConfiguration config) {
-        this.config = config;
-    }
+  public static void main(String[] args)
+  {
+    LOGGER.info(StreamsConfigurator.config.toString());
 
-    public static void main(String[] args)
-    {
-        LOGGER.info(StreamsConfigurator.config.toString());
+    TwitterHistoryElasticsearch history = new TwitterHistoryElasticsearch();
 
-        TwitterHistoryElasticsearch history = new TwitterHistoryElasticsearch();
+    new Thread(history).start();
 
-        new Thread(history).start();
-
-    }
+  }
 
 
-    public void run() {
+  public void run() {
 
-        TwitterTimelineProvider provider = new TwitterTimelineProvider(config.getTwitter());
-        ActivityConverterProcessor converter = new ActivityConverterProcessor();
-        ElasticsearchPersistWriter writer = new ElasticsearchPersistWriter(config.getElasticsearch());
+    TwitterTimelineProvider provider = new TwitterTimelineProvider(config.getTwitter());
+    ActivityConverterProcessor converter = new ActivityConverterProcessor();
+    ElasticsearchPersistWriter writer = new ElasticsearchPersistWriter(config.getElasticsearch());
 
-        StreamBuilder builder = new LocalStreamBuilder(500);
+    LocalRuntimeConfiguration localRuntimeConfiguration =
+        StreamsJacksonMapper.getInstance().convertValue(StreamsConfigurator.detectConfiguration(), LocalRuntimeConfiguration.class);
+    StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
 
-        builder.newPerpetualStream("provider", provider);
-        builder.addStreamsProcessor("converter", converter, 2, "provider");
-        builder.addStreamsPersistWriter("writer", writer, 1, "converter");
-        builder.start();
-    }
+    builder.newPerpetualStream(TwitterTimelineProvider.class.getCanonicalName(), provider);
+    builder.addStreamsProcessor(ActivityConverterProcessor.class.getCanonicalName(), converter, 2, TwitterTimelineProvider.class.getCanonicalName());
+    builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), writer, 1, ActivityConverterProcessor.class.getCanonicalName());
+    builder.start();
+  }
 }

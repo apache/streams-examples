@@ -23,59 +23,54 @@ import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
 import org.apache.streams.hdfs.WebHdfsPersistReader;
+import org.apache.streams.jackson.StreamsJacksonMapper;
+import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 
 import com.google.common.collect.Maps;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 /**
- * Copies documents into a new index
+ * Copies documents from new-line delimited json on dfs to an elasticsearch index.
  */
 public class HdfsElasticsearch implements Runnable {
 
-    public final static String STREAMS_ID = "HdfsElasticsearch";
+  public final static String STREAMS_ID = "HdfsElasticsearch";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HdfsElasticsearch.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(HdfsElasticsearch.class);
 
-    HdfsElasticsearchConfiguration config;
+  HdfsElasticsearchConfiguration config;
 
-    public HdfsElasticsearch() {
-       this(new ComponentConfigurator<>(HdfsElasticsearchConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  public HdfsElasticsearch() {
+    this(new ComponentConfigurator<>(HdfsElasticsearchConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  }
 
-    }
+  public HdfsElasticsearch(HdfsElasticsearchConfiguration reindex) {
+    this.config = reindex;
+  }
 
-    public HdfsElasticsearch(HdfsElasticsearchConfiguration reindex) {
-        this.config = reindex;
-    }
+  public static void main(String[] args)
+  {
+    LOGGER.info(StreamsConfigurator.config.toString());
+    HdfsElasticsearch restore = new HdfsElasticsearch();
+    new Thread(restore).start();
+  }
 
-    public static void main(String[] args)
-    {
-        LOGGER.info(StreamsConfigurator.config.toString());
+  @Override
+  public void run() {
 
-        HdfsElasticsearch restore = new HdfsElasticsearch();
+    WebHdfsPersistReader webHdfsPersistReader = new WebHdfsPersistReader(config.getSource());
+    ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
-        new Thread(restore).start();
+    LocalRuntimeConfiguration localRuntimeConfiguration =
+        StreamsJacksonMapper.getInstance().convertValue(StreamsConfigurator.detectConfiguration(), LocalRuntimeConfiguration.class);
+    StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
 
-    }
-
-    @Override
-    public void run() {
-
-        WebHdfsPersistReader webHdfsPersistReader = new WebHdfsPersistReader(config.getSource());
-
-        ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
-
-        Map<String, Object> streamConfig = Maps.newHashMap();
-        streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 1000 * 1000);
-        StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
-
-        builder.newPerpetualStream(WebHdfsPersistReader.class.getCanonicalName(), webHdfsPersistReader);
-        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, WebHdfsPersistReader.class.getCanonicalName());
-        builder.start();
-    }
+    builder.newPerpetualStream(WebHdfsPersistReader.class.getCanonicalName(), webHdfsPersistReader);
+    builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, WebHdfsPersistReader.class.getCanonicalName());
+    builder.start();
+  }
 }

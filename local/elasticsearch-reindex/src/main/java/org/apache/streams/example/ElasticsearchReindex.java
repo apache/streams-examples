@@ -23,59 +23,59 @@ import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.elasticsearch.ElasticsearchPersistReader;
 import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
+import org.apache.streams.jackson.StreamsJacksonMapper;
+import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 
 import com.google.common.collect.Maps;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 /**
- * Copies documents into a new index
+ * Copies documents from the source index to the destination index.
  */
 public class ElasticsearchReindex implements Runnable {
 
-    public final static String STREAMS_ID = "ElasticsearchReindex";
+  public final static String STREAMS_ID = "ElasticsearchReindex";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindex.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindex.class);
 
-    ElasticsearchReindexConfiguration config;
+  ElasticsearchReindexConfiguration config;
 
-    public ElasticsearchReindex() {
-       this(new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  public ElasticsearchReindex() {
+    this(new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
 
-    }
+  }
 
-    public ElasticsearchReindex(ElasticsearchReindexConfiguration reindex) {
-        this.config = reindex;
-    }
+  public ElasticsearchReindex(ElasticsearchReindexConfiguration reindex) {
+    this.config = reindex;
+  }
 
-    public static void main(String[] args)
-    {
-        LOGGER.info(StreamsConfigurator.config.toString());
+  public static void main(String[] args)
+  {
+    LOGGER.info(StreamsConfigurator.config.toString());
 
-        ElasticsearchReindex reindex = new ElasticsearchReindex();
+    ElasticsearchReindex reindex = new ElasticsearchReindex();
 
-        new Thread(reindex).start();
+    new Thread(reindex).start();
 
-    }
+  }
 
-    @Override
-    public void run() {
+  @Override
+  public void run() {
 
-        ElasticsearchPersistReader elasticsearchPersistReader = new ElasticsearchPersistReader(config.getSource());
+    ElasticsearchPersistReader elasticsearchPersistReader = new ElasticsearchPersistReader(config.getSource());
 
-        ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
+    ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
-        Map<String, Object> streamConfig = Maps.newHashMap();
-        streamConfig.put(LocalStreamBuilder.STREAM_IDENTIFIER_KEY, STREAMS_ID);
-        streamConfig.put(LocalStreamBuilder.TIMEOUT_KEY, 7 * 24 * 60 * 1000);
-        StreamBuilder builder = new LocalStreamBuilder(1000, streamConfig);
+    LocalRuntimeConfiguration localRuntimeConfiguration =
+        StreamsJacksonMapper.getInstance().convertValue(StreamsConfigurator.detectConfiguration(), LocalRuntimeConfiguration.class);
+    StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
 
-        builder.newPerpetualStream(ElasticsearchPersistReader.class.getCanonicalName(), elasticsearchPersistReader);
-        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, ElasticsearchPersistReader.class.getCanonicalName());
-        builder.start();
-    }
+    builder.newPerpetualStream(ElasticsearchPersistReader.class.getCanonicalName(), elasticsearchPersistReader);
+    builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, ElasticsearchPersistReader.class.getCanonicalName());
+    builder.start();
+  }
 }

@@ -22,61 +22,56 @@ import org.apache.streams.config.ComponentConfigurator;
 import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.elasticsearch.ElasticsearchPersistWriter;
+import org.apache.streams.jackson.StreamsJacksonMapper;
 import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
 import org.apache.streams.mongo.MongoPersistReader;
 
-import com.google.common.collect.Maps;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 /**
- * Copies documents into a new index
+ * Copies a mongo collection to an elasticsearch index.
  */
 public class MongoElasticsearchSync implements Runnable {
 
-    public final static String STREAMS_ID = "MongoElasticsearchSync";
+  public final static String STREAMS_ID = "MongoElasticsearchSync";
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(MongoElasticsearchSync.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(MongoElasticsearchSync.class);
 
-    MongoElasticsearchSyncConfiguration config;
+  MongoElasticsearchSyncConfiguration config;
 
-    public MongoElasticsearchSync() {
-        this(new ComponentConfigurator<MongoElasticsearchSyncConfiguration>(MongoElasticsearchSyncConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
-    }
+  public MongoElasticsearchSync() {
+    this(new ComponentConfigurator<MongoElasticsearchSyncConfiguration>(MongoElasticsearchSyncConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
+  }
 
-    public MongoElasticsearchSync(MongoElasticsearchSyncConfiguration config) {
-        this.config = config;
-    }
+  public MongoElasticsearchSync(MongoElasticsearchSyncConfiguration config) {
+    this.config = config;
+  }
 
-    public static void main(String[] args)
-    {
-        LOGGER.info(StreamsConfigurator.config.toString());
+  public static void main(String[] args)
+  {
+    LOGGER.info(StreamsConfigurator.config.toString());
 
-        MongoElasticsearchSync sync = new MongoElasticsearchSync();
+    MongoElasticsearchSync sync = new MongoElasticsearchSync();
 
-        new Thread(sync).start();
+    new Thread(sync).start();
 
-    }
+  }
 
-    @Override
-    public void run() {
+  @Override
+  public void run() {
 
-        MongoPersistReader mongoPersistReader = new MongoPersistReader(config.getSource());
+    MongoPersistReader mongoPersistReader = new MongoPersistReader(config.getSource());
 
-        ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
+    ElasticsearchPersistWriter elasticsearchPersistWriter = new ElasticsearchPersistWriter(config.getDestination());
 
-        LocalRuntimeConfiguration localRuntimeConfiguration = new LocalRuntimeConfiguration();
-        localRuntimeConfiguration.setIdentifier(STREAMS_ID);
-        localRuntimeConfiguration.setTaskTimeoutMs((long)(60 * 1000));
-        localRuntimeConfiguration.setQueueSize((long)1000);
-        StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
+    LocalRuntimeConfiguration localRuntimeConfiguration =
+        StreamsJacksonMapper.getInstance().convertValue(StreamsConfigurator.detectConfiguration(), LocalRuntimeConfiguration.class);
+    StreamBuilder builder = new LocalStreamBuilder(localRuntimeConfiguration);
 
-        builder.newPerpetualStream(MongoPersistReader.class.getCanonicalName(), mongoPersistReader);
-        builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, MongoPersistReader.class.getCanonicalName());
-        builder.start();
-    }
+    builder.newPerpetualStream(MongoPersistReader.class.getCanonicalName(), mongoPersistReader);
+    builder.addStreamsPersistWriter(ElasticsearchPersistWriter.class.getCanonicalName(), elasticsearchPersistWriter, 1, MongoPersistReader.class.getCanonicalName());
+    builder.start();
+  }
 }

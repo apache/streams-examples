@@ -53,59 +53,59 @@ import static org.hamcrest.core.IsNot.not;
  */
 public class ElasticsearchReindexIT {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
 
-    ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
+  ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
 
-    protected ElasticsearchReindexConfiguration testConfiguration;
-    protected Client testClient;
+  protected ElasticsearchReindexConfiguration testConfiguration;
+  protected Client testClient;
 
-    private int count = 0;
+  private int count = 0;
 
-    @BeforeClass
-    public void prepareTest() throws Exception {
+  @BeforeClass
+  public void prepareTest() throws Exception {
 
-        Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
-        assert(conf_file.exists());
-        Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
-        testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
-        testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
+    Config reference  = ConfigFactory.load();
+    File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
+    assert(conf_file.exists());
+    Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+    Config typesafe  = testResourceConfig.withFallback(reference).resolve();
+    testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
+    testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
 
-        ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
-        ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
-        assertThat(clusterHealthResponse.getStatus(), not(ClusterHealthStatus.RED));
+    ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
+    ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
+    assertThat(clusterHealthResponse.getStatus(), not(ClusterHealthStatus.RED));
 
-        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
-        IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
-        assertThat(indicesExistsResponse.isExists(), is(true));
+    IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
+    IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
+    assertThat(indicesExistsResponse.isExists(), is(true));
 
-        SearchRequestBuilder countRequest = testClient
-            .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
-            .setTypes(testConfiguration.getSource().getTypes().get(0));
-        SearchResponse countResponse = countRequest.execute().actionGet();
+    SearchRequestBuilder countRequest = testClient
+        .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
+        .setTypes(testConfiguration.getSource().getTypes().get(0));
+    SearchResponse countResponse = countRequest.execute().actionGet();
 
-        count = (int)countResponse.getHits().getTotalHits();
+    count = (int)countResponse.getHits().getTotalHits();
 
-        assertThat(count, not(0));
+    assertThat(count, not(0));
 
-    }
+  }
 
-    @Test
-    public void testReindex() throws Exception {
+  @Test
+  public void testReindex() throws Exception {
 
-        ElasticsearchReindex reindex = new ElasticsearchReindex(testConfiguration);
+    ElasticsearchReindex reindex = new ElasticsearchReindex(testConfiguration);
 
-        reindex.run();
+    reindex.run();
 
-        // assert lines in file
-        SearchRequestBuilder countRequest = testClient
-            .prepareSearch(testConfiguration.getDestination().getIndex())
-            .setTypes(testConfiguration.getDestination().getType());
-        SearchResponse countResponse = countRequest.execute().actionGet();
+    // assert lines in file
+    SearchRequestBuilder countRequest = testClient
+        .prepareSearch(testConfiguration.getDestination().getIndex())
+        .setTypes(testConfiguration.getDestination().getType());
+    SearchResponse countResponse = countRequest.execute().actionGet();
 
-        assertThat((int)countResponse.getHits().getTotalHits(), is(count));
+    assertThat((int)countResponse.getHits().getTotalHits(), is(count));
 
-    }
+  }
 }

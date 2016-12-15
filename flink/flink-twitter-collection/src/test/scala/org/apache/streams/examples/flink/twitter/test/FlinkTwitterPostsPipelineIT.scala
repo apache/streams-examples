@@ -20,27 +20,21 @@ package com.peoplepattern.streams.twitter.collection
 
 import java.io.File
 import java.nio.file.{Files, Paths}
-import java.util.concurrent.TimeUnit
 
-import com.google.common.util.concurrent.{Monitor, Uninterruptibles}
 import com.typesafe.config.{Config, ConfigFactory, ConfigParseOptions}
-import org.apache.streams.examples.flink.twitter.{TwitterFollowingPipelineConfiguration, TwitterPostsPipelineConfiguration}
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfiguration, StreamsConfigurator}
 import org.apache.streams.examples.flink.twitter.TwitterPostsPipelineConfiguration
-import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterUserInformationPipeline._
-import org.apache.streams.examples.flink.twitter.collection.{FlinkTwitterPostsPipeline, FlinkTwitterUserInformationPipeline}
-import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, HdfsWriterConfiguration}
-import org.slf4j.{Logger, LoggerFactory}
-
-import scala.io.Source
+import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterPostsPipeline
 import org.scalatest.FlatSpec
 import org.scalatest.concurrent.Eventually._
-import org.scalatest.time.{Seconds, Span}
 import org.scalatest.time.SpanSugar._
+import org.slf4j.{Logger, LoggerFactory}
 import org.testng.annotations.Test
 
+import scala.io.Source
+
 /**
-  * Created by sblackmon on 3/13/16.
+  * FlinkTwitterPostsPipelineIT is an integration test for FlinkTwitterPostsPipeline.
   */
 class FlinkTwitterPostsPipelineIT extends FlatSpec  {
 

@@ -32,6 +32,9 @@ import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, Hdfs
 import org.apache.streams.jackson.StreamsJacksonMapper
 import org.slf4j.LoggerFactory
 
+/**
+  * FlinkBase is a base class with capabilities common to all of the streams flink examples.
+  */
 trait FlinkBase {
 
   private val BASELOGGER = LoggerFactory.getLogger("FlinkBase")
@@ -101,16 +104,16 @@ trait FlinkBase {
     }
   }
 
-//  def setup(typesafe: Config): Boolean =  {
-//
-//    val streamsConfig = StreamsConfigurator.detectConfiguration(typesafe)
-//
-//    this.streamsConfig = streamsConfig
-//
-//    BASELOGGER.info("Streams Config: " + streamsConfig)
-//
-//    setup(streamsConfig)
-//  }
+  //  def setup(typesafe: Config): Boolean =  {
+  //
+  //    val streamsConfig = StreamsConfigurator.detectConfiguration(typesafe)
+  //
+  //    this.streamsConfig = streamsConfig
+  //
+  //    BASELOGGER.info("Streams Config: " + streamsConfig)
+  //
+  //    setup(streamsConfig)
+  //  }
 
   def setupStreaming(streamingConfiguration: FlinkStreamingConfiguration): Boolean = {
 
