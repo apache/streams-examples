@@ -26,18 +26,13 @@ import org.apache.streams.config.StreamsConfiguration;
 import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.example.TwitterFollowNeo4j;
 import org.apache.streams.example.TwitterFollowNeo4jConfiguration;
-import org.junit.Before;
-import org.junit.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 
 /**
  * Example stream that populates elasticsearch with activities from twitter userstream in real-time
@@ -50,11 +45,11 @@ public class TwitterFollowNeo4jIT {
 
     private int count = 0;
 
-    @Before
+    @BeforeClass
     public void prepareTest() throws Exception {
 
         Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/TwitterFollowGraphIT.conf");
+        File conf_file = new File("target/test-classes/TwitterFollowNeo4jIT.conf");
         assert(conf_file.exists());
         Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
         Config typesafe  = testResourceConfig.withFallback(reference).resolve();
