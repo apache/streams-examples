@@ -12,7 +12,7 @@
   "properties": {
     "twitter": {
       "type": "object",
-      "javaType": "org.apache.streams.twitter.TwitterUserInformationConfiguration"
+      "javaType": "org.apache.streams.twitter.TwitterTimelineProviderConfiguration"
     },
     "source": {
       "type": "object",

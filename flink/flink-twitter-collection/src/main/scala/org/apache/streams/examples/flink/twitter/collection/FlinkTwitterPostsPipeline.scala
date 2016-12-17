@@ -36,6 +36,7 @@ import org.apache.streams.examples.flink.FlinkBase
 import org.apache.streams.examples.flink.twitter.TwitterPostsPipelineConfiguration
 import org.apache.streams.flink.FlinkStreamingConfiguration
 import org.apache.streams.jackson.StreamsJacksonMapper
+import org.apache.streams.twitter.TwitterTimelineProviderConfiguration
 import org.apache.streams.twitter.pojo.Tweet
 import org.apache.streams.twitter.provider.TwitterTimelineProvider
 import org.slf4j.{Logger, LoggerFactory}
@@ -152,10 +153,9 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
     }
     def collectPosts(id : String, out : Collector[StreamsDatum]) = {
       val twitterConfiguration = config.getTwitter
+      twitterConfiguration.setInfo(List(toProviderId(id)))
       val twitProvider: TwitterTimelineProvider =
-        new TwitterTimelineProvider(
-          twitterConfiguration.withInfo(List(toProviderId(id)))
-        )
+        new TwitterTimelineProvider(twitterConfiguration)
       twitProvider.prepare(twitProvider)
       twitProvider.startStream()
       var iterator: Iterator[StreamsDatum] = null
