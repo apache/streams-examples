@@ -34,7 +34,7 @@ import org.testng.annotations.Test
 import scala.io.Source
 
 /**
-  * Created by sblackmon on 3/13/16.
+  * FlinkTwitterFollowingPipelineFollowersIT is an integration test for FlinkTwitterFollowingPipeline.
   */
 class FlinkTwitterFollowingPipelineFollowersIT extends FlatSpec {
 

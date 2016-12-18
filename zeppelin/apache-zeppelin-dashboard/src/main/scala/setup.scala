@@ -16,19 +16,12 @@
  * under the License.
  */
 
-package org.apache.streams.example.test;
-
-import org.apache.streams.mongo.test.MongoPersistIT;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
-        MongoPersistIT.class,
-        MongoElasticsearchSyncIT.class
-})
-
-public class SyncITs {
-    // the class remains empty,
-    // used only as a holder for the above annotations
-}
+%spark.dep
+z.reset()
+z.load("org.apache.streams:streams-core:0.4-incubating")
+z.load("org.apache.streams:streams-converters:0.4-incubating")
+z.load("org.apache.streams:streams-pojo:0.4-incubating")
+z.load("org.apache.streams:streams-provider-twitter:0.4-incubating")
+z.load("org.apache.streams:streams-provider-facebook:0.4-incubating")
+z.load("org.apache.streams:streams-provider-youtube:0.4-incubating")
+z.load("org.apache.streams:google-gplus:0.4-incubating")

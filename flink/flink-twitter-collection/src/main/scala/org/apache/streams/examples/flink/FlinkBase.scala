@@ -32,6 +32,9 @@ import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, Hdfs
 import org.apache.streams.jackson.StreamsJacksonMapper
 import org.slf4j.LoggerFactory
 
+/**
+  * FlinkBase is a base class with capabilities common to all of the streams flink examples.
+  */
 trait FlinkBase {
 
   private val BASELOGGER = LoggerFactory.getLogger("FlinkBase")
@@ -50,7 +53,7 @@ trait FlinkBase {
    */
   def main(args: Array[String]): Unit = {
     // if only one argument, use it as the config URL
-    if( args.size > 0 ) {
+    if( args.length > 0 ) {
       BASELOGGER.info("Args: {}", args)
       configUrl = args(0)
       setup(configUrl)
@@ -79,7 +82,7 @@ trait FlinkBase {
       typesafe = StreamsConfigurator.getConfig
     }
 
-    return setup(typesafe)
+    setup(typesafe)
 
   }
 
@@ -91,26 +94,26 @@ trait FlinkBase {
     if( this.typesafe.getString("mode").equals("streaming")) {
       val streamingConfiguration: FlinkStreamingConfiguration =
         new ComponentConfigurator[FlinkStreamingConfiguration](classOf[FlinkStreamingConfiguration]).detectConfiguration(typesafe)
-      return setupStreaming(streamingConfiguration)
+      setupStreaming(streamingConfiguration)
     } else if( this.typesafe.getString("mode").equals("batch")) {
       val batchConfiguration: FlinkBatchConfiguration =
         new ComponentConfigurator[FlinkBatchConfiguration](classOf[FlinkBatchConfiguration]).detectConfiguration(typesafe)
-      return setupBatch(batchConfiguration)
+      setupBatch(batchConfiguration)
     } else {
-      return false;
+      false
     }
   }
 
-//  def setup(typesafe: Config): Boolean =  {
-//
-//    val streamsConfig = StreamsConfigurator.detectConfiguration(typesafe)
-//
-//    this.streamsConfig = streamsConfig
-//
-//    BASELOGGER.info("Streams Config: " + streamsConfig)
-//
-//    setup(streamsConfig)
-//  }
+  //  def setup(typesafe: Config): Boolean =  {
+  //
+  //    val streamsConfig = StreamsConfigurator.detectConfiguration(typesafe)
+  //
+  //    this.streamsConfig = streamsConfig
+  //
+  //    BASELOGGER.info("Streams Config: " + streamsConfig)
+  //
+  //    setup(streamsConfig)
+  //  }
 
   def setupStreaming(streamingConfiguration: FlinkStreamingConfiguration): Boolean = {
 
@@ -123,7 +126,7 @@ trait FlinkBase {
     if( streamExecutionEnvironment == null )
       streamExecutionEnvironment = streamEnvironment(streamingConfiguration)
 
-    return false
+    false
 
   }
 
@@ -138,17 +141,17 @@ trait FlinkBase {
     if( executionEnvironment == null )
       executionEnvironment = batchEnvironment(batchConfiguration)
 
-    return true
+    true
 
   }
 
   def batchEnvironment(config: FlinkBatchConfiguration = new FlinkBatchConfiguration()) : ExecutionEnvironment = {
     if (config.getTest == false && config.getLocal == false) {
       val env = ExecutionEnvironment.getExecutionEnvironment
-      return env
+      env
     } else {
       val env = ExecutionEnvironment.createLocalEnvironment(config.getParallel.toInt)
-      return env
+      env
     }
   }
 
@@ -156,7 +159,7 @@ trait FlinkBase {
     if( config.getTest == false && config.getLocal == false) {
       val env = StreamExecutionEnvironment.getExecutionEnvironment
 
-      env.setRestartStrategy(RestartStrategies.noRestart());
+      env.setRestartStrategy(RestartStrategies.noRestart())
 
       // start a checkpoint every hour
       env.enableCheckpointing(config.getCheckpointIntervalMs)
@@ -169,10 +172,10 @@ trait FlinkBase {
       // allow only one checkpoint to be in progress at the same time
       env.getCheckpointConfig.setMaxConcurrentCheckpoints(1)
 
-      return env
+      env
     }
 
-    else return StreamExecutionEnvironment.createLocalEnvironment(config.getParallel.toInt)
+    else StreamExecutionEnvironment.createLocalEnvironment(config.getParallel.toInt)
   }
 
   def buildReaderPath(configObject: HdfsReaderConfiguration) : String = {
@@ -188,7 +191,7 @@ trait FlinkBase {
     } else {
       throw new Exception("scheme not recognized: " + configObject.getScheme)
     }
-    return inPathBuilder
+    inPathBuilder
   }
 
   def buildWriterPath(configObject: HdfsWriterConfiguration) : String = {
@@ -204,15 +207,15 @@ trait FlinkBase {
     } else {
       throw new Exception("output scheme not recognized: " + configObject.getScheme)
     }
-    return outPathBuilder
+    outPathBuilder
   }
 
   def toProviderId(input : String) : String = {
     if( input.startsWith("@") )
       return input.substring(1)
     if( input.contains(':'))
-      return input.substring(input.lastIndexOf(':')+1)
-    else return input
+      input.substring(input.lastIndexOf(':')+1)
+    else input
   }
 
 }

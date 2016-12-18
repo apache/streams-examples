@@ -22,15 +22,14 @@ import java.util.concurrent.TimeUnit
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.{Preconditions, Strings}
-import org.apache.flink.core.fs.FileSystem
-import org.apache.flink.streaming.api.TimeCharacteristic
-import org.apache.flink.streaming.api.scala.function.{AllWindowFunction, WindowFunction}
-import org.apache.flink.streaming.api.windowing.assigners.{GlobalWindows, TumblingEventTimeWindows}
 import com.google.common.util.concurrent.Uninterruptibles
 import org.apache.flink.api.common.functions.RichFlatMapFunction
-import org.apache.flink.streaming.api.scala.{AllWindowedStream, DataStream, KeyedStream, StreamExecutionEnvironment, WindowedStream}
-import org.apache.flink.streaming.api.windowing.windows.{GlobalWindow, TimeWindow, Window}
 import org.apache.flink.api.scala._
+import org.apache.flink.core.fs.FileSystem
+import org.apache.flink.streaming.api.TimeCharacteristic
+import org.apache.flink.streaming.api.scala.function.WindowFunction
+import org.apache.flink.streaming.api.scala.{DataStream, KeyedStream, StreamExecutionEnvironment, WindowedStream}
+import org.apache.flink.streaming.api.windowing.windows.GlobalWindow
 import org.apache.flink.streaming.connectors.fs.RollingSink
 import org.apache.flink.util.Collector
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
@@ -46,7 +45,8 @@ import org.slf4j.{Logger, LoggerFactory}
 import scala.collection.JavaConversions._
 
 /**
-  * Created by sblackmon on 3/15/16.
+  * FlinkTwitterPostsPipeline collects the current user profile of a
+  * set of IDs, writing each as a twitter:user in json format to dfs.
   */
 object FlinkTwitterUserInformationPipeline extends FlinkBase {
 
@@ -58,7 +58,7 @@ object FlinkTwitterUserInformationPipeline extends FlinkBase {
   override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator[TwitterUserInformationPipelineConfiguration](classOf[TwitterUserInformationPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterUserInformationPipeline = new FlinkTwitterUserInformationPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -99,7 +99,7 @@ object FlinkTwitterUserInformationPipeline extends FlinkBase {
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-    return true
+    true
 
   }
 
@@ -113,7 +113,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
     env.setNumberOfExecutionRetries(0)
 
     val inPath = buildReaderPath(config.getSource)
@@ -142,7 +142,7 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
       jsons.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
     else
       jsons.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-        .setParallelism(env.getParallelism);
+        .setParallelism(env.getParallelism)
 
     LOGGER.info("StreamExecutionEnvironment: {}", env.toString )
 
@@ -150,7 +150,8 @@ class FlinkTwitterUserInformationPipeline(config: TwitterUserInformationPipeline
   }
 
   class idListWindowFunction extends WindowFunction[String, List[String], Int, GlobalWindow] {
-    override def apply(key: Int, window: GlobalWindow, input: Iterable[String], out: Collector[List[String]]): Unit = {if( input.size > 0 )
+    override def apply(key: Int, window: GlobalWindow, input: Iterable[String], out: Collector[List[String]]): Unit = {
+      if( input.nonEmpty )
         out.collect(input.map(id => toProviderId(id)).toList)
     }
   }

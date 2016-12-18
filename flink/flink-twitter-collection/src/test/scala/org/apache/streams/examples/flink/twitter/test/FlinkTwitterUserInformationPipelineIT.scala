@@ -22,25 +22,19 @@ import java.io.File
 import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.{Config, ConfigFactory, ConfigParseOptions}
-import org.apache.streams.examples.flink.twitter.{TwitterSpritzerPipelineConfiguration, TwitterUserInformationPipelineConfiguration}
-import org.apache.flink.api.scala.ExecutionEnvironment
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfiguration, StreamsConfigurator}
+import org.apache.streams.examples.flink.twitter.TwitterUserInformationPipelineConfiguration
 import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterUserInformationPipeline
-import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, HdfsWriterConfiguration}
 import org.scalatest.FlatSpec
-import org.scalatest._
-import org.scalatest.junit.JUnitRunner
-import org.slf4j.{Logger, LoggerFactory}
-
-import scala.io.Source
-import org.scalatest.Ignore
 import org.scalatest.concurrent.Eventually._
-import org.scalatest.time.{Seconds, Span}
 import org.scalatest.time.SpanSugar._
+import org.slf4j.{Logger, LoggerFactory}
 import org.testng.annotations.Test
 
+import scala.io.Source
+
 /**
-  * Created by sblackmon on 3/13/16.
+  * FlinkTwitterUserInformationPipelineIT is an integration test for FlinkTwitterUserInformationPipeline.
   */
 class FlinkTwitterUserInformationPipelineIT extends FlatSpec {
 

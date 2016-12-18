@@ -21,24 +21,20 @@ package com.peoplepattern.streams.twitter.collection
 import java.io.File
 import java.nio.file.{Files, Paths}
 
-import org.apache.streams.examples.flink.twitter.TwitterFollowingPipelineConfiguration
 import com.typesafe.config.{Config, ConfigFactory, ConfigParseOptions}
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfiguration, StreamsConfigurator}
-import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterUserInformationPipeline._
-import org.apache.streams.examples.flink.twitter.collection.{FlinkTwitterFollowingPipeline, FlinkTwitterSpritzerPipeline}
-import org.apache.streams.hdfs.{HdfsConfiguration, HdfsReaderConfiguration, HdfsWriterConfiguration}
-import org.junit.Ignore
+import org.apache.streams.examples.flink.twitter.TwitterFollowingPipelineConfiguration
+import org.apache.streams.examples.flink.twitter.collection.FlinkTwitterFollowingPipeline
+import org.scalatest.FlatSpec
+import org.scalatest.concurrent.Eventually._
+import org.scalatest.time.SpanSugar._
 import org.slf4j.{Logger, LoggerFactory}
 import org.testng.annotations.Test
 
 import scala.io.Source
-import org.scalatest.FlatSpec
-import org.scalatest.concurrent.Eventually._
-import org.scalatest.time.{Seconds, Span}
-import org.scalatest.time.SpanSugar._
 
 /**
-  * Created by sblackmon on 3/13/16.
+  * FlinkTwitterFollowingPipelineFriendsIT is an integration test for FlinkTwitterFollowingPipeline.
   */
 class FlinkTwitterFollowingPipelineFriendsIT extends FlatSpec {
 

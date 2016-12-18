@@ -8,4 +8,5 @@ Create a local file `flink.conf`
 When configuring a stream, include this file:
 
     include "flink.conf"
-    
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

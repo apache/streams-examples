@@ -18,57 +18,50 @@
 
 package org.apache.streams.example.test;
 
+import org.apache.streams.config.ComponentConfigurator;
+import org.apache.streams.example.TwitterFollowNeo4j;
+import org.apache.streams.example.TwitterFollowNeo4jConfiguration;
+
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigParseOptions;
-import org.apache.streams.config.ComponentConfigurator;
-import org.apache.streams.config.StreamsConfiguration;
-import org.apache.streams.config.StreamsConfigurator;
-import org.apache.streams.example.TwitterFollowNeo4j;
-import org.apache.streams.example.TwitterFollowNeo4jConfiguration;
-import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 
 /**
- * Example stream that populates elasticsearch with activities from twitter userstream in real-time
+ * TwitterFollowNeo4jIT is an integration test for TwitterFollowNeo4j.
  */
 public class TwitterFollowNeo4jIT {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(TwitterFollowNeo4jIT.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(TwitterFollowNeo4jIT.class);
 
-    protected TwitterFollowNeo4jConfiguration testConfiguration;
+  protected TwitterFollowNeo4jConfiguration testConfiguration;
 
-    private int count = 0;
+  private int count = 0;
 
-    @Before
-    public void prepareTest() throws Exception {
+  @BeforeClass
+  public void prepareTest() throws Exception {
 
-        Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/TwitterFollowGraphIT.conf");
-        assert(conf_file.exists());
-        Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
-        testConfiguration = new ComponentConfigurator<>(TwitterFollowNeo4jConfiguration.class).detectConfiguration(typesafe);
+    Config reference  = ConfigFactory.load();
+    File conf_file = new File("target/test-classes/TwitterFollowNeo4jIT.conf");
+    assert(conf_file.exists());
+    Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+    Config typesafe  = testResourceConfig.withFallback(reference).resolve();
+    testConfiguration = new ComponentConfigurator<>(TwitterFollowNeo4jConfiguration.class).detectConfiguration(typesafe);
 
-    }
+  }
 
-    @Test
-    public void testTwitterFollowGraph() throws Exception {
+  @Test
+  public void testTwitterFollowGraph() throws Exception {
 
-        TwitterFollowNeo4j stream = new TwitterFollowNeo4j(testConfiguration);
+    TwitterFollowNeo4j stream = new TwitterFollowNeo4j(testConfiguration);
 
-        stream.run();
+    stream.run();
 
-    }
+  }
 
 }

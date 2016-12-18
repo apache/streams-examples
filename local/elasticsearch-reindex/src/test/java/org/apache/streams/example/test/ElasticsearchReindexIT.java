@@ -18,17 +18,16 @@
 
 package org.apache.streams.example.test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import com.typesafe.config.ConfigParseOptions;
 import org.apache.streams.config.ComponentConfigurator;
-import org.apache.streams.config.StreamsConfiguration;
-import org.apache.streams.config.StreamsConfigurator;
 import org.apache.streams.elasticsearch.ElasticsearchClientManager;
 import org.apache.streams.example.ElasticsearchReindex;
 import org.apache.streams.example.ElasticsearchReindexConfiguration;
 import org.apache.streams.jackson.StreamsJacksonMapper;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+import com.typesafe.config.ConfigParseOptions;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequest;
@@ -38,78 +37,75 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
 import org.elasticsearch.cluster.health.ClusterHealthStatus;
-import org.junit.Before;
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Properties;
 
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Test copying documents between two indexes on same cluster
  */
 public class ElasticsearchReindexIT {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
+  private final static Logger LOGGER = LoggerFactory.getLogger(ElasticsearchReindexIT.class);
 
-    ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
+  ObjectMapper MAPPER = StreamsJacksonMapper.getInstance();
 
-    protected ElasticsearchReindexConfiguration testConfiguration;
-    protected Client testClient;
+  protected ElasticsearchReindexConfiguration testConfiguration;
+  protected Client testClient;
 
-    private int count = 0;
+  private int count = 0;
 
-    @Before
-    public void prepareTest() throws Exception {
+  @BeforeClass
+  public void prepareTest() throws Exception {
 
-        Config reference  = ConfigFactory.load();
-        File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
-        assert(conf_file.exists());
-        Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
-        Config typesafe  = testResourceConfig.withFallback(reference).resolve();
-        testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
-        testClient = new ElasticsearchClientManager(testConfiguration.getSource()).getClient();
+    Config reference  = ConfigFactory.load();
+    File conf_file = new File("target/test-classes/ElasticsearchReindexIT.conf");
+    assert(conf_file.exists());
+    Config testResourceConfig  = ConfigFactory.parseFileAnySyntax(conf_file, ConfigParseOptions.defaults().setAllowMissing(false));
+    Config typesafe  = testResourceConfig.withFallback(reference).resolve();
+    testConfiguration = new ComponentConfigurator<>(ElasticsearchReindexConfiguration.class).detectConfiguration(typesafe);
+    testClient = ElasticsearchClientManager.getInstance(testConfiguration.getSource()).client();
 
-        ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
-        ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
-        assertNotEquals(clusterHealthResponse.getStatus(), ClusterHealthStatus.RED);
+    ClusterHealthRequest clusterHealthRequest = Requests.clusterHealthRequest();
+    ClusterHealthResponse clusterHealthResponse = testClient.admin().cluster().health(clusterHealthRequest).actionGet();
+    assertThat(clusterHealthResponse.getStatus(), not(ClusterHealthStatus.RED));
 
-        IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
-        IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
-        assertTrue(indicesExistsResponse.isExists());
+    IndicesExistsRequest indicesExistsRequest = Requests.indicesExistsRequest(testConfiguration.getSource().getIndexes().get(0));
+    IndicesExistsResponse indicesExistsResponse = testClient.admin().indices().exists(indicesExistsRequest).actionGet();
+    assertThat(indicesExistsResponse.isExists(), is(true));
 
-        SearchRequestBuilder countRequest = testClient
-                .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
-                .setTypes(testConfiguration.getSource().getTypes().get(0));
-        SearchResponse countResponse = countRequest.execute().actionGet();
+    SearchRequestBuilder countRequest = testClient
+        .prepareSearch(testConfiguration.getSource().getIndexes().get(0))
+        .setTypes(testConfiguration.getSource().getTypes().get(0));
+    SearchResponse countResponse = countRequest.execute().actionGet();
 
-        count = (int)countResponse.getHits().getTotalHits();
+    count = (int)countResponse.getHits().getTotalHits();
 
-        assertNotEquals(count, 0);
+    assertThat(count, not(0));
 
-    }
+  }
 
-    @Test
-    public void testReindex() throws Exception {
+  @Test
+  public void testReindex() throws Exception {
 
-        ElasticsearchReindex reindex = new ElasticsearchReindex(testConfiguration);
+    ElasticsearchReindex reindex = new ElasticsearchReindex(testConfiguration);
 
-        reindex.run();
+    reindex.run();
 
-        // assert lines in file
-        SearchRequestBuilder countRequest = testClient
-                .prepareSearch(testConfiguration.getDestination().getIndex())
-                .setTypes(testConfiguration.getDestination().getType());
-        SearchResponse countResponse = countRequest.execute().actionGet();
+    // assert lines in file
+    SearchRequestBuilder countRequest = testClient
+        .prepareSearch(testConfiguration.getDestination().getIndex())
+        .setTypes(testConfiguration.getDestination().getType());
+    SearchResponse countResponse = countRequest.execute().actionGet();
 
-        assertEquals(count, (int)countResponse.getHits().getTotalHits());
+    assertThat((int)countResponse.getHits().getTotalHits(), is(count));
 
-    }
+  }
 }

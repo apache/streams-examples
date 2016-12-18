@@ -23,37 +23,29 @@ import java.util.concurrent.TimeUnit
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.{Preconditions, Strings}
 import com.google.common.util.concurrent.Uninterruptibles
-import org.apache.flink.api.common.functions.{FlatMapFunction, RichFlatMapFunction}
-import org.apache.flink.api.common.restartstrategy.RestartStrategies
-import org.apache.flink.api.scala.{ExecutionEnvironment, _}
+import org.apache.flink.api.common.functions.RichFlatMapFunction
+import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
-import org.apache.flink.runtime.state.filesystem.FsStateBackend
 import org.apache.flink.streaming.api.TimeCharacteristic
-import org.apache.flink.streaming.api.scala.function.AllWindowFunction
-import org.apache.flink.streaming.api.scala.{AllWindowedStream, DataStream, KeyedStream, StreamExecutionEnvironment}
-import org.apache.flink.streaming.api.windowing.time.Time
-import org.apache.flink.streaming.api.windowing.triggers.ContinuousEventTimeTrigger
-import org.apache.flink.streaming.api.windowing.windows.GlobalWindow
+import org.apache.flink.streaming.api.scala.{DataStream, KeyedStream, StreamExecutionEnvironment}
 import org.apache.flink.streaming.connectors.fs.RollingSink
-import org.apache.flink.streaming.util.serialization.SimpleStringSchema
 import org.apache.flink.util.Collector
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
 import org.apache.streams.core.StreamsDatum
 import org.apache.streams.examples.flink.FlinkBase
 import org.apache.streams.examples.flink.twitter.TwitterPostsPipelineConfiguration
 import org.apache.streams.flink.FlinkStreamingConfiguration
-import org.apache.streams.hdfs.HdfsConfiguration
 import org.apache.streams.jackson.StreamsJacksonMapper
-import org.apache.streams.twitter.TwitterUserInformationConfiguration
-import org.apache.streams.twitter.pojo.{Tweet, User}
-import org.apache.streams.twitter.provider.{TwitterTimelineProvider, TwitterUserInformationProvider}
+import org.apache.streams.twitter.TwitterTimelineProviderConfiguration
+import org.apache.streams.twitter.pojo.Tweet
+import org.apache.streams.twitter.provider.TwitterTimelineProvider
 import org.slf4j.{Logger, LoggerFactory}
-import org.apache.flink.api.scala._
 
 import scala.collection.JavaConversions._
 
 /**
-  * Created by sblackmon on 7/29/15.
+  * FlinkTwitterPostsPipeline collects recent posts from all profiles from a
+  * set of IDs, writing each post as a twitter:status in json format to dfs.
   */
 object FlinkTwitterPostsPipeline extends FlinkBase {
 
@@ -65,7 +57,7 @@ object FlinkTwitterPostsPipeline extends FlinkBase {
   override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator[TwitterPostsPipelineConfiguration](classOf[TwitterPostsPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterPostsPipeline = new FlinkTwitterPostsPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -106,7 +98,7 @@ object FlinkTwitterPostsPipeline extends FlinkBase {
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-    return true
+    true
 
   }
 
@@ -120,7 +112,7 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
     env.setNumberOfExecutionRetries(0)
 
     val inPath = buildReaderPath(config.getSource)
@@ -148,7 +140,7 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
       jsons.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
     else
       jsons.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-        .setParallelism(env.getParallelism);
+        .setParallelism(env.getParallelism)
 
     // if( test == true ) jsons.print();
 
@@ -157,14 +149,13 @@ class FlinkTwitterPostsPipeline(config: TwitterPostsPipelineConfiguration = new 
 
   class postCollectorFlatMapFunction extends RichFlatMapFunction[String, StreamsDatum] with Serializable {
     override def flatMap(input: String, out: Collector[StreamsDatum]): Unit = {
-        collectPosts(input, out)
+      collectPosts(input, out)
     }
     def collectPosts(id : String, out : Collector[StreamsDatum]) = {
       val twitterConfiguration = config.getTwitter
+      twitterConfiguration.setInfo(List(toProviderId(id)))
       val twitProvider: TwitterTimelineProvider =
-        new TwitterTimelineProvider(
-          twitterConfiguration.withInfo(List(toProviderId(id))).withMaxItems(200l)
-        )
+        new TwitterTimelineProvider(twitterConfiguration)
       twitProvider.prepare(twitProvider)
       twitProvider.startStream()
       var iterator: Iterator[StreamsDatum] = null

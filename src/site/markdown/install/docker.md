@@ -18,6 +18,7 @@ If you need to install docker, start here:
 Run from your command line:
 
     docker ps
-  
+
 If you see a (possibly empty) list of running containers, you are good.
 
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

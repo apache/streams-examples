@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="ExampleITs">
+
+    <test name="ElasticsearchPersistWriterIT">
+        <classes>
+            <class name="org.apache.streams.elasticsearch.test.ElasticsearchPersistWriterIT" />
+        </classes>
+    </test>
+
+    <test name="ElasticsearchHdfsIT">
+        <classes>
+            <class name="org.apache.streams.example.test.ElasticsearchHdfsIT" />
+        </classes>
+    </test>
+
+    <test name="HdfsElasticsearchIT">
+        <classes>
+            <class name="org.apache.streams.example.test.HdfsElasticsearchIT" />
+        </classes>
+    </test>
+
+</suite>  

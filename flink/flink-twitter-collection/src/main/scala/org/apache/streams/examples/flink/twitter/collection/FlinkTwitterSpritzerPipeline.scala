@@ -25,11 +25,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.common.base.{Preconditions, Strings}
 import com.google.common.util.concurrent.Uninterruptibles
 import org.apache.flink.api.common.functions.StoppableFunction
+import org.apache.flink.api.scala._
 import org.apache.flink.configuration.Configuration
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.streaming.api.TimeCharacteristic
 import org.apache.flink.streaming.api.functions.source.{RichSourceFunction, SourceFunction}
-import org.apache.flink.streaming.api.scala.{DataStream, KeyedStream, StreamExecutionEnvironment}
+import org.apache.flink.streaming.api.scala.{DataStream, StreamExecutionEnvironment}
 import org.apache.flink.streaming.connectors.fs.RollingSink
 import org.apache.streams.config.{ComponentConfigurator, StreamsConfigurator}
 import org.apache.streams.core.StreamsDatum
@@ -38,15 +39,15 @@ import org.apache.streams.examples.flink.twitter.TwitterSpritzerPipelineConfigur
 import org.apache.streams.flink.FlinkStreamingConfiguration
 import org.apache.streams.jackson.StreamsJacksonMapper
 import org.apache.streams.twitter.TwitterStreamConfiguration
+import org.apache.streams.twitter.converter.TwitterDateTimeFormat
 import org.apache.streams.twitter.provider.TwitterStreamProvider
 import org.slf4j.{Logger, LoggerFactory}
-import org.apache.flink.api.scala._
-import org.apache.streams.twitter.converter.TwitterDateTimeFormat
 
 import scala.collection.JavaConversions._
 
 /**
-  * Created by sblackmon on 7/29/15.
+  * FlinkTwitterSpritzerPipeline opens a spritzer stream and writes
+  * each post received as a twitter:status in json format to dfs.
   */
 object FlinkTwitterSpritzerPipeline extends FlinkBase {
 
@@ -58,7 +59,7 @@ object FlinkTwitterSpritzerPipeline extends FlinkBase {
   override def main(args: Array[String]) = {
     super.main(args)
     val jobConfig = new ComponentConfigurator(classOf[TwitterSpritzerPipelineConfiguration]).detectConfiguration(typesafe)
-    if( setup(jobConfig) == false ) System.exit(1)
+    if( !setup(jobConfig) ) System.exit(1)
     val pipeline: FlinkTwitterSpritzerPipeline = new FlinkTwitterSpritzerPipeline(jobConfig)
     val thread = new Thread(pipeline)
     thread.start()
@@ -93,7 +94,7 @@ object FlinkTwitterSpritzerPipeline extends FlinkBase {
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerKey))
     Preconditions.checkArgument(!Strings.isNullOrEmpty(jobConfig.getTwitter.getOauth.getConsumerSecret))
 
-    return true
+    true
 
   }
 
@@ -109,18 +110,18 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
 
     val env: StreamExecutionEnvironment = streamEnvironment(MAPPER.convertValue(config, classOf[FlinkStreamingConfiguration]))
 
-    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime);
+    env.setStreamTimeCharacteristic(TimeCharacteristic.IngestionTime)
     env.setNumberOfExecutionRetries(0)
 
     val outPath = buildWriterPath(config.getDestination)
 
-    val streamSource : DataStream[String] = env.addSource(spritzerSource);
+    val streamSource : DataStream[String] = env.addSource(spritzerSource)
 
     if( config.getTest == false )
       streamSource.addSink(new RollingSink[String](outPath)).setParallelism(3).name("hdfs")
     else
       streamSource.writeAsText(outPath,FileSystem.WriteMode.OVERWRITE)
-        .setParallelism(env.getParallelism);
+        .setParallelism(env.getParallelism)
 
     // if( test == true ) jsons.print();
 
@@ -160,7 +161,7 @@ class FlinkTwitterSpritzerPipeline(config: TwitterSpritzerPipelineConfiguration 
     }
 
     override def stop(): Unit = {
-      close();
+      close()
     }
   }
 
