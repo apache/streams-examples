@@ -22,11 +22,11 @@
     <parent>
         <artifactId>streams-master</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.5-incubating-SNAPSHOT</version>
+        <version>0.4.1-incubating</version>
     </parent>
 
     <artifactId>streams-examples</artifactId>
-    <version>0.5-incubating-SNAPSHOT</version>
+    <version>0.4.1-incubating-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>streams-examples</name>
@@ -187,77 +187,102 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-core</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-filters</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.streams</groupId>
+                <artifactId>streams-schema-activitystreams</artifactId>
+                <version>0.4.1-incubating</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.streams</groupId>
+                <artifactId>streams-schema-activitystreams</artifactId>
+                <version>0.4.1-incubating</version>
+                <type>test-jar</type>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo-extensions</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-runtime-local</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-provider-twitter</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.streams</groupId>
+                <artifactId>streams-persist-elasticsearch</artifactId>
+                <version>0.4.1-incubating</version>
+                <type>test-jar</type>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-graph</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-hdfs</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>${project.version}</version>
+                <version>0.4.1-incubating</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.streams</groupId>
+                <artifactId>streams-persist-mongo</artifactId>
+                <version>0.4.1-incubating</version>
+                <type>test-jar</type>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -270,21 +295,6 @@
             <plugin>
                 <groupId>org.scalastyle</groupId>
                 <artifactId>scalastyle-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-remote-resources-plugin</artifactId>
             </plugin>
         </plugins>
         <pluginManagement>
@@ -305,7 +315,7 @@
                             <id>validate</id>
                             <phase>validate</phase>
                             <configuration>
-                                <configLocation>http://streams.incubator.apache.org/site/${project.version}/streams-master/streams-java-checkstyle.xml</configLocation>
+                                <configLocation>http://streams.incubator.apache.org/site/latest/streams-master/streams-java-checkstyle.xml</configLocation>
                                 <encoding>UTF-8</encoding>
                                 <consoleOutput>true</consoleOutput>
                                 <includeTestSourceDirectory>true</includeTestSourceDirectory>
@@ -394,6 +404,25 @@
                                     <!--</transformer>-->
                                 </transformers>
                             </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                 <plugin>
+                    <groupId>org.apache.streams.plugins</groupId>
+                    <artifactId>streams-plugin-pojo</artifactId>
+                    <version>0.4.1-incubating</version>
+                    <configuration>
+                        <sourcePaths>
+                            <sourcePath>${project.basedir}/src/main/jsonschema</sourcePath>
+                        </sourcePaths>
+                        <targetDirectory>${project.basedir}/target/generated-sources/pojo</targetDirectory>
+                        <targetPackage>org.apache.streams.pojo</targetPackage>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate-sources</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>
