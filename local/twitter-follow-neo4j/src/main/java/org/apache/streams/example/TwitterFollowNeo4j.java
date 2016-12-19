@@ -36,9 +36,11 @@ import org.apache.streams.twitter.converter.TwitterDocumentClassifier;
 import org.apache.streams.twitter.converter.TwitterFollowActivityConverter;
 import org.apache.streams.twitter.provider.TwitterFollowingProvider;
 
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Collects friend and follow connections for a set of twitter users and builds a graph
@@ -48,7 +50,7 @@ public class TwitterFollowNeo4j implements Runnable {
 
   private final static Logger LOGGER = LoggerFactory.getLogger(TwitterFollowNeo4j.class);
 
-  TwitterFollowNeo4jConfiguration config;
+  private TwitterFollowNeo4jConfiguration config;
 
   public TwitterFollowNeo4j() {
     this(new ComponentConfigurator<>(TwitterFollowNeo4jConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
@@ -66,8 +68,8 @@ public class TwitterFollowNeo4j implements Runnable {
 
     ActivityConverterProcessorConfiguration activityConverterProcessorConfiguration =
         new ActivityConverterProcessorConfiguration()
-            .withClassifiers(Lists.newArrayList((DocumentClassifier) new TwitterDocumentClassifier()))
-            .withConverters(Lists.newArrayList((ActivityConverter) new TwitterFollowActivityConverter()));
+            .withClassifiers(Stream.of((DocumentClassifier) new TwitterDocumentClassifier()).collect(Collectors.toList()))
+            .withConverters(Stream.of((ActivityConverter) new TwitterFollowActivityConverter()).collect(Collectors.toList()));
     ActivityConverterProcessor activity = new ActivityConverterProcessor(activityConverterProcessorConfiguration);
 
     GraphHttpConfiguration graphWriterConfiguration = config.getGraph();
