@@ -38,14 +38,15 @@ import org.apache.streams.twitter.provider.TwitterStreamProvider;
 import org.apache.streams.verbs.ObjectCombination;
 import org.apache.streams.verbs.VerbDefinition;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import org.elasticsearch.common.Strings;
+import org.apache.commons.lang3.StringUtils;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.core.IsInstanceOf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Example stream that populates elasticsearch with activities from twitter userstream in real-time
@@ -60,9 +61,9 @@ public class TwitterUserstreamElasticsearch implements Runnable {
   private static VerbDefinition deleteVerbDefinition =
       new VerbDefinition()
           .withValue("delete")
-          .withObjects(Lists.newArrayList(new ObjectCombination()));
+          .withObjects(Stream.of(new ObjectCombination()).collect(Collectors.toList()));
 
-  TwitterUserstreamElasticsearchConfiguration config;
+  private TwitterUserstreamElasticsearchConfiguration config;
 
   public TwitterUserstreamElasticsearch() {
     this(new ComponentConfigurator<>(TwitterUserstreamElasticsearchConfiguration.class).detectConfiguration(StreamsConfigurator.getConfig()));
@@ -90,9 +91,9 @@ public class TwitterUserstreamElasticsearch implements Runnable {
 
     TwitterStreamProvider stream = new TwitterStreamProvider(twitterStreamConfiguration);
     ActivityConverterProcessor converter = new ActivityConverterProcessor();
-    VerbDefinitionDropFilter noDeletesProcessor = new VerbDefinitionDropFilter(Sets.newHashSet(deleteVerbDefinition));
+    VerbDefinitionDropFilter noDeletesProcessor = new VerbDefinitionDropFilter(Stream.of(deleteVerbDefinition).collect(Collectors.toSet()));
     ElasticsearchPersistWriter writer = new ElasticsearchPersistWriter(elasticsearchWriterConfiguration);
-    VerbDefinitionKeepFilter deleteOnlyProcessor = new VerbDefinitionKeepFilter(Sets.newHashSet(deleteVerbDefinition));
+    VerbDefinitionKeepFilter deleteOnlyProcessor = new VerbDefinitionKeepFilter(Stream.of(deleteVerbDefinition).collect(Collectors.toSet()));
     SetDeleteIdProcessor setDeleteIdProcessor = new SetDeleteIdProcessor();
     ElasticsearchPersistDeleter deleter = new ElasticsearchPersistDeleter(elasticsearchWriterConfiguration);
 
@@ -121,14 +122,14 @@ public class TwitterUserstreamElasticsearch implements Runnable {
     @Override
     public List<StreamsDatum> process(StreamsDatum entry) {
 
-      Preconditions.checkArgument(entry.getDocument() instanceof Activity);
+      MatcherAssert.assertThat(entry.getDocument(), IsInstanceOf.instanceOf(Activity.class));
       String id = entry.getId();
       // replace delete with post in id
       // ensure ElasticsearchPersistDeleter will remove original post if present
-      id = Strings.replace(id, "delete", "post");
+      id = StringUtils.replace(id, "delete", "post");
       entry.setId(id);
 
-      return Lists.newArrayList(entry);
+      return Stream.of(entry).collect(Collectors.toList());
     }
 
     @Override
