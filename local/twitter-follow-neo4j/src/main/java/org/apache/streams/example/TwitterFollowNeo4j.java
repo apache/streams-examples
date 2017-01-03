@@ -26,11 +26,11 @@ import org.apache.streams.converter.TypeConverterProcessor;
 import org.apache.streams.core.StreamBuilder;
 import org.apache.streams.data.ActivityConverter;
 import org.apache.streams.data.DocumentClassifier;
-import org.apache.streams.graph.GraphHttpConfiguration;
-import org.apache.streams.graph.GraphHttpPersistWriter;
 import org.apache.streams.jackson.StreamsJacksonMapper;
 import org.apache.streams.local.LocalRuntimeConfiguration;
 import org.apache.streams.local.builders.LocalStreamBuilder;
+import org.apache.streams.neo4j.Neo4jConfiguration;
+import org.apache.streams.neo4j.bolt.Neo4jBoltPersistWriter;
 import org.apache.streams.twitter.TwitterFollowingConfiguration;
 import org.apache.streams.twitter.converter.TwitterDocumentClassifier;
 import org.apache.streams.twitter.converter.TwitterFollowActivityConverter;
@@ -39,6 +39,7 @@ import org.apache.streams.twitter.provider.TwitterFollowingProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -66,14 +67,17 @@ public class TwitterFollowNeo4j implements Runnable {
     TwitterFollowingProvider followingProvider = new TwitterFollowingProvider(twitterFollowingConfiguration);
     TypeConverterProcessor converter = new TypeConverterProcessor(String.class);
 
+    List<DocumentClassifier> classifiers = Stream.of((DocumentClassifier) new TwitterDocumentClassifier()).collect(Collectors.toList());
+    List<ActivityConverter> converters = Stream.of((ActivityConverter) new TwitterFollowActivityConverter()).collect(Collectors.toList());
     ActivityConverterProcessorConfiguration activityConverterProcessorConfiguration =
         new ActivityConverterProcessorConfiguration()
-            .withClassifiers(Stream.of((DocumentClassifier) new TwitterDocumentClassifier()).collect(Collectors.toList()))
-            .withConverters(Stream.of((ActivityConverter) new TwitterFollowActivityConverter()).collect(Collectors.toList()));
+            .withClassifiers(classifiers)
+            .withConverters(converters);
     ActivityConverterProcessor activity = new ActivityConverterProcessor(activityConverterProcessorConfiguration);
 
-    GraphHttpConfiguration graphWriterConfiguration = config.getGraph();
-    GraphHttpPersistWriter graphPersistWriter = new GraphHttpPersistWriter(graphWriterConfiguration);
+    Neo4jConfiguration neo4jConfiguration = config.getNeo4j();
+    Neo4jBoltPersistWriter graphPersistWriter = new Neo4jBoltPersistWriter(neo4jConfiguration);
+    graphPersistWriter.prepare(neo4jConfiguration);
 
     LocalRuntimeConfiguration localRuntimeConfiguration =
         StreamsJacksonMapper.getInstance().convertValue(StreamsConfigurator.detectConfiguration(), LocalRuntimeConfiguration.class);
@@ -82,7 +86,7 @@ public class TwitterFollowNeo4j implements Runnable {
     builder.newPerpetualStream(TwitterFollowingProvider.class.getCanonicalName(), followingProvider);
     builder.addStreamsProcessor(TypeConverterProcessor.class.getCanonicalName(), converter, 1, TwitterFollowingProvider.class.getCanonicalName());
     builder.addStreamsProcessor(ActivityConverterProcessor.class.getCanonicalName(), activity, 1, TypeConverterProcessor.class.getCanonicalName());
-    builder.addStreamsPersistWriter(GraphHttpPersistWriter.class.getCanonicalName(), graphPersistWriter, 1, ActivityConverterProcessor.class.getCanonicalName());
+    builder.addStreamsPersistWriter(Neo4jBoltPersistWriter.class.getCanonicalName(), graphPersistWriter, 1, ActivityConverterProcessor.class.getCanonicalName());
 
     builder.start();
   }

@@ -78,7 +78,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
-            <artifactId>streams-persist-graph</artifactId>
+            <artifactId>streams-persist-neo4j</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.streams</groupId>
@@ -175,7 +175,7 @@
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.streams</groupId>
-                        <artifactId>streams-persist-graph</artifactId>
+                        <artifactId>streams-persist-neo4j</artifactId>
                         <version>${project.version}</version>
                     </dependency>
                     <dependency>

@@ -263,7 +263,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
-                <artifactId>streams-persist-graph</artifactId>
+                <artifactId>streams-persist-neo4j</artifactId>
                 <version>0.5-incubating-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -574,7 +574,7 @@
                                     </watch>
                                 </image>
                                 <image>
-                                    <name>neo4j</name>
+                                    <name>neo4j:3.0.6</name>
                                     <alias>graph</alias>
                                     <run>
                                         <env>
