@@ -19,20 +19,43 @@
 <project>
     <custom>
         <fluidoSkin>
-            <topBarEnabled>false</topBarEnabled>
+            <topBarEnabled>true</topBarEnabled>
             <navBarStyle>navbar-inverse</navBarStyle>
-            <sideBarEnabled>true</sideBarEnabled>
+            <sideBarEnabled>false</sideBarEnabled>
+            <gitHub>
+                <projectId>apache/incubator-streams-examples</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>black</ribbonColor>
+            </gitHub>
+            <twitter>
+                <user>ApacheStreams</user>
+                <showUser>true</showUser>
+                <showFollowers>true</showFollowers>
+            </twitter>
         </fluidoSkin>
     </custom>
     <body>
-        <menu name="Overview" />
-        <menu name="Projects" />
-        <menu name="Resources" inherit="bottom" >
-            <item name="Install Git" href="install/git.html"/>
-            <item name="Install Java" href="install/java.html"/>
-            <item name="Install Maven" href="install/maven.html"/>
-            <item name="Install Docker" href="install/docker.html"/>
-            <item name="Install SBT" href="install/sbt.html"/>
+        <menu name="Examples" inherit="top">
+            <item name="Flink" href="streams-examples-flink/index.html"/>
+            <item name="Local" href="streams-examples-local/index.html"/>
         </menu>
+        <breadcrumbs>
+            <item name="Incubator" href="http://incubator.apache.org/"/>
+            <item name="Streams" href="http://streams.incubator.apache.org/site/latest/streams-project"/>
+            <item name="Examples" href="http://streams.incubator.apache.org/site/latest/streams-examples"/>
+        </breadcrumbs>
+        <head>
+            <![CDATA[
+            <script>
+                (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+                ga('create', 'UA-77087101-1', 'auto');
+                ga('send', 'pageview');
+            </script>
+            ]]>
+        </head>
     </body>
 </project>

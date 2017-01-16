@@ -20,7 +20,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>streams-master</artifactId>
+        <artifactId>streams-project</artifactId>
         <groupId>org.apache.streams</groupId>
         <version>0.5-incubating-SNAPSHOT</version>
     </parent>
@@ -51,45 +51,14 @@
         <tag>HEAD</tag>
     </scm>
 
-    <developers>
-        <developer>
-            <id>sblackmon</id>
-            <name>Steve Blackmon</name>
-            <email>sblackmon@apache.org</email>
-            <url>https://github.com/steveblackmon</url>
-            <organization>Apache Software Foundation</organization>
-            <organizationUrl>http://streams.incubator.apache.org</organizationUrl>
-        </developer>
-    </developers>
-
-    <issueManagement>
-        <system>JIRA</system>
-        <url>https://issues.apache.org/jira/browse/STREAMS</url>
-    </issueManagement>
-
     <ciManagement>
         <system>jenkins</system>
-        <url>http://builds.apache.org/job/Streams%20Examples/</url>
+        <url>http://builds.apache.org/job/streams-examples/</url>
     </ciManagement>
 
     <prerequisites>
         <maven>3.0.5</maven>
     </prerequisites>
-
-    <mailingLists>
-        <mailingList>
-            <name>Dev Mailing List</name>
-            <post>dev@streams.incubator.apache.org</post>
-            <subscribe>dev-subscribe@streams.incubator.apache.org</subscribe>
-            <unsubscribe>dev-unsubscribe@streams.incubator.apache.org</unsubscribe>
-        </mailingList>
-        <mailingList>
-            <name>User Mailing List</name>
-            <post>user@streams.incubator.apache.org</post>
-            <subscribe>user-subscribe@streams.incubator.apache.org</subscribe>
-            <unsubscribe>user-unsubscribe@streams.incubator.apache.org</unsubscribe>
-        </mailingList>
-    </mailingLists>
 
     <distributionManagement>
         <site>
@@ -137,17 +106,6 @@
             <id>clojars-repo</id>
             <name>Clojars Repository</name>
             <url>http://clojars.org/repo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>cloudera-repo</id>
-            <name>Cloudera Repository</name>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
