@@ -1,36 +1,23 @@
-Apache Streams Examples (incubating)
-Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
---------------------------------------------------------------------------------
+## Overview
+Apache Streams (incubating) unifies a diverse world of digital profiles and online activities into common formats and vocabularies, and makes these datasets accessible across a variety of databases, devices, and platforms for streaming, browsing, search, sharing, and analytics use-cases.
 
-About
-=====
-Apache Streams Examples (incubating) contains community-supported example applications built on Apache Streams (incubating).
+### How do I use Streams?
+This repository contains officially maintained examples of how to compose and run streams in various contexts.
 
-Apache Streams is a lightweight (yet scalable) server for ActivityStreams. The role of Apache Streams is to provide a central point of aggregation, filtering and querying for Activities that have been submitted by disparate systems. Apache Streams also intends to include a mechanism for intelligent filtering and recommendation to reduce the noise to end users.
+### Getting Started
 
-Release Notes
-=============
-
-
-Getting Started
-===============
 Please visit the project website for the latest information:
     http://streams.incubator.apache.org/
 
 Along with the developer mailing list archive:
-    http://mail-archives.apache.org/mod_mbox/streams-dev/
+    https://lists.apache.org/list.html?dev@streams.apache.org
 
-System Requirements
-===================
-You need a platform that supports Java SE 7 or later.
-
-Building and running
-====================
+### Building and running
 To build from source code:
 
   - Requirements:
-    Sources compilation require Java SE 7 or higher.
-    The project is built with Apache Maven 3+ (suggested is 3.2.1).
+    Sources compilation require Java SE 8 or higher.
+    Sources compilation require Apache Maven 3.3.9 or higher.
     You need to download and install Maven 3 from: http://maven.apache.org/
 
   - The Streams Examples project itself (this one) depends on the separate Streams project
@@ -39,16 +26,32 @@ To build from source code:
     there is no need to check it out manually and build it locally yourself,
     unless you choose to checkout a SNAPSHOT branch.
     
-    If so needed, incubator-streams can be checked out from:
+    - If so needed, incubator-streams can be checked out from:
       http://git-wip-us.apache.org/repos/asf/incubator-streams.git
 
-    After check out, cd into incubator-streams and invoke maven to install it using:
-      $mvn install
-    
-  - To build all of the Streams examples, invoke maven in the root directory:
-      $mvn install
+    - After check out, cd into incubator-streams and invoke maven to install it using:
+      
+            mvn install
+   
+  - To build all of the Streams examples, invoke maven with:
+      
+        mvn install
+
+### Integration Testing
+
+  *Integration Testing will fail unless you have a working docker installation and valid twitter credentials in local conf files.*
+  
+  - To run the full suite of integration tests, invoke maven with:
+        
+        mvn -N -PdockerITs docker:start
+        mvn clean verify -D
+        mvn -N -PdockerITs docker:stop
 
   - To build and install a docker image containing a specific example, change to that example's directory then:
-      $mvn -Pdocker clean package docker:build
+      
+        mvn -Pdocker clean package docker:build
 
-    This will only work if you have a working docker installation.
+### Disclaimer
+Apache Streams is an effort undergoing incubation at [The Apache Software Foundation (ASF)](http://apache.org) sponsored by the [Apache Incubator PMC](http://incubator.apache.org). Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
+
+###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0
