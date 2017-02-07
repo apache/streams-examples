@@ -20,8 +20,8 @@ package org.apache.streams.examples.flink
 
 import java.net.MalformedURLException
 
-import com.google.common.base.Strings
 import com.typesafe.config.Config
+import org.apache.commons.lang3.StringUtils
 import org.apache.flink.api.common.restartstrategy.RestartStrategies
 import org.apache.flink.api.scala.ExecutionEnvironment
 import org.apache.flink.streaming.api.CheckpointingMode
@@ -63,7 +63,7 @@ trait FlinkBase {
 
   def setup(configUrl : String): Boolean =  {
     BASELOGGER.info("StreamsConfigurator.config: {}", StreamsConfigurator.config)
-    if( !Strings.isNullOrEmpty(configUrl)) {
+    if(StringUtils.isNotEmpty(configUrl)) {
       BASELOGGER.info("StreamsConfigurator.resolveConfig(configUrl): {}", StreamsConfigurator.resolveConfig(configUrl))
       try {
         typesafe = StreamsConfigurator.resolveConfig(configUrl).withFallback(StreamsConfigurator.config).resolve()
