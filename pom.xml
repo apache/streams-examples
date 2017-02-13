@@ -145,99 +145,99 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-core</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-filters</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-schema-activitystreams</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-schema-activitystreams</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo-extensions</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-runtime-local</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-provider-twitter</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-neo4j</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-hdfs</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>0.5-incubating-SNAPSHOT</version>
+                <version>${project.version}</version>
                 <type>test-jar</type>
             </dependency>
 
@@ -368,7 +368,7 @@
                  <plugin>
                     <groupId>org.apache.streams.plugins</groupId>
                     <artifactId>streams-plugin-pojo</artifactId>
-                    <version>0.5-incubating-SNAPSHOT</version>
+                    <version>${project.version}</version>
                     <configuration>
                         <sourcePaths>
                             <sourcePath>${project.basedir}/src/main/jsonschema</sourcePath>

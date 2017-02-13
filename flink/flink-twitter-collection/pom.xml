@@ -22,7 +22,7 @@
         <groupId>org.apache.streams</groupId>
         <artifactId>streams-examples-flink</artifactId>
         <version>0.5-incubating-SNAPSHOT</version>
-        <relativePath>..</relativePath>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
