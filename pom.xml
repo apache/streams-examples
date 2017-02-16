@@ -115,6 +115,20 @@
         </repository>
     </repositories>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>streams-project</id>
+            <name>Streams Project</name>
+            <url>https://repository.apache.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
     <properties>
 
         <!-- Release Properties -->
