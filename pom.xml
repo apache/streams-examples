@@ -256,6 +256,12 @@
                 <version>${streams.version}</version>
                 <type>test-jar</type>
             </dependency>
+            <dependency>
+                <groupId>org.apache.streams</groupId>
+                <artifactId>streams-testing</artifactId>
+                <version>${streams.version}</version>
+                <type>test-jar</type>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
