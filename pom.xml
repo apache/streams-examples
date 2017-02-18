@@ -131,6 +131,8 @@
 
     <properties>
 
+        <streams.version>0.5-incubating</streams.version>
+
         <!-- Release Properties -->
         <snapshot.repository.url>
             https://repository.apache.org/content/repositories/snapshots
@@ -159,103 +161,101 @@
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-config</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-core</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-filters</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-schema-activitystreams</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-schema-activitystreams</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-util</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
                 <type>test-jar</type>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-pojo-extensions</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-runtime-local</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-provider-twitter</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-elasticsearch</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
                 <type>test-jar</type>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-neo4j</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-hdfs</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.streams</groupId>
                 <artifactId>streams-persist-mongo</artifactId>
-                <version>${project.version}</version>
+                <version>${streams.version}</version>
                 <type>test-jar</type>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
@@ -382,7 +382,7 @@
                  <plugin>
                     <groupId>org.apache.streams.plugins</groupId>
                     <artifactId>streams-plugin-pojo</artifactId>
-                    <version>${project.version}</version>
+                    <version>${streams.version}</version>
                     <configuration>
                         <sourcePaths>
                             <sourcePath>${project.basedir}/src/main/jsonschema</sourcePath>
