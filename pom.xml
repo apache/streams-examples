@@ -26,7 +26,7 @@
     </parent>
 
     <artifactId>streams-examples</artifactId>
-    <version>0.5-incubating-SNAPSHOT</version>
+    <version>0.5-incubating</version>
 
     <packaging>pom</packaging>
     <name>streams-examples</name>
@@ -48,7 +48,7 @@
         <connection>scm:git:git@github.com:apache/incubator-streams-examples.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/incubator-streams-examples.git</developerConnection>
         <url>scm:git:git@github.com:apache/incubator-streams-examples.git</url>
-        <tag>HEAD</tag>
+        <tag>streams-examples-0.5-incubating</tag>
     </scm>
 
     <ciManagement>
