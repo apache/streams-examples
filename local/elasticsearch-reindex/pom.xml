@@ -26,7 +26,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>elasticsearch-reindex</artifactId>
+    <artifactId>streams-elasticsearch-reindex</artifactId>
     <name>elasticsearch-reindex</name>
 
     <description>Copies documents between indexes.</description>
