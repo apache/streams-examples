@@ -26,7 +26,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>twitter-follow-neo4j</artifactId>
+    <artifactId>streams-twitter-follow-neo4j</artifactId>
     <name>twitter-follow-neo4j</name>
 
     <description>
