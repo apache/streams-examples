@@ -22,11 +22,11 @@
     <parent>
         <artifactId>streams-project</artifactId>
         <groupId>org.apache.streams</groupId>
-        <version>0.5.1-incubating-SNAPSHOT</version>
+        <version>0.5.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>streams-examples</artifactId>
-    <version>0.5.1-incubating-SNAPSHOT</version>
+    <version>0.5.1-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>streams-examples</name>
@@ -131,7 +131,7 @@
 
     <properties>
 
-        <streams.version>0.5.1-incubating-SNAPSHOT</streams.version>
+        <streams.version>0.5.1-SNAPSHOT</streams.version>
 
         <!-- Release Properties -->
         <snapshot.repository.url>
