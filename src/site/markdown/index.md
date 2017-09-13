@@ -7,7 +7,7 @@ This repository contains officially maintained examples of how to compose and ru
 ### Getting Started
 
 Please visit the project website for the latest information:
-    http://streams.incubator.apache.org/
+    http://streams.apache.org/
 
 Along with the developer mailing list archive:
     https://lists.apache.org/list.html?dev@streams.apache.org
@@ -26,10 +26,10 @@ To build from source code:
     there is no need to check it out manually and build it locally yourself,
     unless you choose to checkout a SNAPSHOT branch.
     
-    - If so needed, incubator-streams can be checked out from:
-      http://git-wip-us.apache.org/repos/asf/incubator-streams.git
+    - If so needed, streams can be checked out from:
+      http://git-wip-us.apache.org/repos/asf/streams.git
 
-    - After check out, cd into incubator-streams and invoke maven to install it using:
+    - After check out, cd into streams and invoke maven to install it using:
       
             mvn install
    
