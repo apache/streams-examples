@@ -22,7 +22,7 @@
   source [label="source\nhdfs://${host}:${port}/${path}/${readerPath}",shape=tab];
 
   //providers
-  TwitterTimelineProvider [label="TwitterTimelineProvider",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterTimelineProvider.java"];
+  TwitterTimelineProvider [label="TwitterTimelineProvider",shape=ellipse,URL="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterTimelineProvider.java"];
 
   //persisters
   RollingFileSink [label="RollingFileSink",shape=ellipse];

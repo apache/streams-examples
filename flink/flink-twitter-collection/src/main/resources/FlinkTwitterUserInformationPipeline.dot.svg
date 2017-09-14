@@ -20,7 +20,7 @@
 <!-- TwitterUserInformationProvider -->
 <g id="node2" class="node">
 <title>TwitterUserInformationProvider</title>
-<g id="a_node2"><a xlink:href="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterUserInformationProvider.java" xlink:title="TwitterUserInformationProvider">
+<g id="a_node2"><a xlink:href="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterUserInformationProvider.java" xlink:title="TwitterUserInformationProvider">
 <ellipse fill="none" stroke="black" cx="200.527" cy="-177" rx="124.824" ry="18"/>
 <text text-anchor="middle" x="200.527" y="-172.8" font-family="Times,serif" font-size="14.00">TwitterUserInformationProvider</text>
 </a>

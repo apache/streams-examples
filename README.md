@@ -7,7 +7,7 @@ This repository contains officially maintained examples of how to compose and ru
 ### Getting Started
 
 Please visit the project website for the latest information:
-    http://streams.incubator.apache.org/
+    http://streams.apache.org/
 
 Along with the developer mailing list archive:
     https://lists.apache.org/list.html?dev@streams.apache.org
@@ -26,10 +26,10 @@ To build from source code:
     there is no need to check it out manually and build it locally yourself,
     unless you choose to checkout a SNAPSHOT branch.
     
-    - If so needed, incubator-streams can be checked out from:
-      http://git-wip-us.apache.org/repos/asf/incubator-streams.git
+    - If so needed, streams can be checked out from:
+      http://git-wip-us.apache.org/repos/asf/streams.git
 
-    - After check out, cd into incubator-streams and invoke maven to install it using:
+    - After check out, cd into streams and invoke maven to install it using:
       
             mvn install
    
@@ -50,8 +50,5 @@ To build from source code:
   - To build and install a docker image containing a specific example, change to that example's directory then:
       
         mvn -Pdocker clean package docker:build
-
-### Disclaimer
-Apache Streams is an effort undergoing incubation at [The Apache Software Foundation (ASF)](http://apache.org) sponsored by the [Apache Incubator PMC](http://incubator.apache.org). Incubation is required of all newly accepted projects until a further review indicates that the infrastructure, communications, and decision making process have stabilized in a manner consistent with other successful ASF projects. While incubation status is not necessarily a reflection of the completeness or stability of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
 
 ###### Licensed under Apache License 2.0 - http://www.apache.org/licenses/LICENSE-2.0

@@ -23,7 +23,7 @@
             <navBarStyle>navbar-inverse</navBarStyle>
             <sideBarEnabled>false</sideBarEnabled>
             <gitHub>
-                <projectId>apache/incubator-streams-examples</projectId>
+                <projectId>apache/streams-examples</projectId>
                 <ribbonOrientation>right</ribbonOrientation>
                 <ribbonColor>black</ribbonColor>
             </gitHub>
@@ -40,9 +40,8 @@
             <item name="Local" href="streams-examples-local/index.html"/>
         </menu>
         <breadcrumbs>
-            <item name="Incubator" href="http://incubator.apache.org/"/>
-            <item name="Streams" href="http://streams.incubator.apache.org/site/latest/streams-project"/>
-            <item name="Examples" href="http://streams.incubator.apache.org/site/latest/streams-examples"/>
+            <item name="Streams" href="http://streams.apache.org/site/latest/streams-project"/>
+            <item name="Examples" href="http://streams.apache.org/site/latest/streams-examples"/>
         </breadcrumbs>
         <head>
             <![CDATA[

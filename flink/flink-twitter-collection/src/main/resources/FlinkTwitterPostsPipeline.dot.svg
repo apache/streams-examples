@@ -20,7 +20,7 @@
 <!-- TwitterTimelineProvider -->
 <g id="node2" class="node">
 <title>TwitterTimelineProvider</title>
-<g id="a_node2"><a xlink:href="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterTimelineProvider.java" xlink:title="TwitterTimelineProvider">
+<g id="a_node2"><a xlink:href="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterTimelineProvider.java" xlink:title="TwitterTimelineProvider">
 <ellipse fill="none" stroke="black" cx="200.527" cy="-177" rx="97.6831" ry="18"/>
 <text text-anchor="middle" x="200.527" y="-172.8" font-family="Times,serif" font-size="14.00">TwitterTimelineProvider</text>
 </a>

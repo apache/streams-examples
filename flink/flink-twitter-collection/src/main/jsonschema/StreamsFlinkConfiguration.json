@@ -7,7 +7,7 @@
   "javaType" : "org.apache.streams.flink.StreamsFlinkConfiguration",
   "javaInterfaces": ["java.io.Serializable"],
   "extends": {
-    "$ref": "http://streams.peoplepattern.com/incubator-streams/0.3.9-PP-SNAPSHOT/streams-config/StreamsConfiguration.json"
+    "$ref": "http://streams.apache.org/site/latest/streams-project/streams-config/StreamsConfiguration.json"
   },
   "properties": {
     "parallel": {

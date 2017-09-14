@@ -22,7 +22,7 @@
   source [label="source\nhdfs://${host}:${port}/${path}/${readerPath}",shape=tab];
 
   //providers
-  TwitterFollowingProvider [label="TwitterFollowingProvider",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterFollowingProvider.java"];
+  TwitterFollowingProvider [label="TwitterFollowingProvider",shape=ellipse,URL="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterFollowingProvider.java"];
 
   //persisters
   RollingFileSink [label="RollingFileSink",shape=ellipse];

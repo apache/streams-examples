@@ -12,7 +12,7 @@
 <!-- TwitterStreamProvider -->
 <g id="node1" class="node">
 <title>TwitterStreamProvider</title>
-<g id="a_node1"><a xlink:href="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterStreamProvider.java" xlink:title="TwitterStreamProvider">
+<g id="a_node1"><a xlink:href="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterStreamProvider.java" xlink:title="TwitterStreamProvider">
 <ellipse fill="none" stroke="black" cx="136.758" cy="-177" rx="91.0473" ry="18"/>
 <text text-anchor="middle" x="136.758" y="-172.8" font-family="Times,serif" font-size="14.00">TwitterStreamProvider</text>
 </a>

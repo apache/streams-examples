@@ -19,7 +19,7 @@
  digraph g {
 
   //providers
-  TwitterStreamProvider [label="TwitterStreamProvider",shape=ellipse,URL="https://github.com/apache/incubator-streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterStreamProvider.java"];
+  TwitterStreamProvider [label="TwitterStreamProvider",shape=ellipse,URL="https://github.com/apache/streams/blob/master/streams-contrib/streams-provider-twitter/src/main/java/org/apache/streams/twitter/provider/TwitterStreamProvider.java"];
 
   //persisters
   RollingFileSink [label="RollingFileSink",shape=ellipse];
