@@ -76,7 +76,7 @@ public class TwitterUserstreamElasticsearch implements Runnable {
 
   public static void main(String[] args)
   {
-    LOGGER.info(StreamsConfigurator.config.toString());
+    LOGGER.info(StreamsConfigurator.getConfig().toString());
 
     TwitterUserstreamElasticsearch userstream = new TwitterUserstreamElasticsearch();
     new Thread(userstream).start();

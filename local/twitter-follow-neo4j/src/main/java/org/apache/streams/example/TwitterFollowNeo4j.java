@@ -93,7 +93,7 @@ public class TwitterFollowNeo4j implements Runnable {
 
   public static void main(String[] args) {
 
-    LOGGER.info(StreamsConfigurator.config.toString());
+    LOGGER.info(StreamsConfigurator.getConfig().toString());
 
     TwitterFollowNeo4j stream = new TwitterFollowNeo4j();
 

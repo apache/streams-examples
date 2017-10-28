@@ -51,7 +51,7 @@ public class HdfsElasticsearch implements Runnable {
 
   public static void main(String[] args)
   {
-    LOGGER.info(StreamsConfigurator.config.toString());
+    LOGGER.info(StreamsConfigurator.getConfig().toString());
     HdfsElasticsearch restore = new HdfsElasticsearch();
     new Thread(restore).start();
   }

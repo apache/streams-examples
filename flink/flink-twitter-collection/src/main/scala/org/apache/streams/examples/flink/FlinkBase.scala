@@ -62,11 +62,11 @@ trait FlinkBase {
   }
 
   def setup(configUrl : String): Boolean =  {
-    BASELOGGER.info("StreamsConfigurator.config: {}", StreamsConfigurator.config)
+    BASELOGGER.info("StreamsConfigurator.config: {}", StreamsConfigurator.getConfig)
     if(StringUtils.isNotEmpty(configUrl)) {
       BASELOGGER.info("StreamsConfigurator.resolveConfig(configUrl): {}", StreamsConfigurator.resolveConfig(configUrl))
       try {
-        typesafe = StreamsConfigurator.resolveConfig(configUrl).withFallback(StreamsConfigurator.config).resolve()
+        typesafe = StreamsConfigurator.resolveConfig(configUrl).withFallback(StreamsConfigurator.getConfig).resolve()
       } catch {
         case mue: MalformedURLException => {
           BASELOGGER.error("Invalid Configuration URL: ", mue)

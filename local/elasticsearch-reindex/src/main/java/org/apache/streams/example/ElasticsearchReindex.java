@@ -52,7 +52,7 @@ public class ElasticsearchReindex implements Runnable {
 
   public static void main(String[] args)
   {
-    LOGGER.info(StreamsConfigurator.config.toString());
+    LOGGER.info(StreamsConfigurator.getConfig().toString());
 
     ElasticsearchReindex reindex = new ElasticsearchReindex();
 

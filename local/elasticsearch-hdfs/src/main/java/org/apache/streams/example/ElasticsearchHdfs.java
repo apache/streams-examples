@@ -51,7 +51,7 @@ public class ElasticsearchHdfs implements Runnable {
 
   public static void main(String[] args)
   {
-    LOGGER.info(StreamsConfigurator.config.toString());
+    LOGGER.info(StreamsConfigurator.getConfig().toString());
     ElasticsearchHdfs backup = new ElasticsearchHdfs();
     new Thread(backup).start();
   }
